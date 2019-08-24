@@ -1,6 +1,5 @@
 package com.union.travel.tvtest2;
 
-import android.app.PendingIntent;
 import android.hardware.usb.UsbDevice;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
