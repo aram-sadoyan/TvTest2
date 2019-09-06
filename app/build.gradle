@@ -15,6 +15,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
@@ -24,5 +28,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     compile project(path: ':PhysicaloidLibrary')
     //  implementation 'com.github.felHR85:UsbSerial:6.1.0'
-    compile 'me.aflak.libraries:arduino:1.4.3'
+    implementation 'me.aflak.libraries:arduino:1.4.3'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.airbnb.android:lottie:2.6.0'
 }

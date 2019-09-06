@@ -15,7 +15,7 @@
 		android:required="false" />
 
 
-	<application
+	<application android:hardwareAccelerated="true"
 		android:allowBackup="true"
 		android:banner="@style/Theme.AppCompat.NoActionBar"
 		android:icon="@mipmap/ic_launcher"
@@ -23,6 +23,7 @@
 		android:supportsRtl="true"
 		android:theme="@style/Theme.AppCompat.NoActionBar">
 		<activity android:name=".MainActivity">
+
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 
