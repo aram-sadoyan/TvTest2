@@ -10,12 +10,36 @@
 
 
 	<com.airbnb.lottie.LottieAnimationView
+		android:id="@+id/lmi_menu_item"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:id="@+id/lmi_menu_item"
 		android:layout_gravity="center"
 		app:lottie_fileName="gradientlottie.json"
-		/>
+		android:scaleType="centerCrop" />
+
+	<TextView
+		android:id="@+id/titleVxtView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="PICK ONE"
+		android:textStyle="bold"
+		android:textSize="44sp"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="@+id/tabLayout" />
+
+
+	<com.airbnb.lottie.LottieAnimationView
+		android:layout_width="100dp"
+		android:layout_height="200dp"
+		android:id="@+id/icArrowDown"
+
+		app:lottie_fileName="arrow.json"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/titleVxtView"/>
 
 
 	<android.support.design.widget.TabLayout
@@ -56,7 +80,7 @@
 		android:layout_height="wrap_content"
 		android:layout_marginStart="8dp"
 		android:text="   online txt"
-		android:textSize="8dp"
+		android:textSize="12sp"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent" />
 
@@ -67,7 +91,7 @@
 		android:layout_height="wrap_content"
 		android:layout_marginStart="8dp"
 		android:text="       online"
-		android:textSize="8dp"
+		android:textSize="12sp"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toEndOf="@id/textView" />
 

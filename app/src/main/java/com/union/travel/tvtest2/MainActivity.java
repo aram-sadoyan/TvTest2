@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
     private ViewPager viewPager;
 
     private LottieAnimationView lottieAnimationView;
+    private LottieAnimationView lottieAnimationViewArrow;
 
     TextView txtv = null;
     TextView txtv2 = null;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         watchMap.put(1, new Watch(
-                        "name1",
+                        "Watch 1 Lorem ipsum",
                         "header1",
                         "title1",
                         "mainDescription1",
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         );
 
         watchMap.put(2, new Watch(
-                        "name2",
+                        "Watch 2 Lorem ipsum",
                         "header2",
                         "title2",
                         "mainDescription2",
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         );
 
         watchMap.put(3, new Watch(
-                        "name3",
+                        "Watch 3 Lorem ipsum",
                         "header3",
                         "title3",
                         "mainDescription3",
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         );
 
         watchMap.put(4, new Watch(
-                        "name4",
+                        "Watch 4 Lorem ipsum",
                         "header4",
                         "title4",
                         "mainDescription4",
@@ -102,23 +103,27 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
                 )
         );
 
-        watchMap.put(5, new Watch(
-                        "name5",
-                        "header5",
-                        "title5",
-                        "mainDescription5",
-                        "smallDescription5",
-                        "iconUrlMain5",
-                        "iconUrlMain5"
-                )
-        );
+//        watchMap.put(5, new Watch(
+//                        "name5",
+//                        "header5",
+//                        "title5",
+//                        "mainDescription5",
+//                        "smallDescription5",
+//                        "iconUrlMain5",
+//                        "iconUrlMain5"
+//                )
+//        );
 
 
         setContentView(R.layout.activity_main);
         lottieAnimationView = findViewById(R.id.lmi_menu_item);
         lottieAnimationView.playAnimation();
 
+        lottieAnimationViewArrow = findViewById(R.id.icArrowDown);
+        lottieAnimationViewArrow.playAnimation();
+
         lottieAnimationView.loop(true);
+        lottieAnimationViewArrow.loop(true);
         //lottieAnimationView.setRepeatMode(LottieDrawable.REVERSE);
 
         viewPager = findViewById(R.id.viewPager);
@@ -194,6 +199,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
         viewPager.setVisibility(View.VISIBLE);
         tabLayout.setVisibility(View.VISIBLE);
+
+        lottieAnimationViewArrow.setVisibility(View.INVISIBLE);
         tabsAreShown = true;
 
     }
@@ -204,19 +211,19 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
         InfoTab tab1 = new InfoTab();
         tab1.tabId = "tabId1";
         tab1.tabTitle = new HashMap<>();
-        tab1.tabTitle.put(Locale.ENGLISH.getLanguage().toLowerCase(), "tab1EnglishTitle");
+        tab1.tabTitle.put(Locale.ENGLISH.getLanguage().toLowerCase(), "DETAILS");
         infoTabs.add(tab1);
 
         InfoTab tab2 = new InfoTab();
         tab2.tabId = "tabId2";
         tab2.tabTitle = new HashMap<>();
-        tab2.tabTitle.put(Locale.ENGLISH.getLanguage().toLowerCase(), "tab2EnglishTitle");
+        tab2.tabTitle.put(Locale.ENGLISH.getLanguage().toLowerCase(), "SPORT");
         infoTabs.add(tab2);
 
         InfoTab tab3 = new InfoTab();
         tab3.tabId = "tabId3";
         tab3.tabTitle = new HashMap<>();
-        tab3.tabTitle.put(Locale.ENGLISH.getLanguage().toLowerCase(), "tab3EnglishTitle");
+        tab3.tabTitle.put(Locale.ENGLISH.getLanguage().toLowerCase(), "STYLES");
         infoTabs.add(tab3);
     }
 
@@ -271,41 +278,38 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
             int sensorIdInt = -1;
             switch (message) {
-                case "d1":
+                case "d2\r\n":
                     sensorIdInt = 1;
                     break;
-                case "d2\r\n":
+                case "d3\r\n":
                     sensorIdInt = 2;
                     break;
-                case "d3\r\n":
+                case "d4\r\n":
                     sensorIdInt = 3;
                     break;
-                case "d4\r\n":
+                case "d5\r\n":
                     sensorIdInt = 4;
                     break;
-                case "d5\r\n":
+                case "d6\r\n":
                     sensorIdInt = 5;
                     break;
-                case "d6":
+                case "d7\r\n":
                     sensorIdInt = 6;
                     break;
-                case "d7\r\n":
+                case "d8":
                     sensorIdInt = 7;
                     break;
-                case "d8":
+                case "d9":
                     sensorIdInt = 8;
                     break;
-                case "d9":
+                case "d10":
                     sensorIdInt = 9;
                     break;
-                case "d10":
+                case "d11":
                     sensorIdInt = 10;
                     break;
-                case "d11":
-                    sensorIdInt = 11;
-                    break;
                 case "d12":
-                    sensorIdInt = 12;
+                    sensorIdInt = 11;
                     break;
                 case "OFF":
                     sensorIdInt = -1;
@@ -357,11 +361,13 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 
     private void closeTabs() {
-        Log.d("flow","close Tabs");
 
         tabLayout.removeAllTabs();
         viewPager.setVisibility(View.INVISIBLE);
         tabLayout.setVisibility(View.INVISIBLE);
+
+        lottieAnimationViewArrow.cancelAnimation();
+        lottieAnimationViewArrow.setVisibility(View.VISIBLE);
     }
 
     private void startShowingContent(Watch watch) {
