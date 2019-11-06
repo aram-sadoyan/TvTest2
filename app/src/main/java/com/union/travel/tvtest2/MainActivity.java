@@ -1,17 +1,19 @@
 package com.union.travel.tvtest2;
 
 import android.hardware.usb.UsbDevice;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
     Map<Integer, Watch> watchMap = new HashMap<>();
 
     private ArrayList<InfoTab> infoTabs;
-    private TabFragment1 tabFragment1;
+    private OverviewFragment overViewFragment;
     private TabFragment2 tabFragment2;
     private TabFragment3 tabFragment3;
 
@@ -139,6 +141,9 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
         setDefaultTabs();
 
+        //for debug
+        startShowingContent(watchMap.get(1));
+
 
     }
 
@@ -151,11 +156,11 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
             if ("tabId1".equals(tab.tabId)) {
                 //todo args put data for tabId1
                 args.putString("name", watch.getName());
-                if (tabFragment1 == null) {
-                    tabFragment1 = new TabFragment1();
-                    fragmentItemList.add(tabFragment1);
+                if (overViewFragment == null) {
+                    overViewFragment = new OverviewFragment();
+                    fragmentItemList.add(overViewFragment);
                 }
-                tabFragment1.setArguments(args);
+                overViewFragment.setArguments(args);
             } else if ("tabId2".equals(tab.tabId)) {
                 //todo args put data for tabId2
 //                args.putParcelable(ShopConstants.SHOP_GENERIC_QUERY, ShopPackageQuery.getInstance().hasTag(category).purchased(false)

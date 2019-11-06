@@ -1,11 +1,12 @@
 package com.union.travel.tvtest2;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 public class TabFragment3 extends Fragment {
     private boolean isViewShown;
