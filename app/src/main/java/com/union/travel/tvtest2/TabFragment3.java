@@ -21,5 +21,5 @@ public class TabFragment3 extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         isViewShown = getView() != null && isVisibleToUser;
-        Log.d("dwd", "fragment 3 " + isViewShown);    }
+        Log.d("dwd", "FRG 3 " + isViewShown);    }
 }
