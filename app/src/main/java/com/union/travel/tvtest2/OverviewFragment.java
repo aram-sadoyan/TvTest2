@@ -11,9 +11,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.union.travel.tvtest2.adapter.VerticalWatchAdapter;
 
 public class OverviewFragment extends Fragment {
     private boolean isViewShown;
+    public RecyclerView recyclerView;
+
 
 
     String name = "Grzo";
@@ -32,16 +38,39 @@ public class OverviewFragment extends Fragment {
     }
 
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         titleTxtView = view.findViewById(R.id.titleTxtView);
+        recyclerView = view.findViewById(R.id.watchesRecyclerView);
         Bundle args = getArguments();
         if (args != null){
             name = args.getString("name");
         }
 
       //  titleTxtView.setText(name);
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.VERTICAL, false));
+        recyclerView.setItemViewCacheSize(10);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        recyclerView.setHasFixedSize(true);
+
+
+        VerticalWatchAdapter verticalWatchAdapter = new VerticalWatchAdapter();
+
+        recyclerView.setAdapter(verticalWatchAdapter);
+
+
+
     }
 
     @Override

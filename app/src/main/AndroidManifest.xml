@@ -15,7 +15,9 @@
 <!--		android:required="false" />-->
 
 
-	<application android:hardwareAccelerated="true"
+	<application
+		android:name=".ApplicationMain"
+		android:hardwareAccelerated="true"
 		android:allowBackup="true"
 		android:banner="@style/Theme.AppCompat.NoActionBar"
 		android:icon="@mipmap/ic_launcher"
