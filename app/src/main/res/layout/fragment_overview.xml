@@ -9,18 +9,22 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/watchesRecyclerView"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="90px"
         app:layout_constraintStart_toStartOf="parent"/>
+
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/watchId"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        app:layout_constraintStart_toStartOf="@id/watchesRecyclerView"
-        app:layout_constraintTop_toBottomOf="parent"/>
-
+        android:layout_width="590px"
+        android:layout_height="590px"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="144dp"
+        android:background="@color/primary_color_orange"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/watchesRecyclerView" />
 
     <TextView
         android:id="@+id/titleTxtView"
@@ -57,5 +61,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/colorDescTxtView"
         android:text="Part Number 01038347" />
+
+
+    <View
+        android:id="@+id/lineView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/primary_color_orange"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/priceTxtView"/>
+
+    <TextView
+        android:id="@+id/priceTxtView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="228dp"
+        android:layout_marginEnd="90dp"
+        android:includeFontPadding="false"
+        android:text="899.99 USD"
+        android:textColor="@android:color/black"
+        android:textSize="64px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/colorDescTxtView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
