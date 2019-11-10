@@ -1,4 +1,4 @@
-package com.union.travel.tvtest2;
+package com.union.travel.tvtest2.tabFragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-public class TabFragment3 extends Fragment {
+import com.union.travel.tvtest2.R;
+
+public class ModelFragment extends Fragment {
     private boolean isViewShown;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_three, container, false);
+        return inflater.inflate(R.layout.fragment_model, container, false);
     }
 
 

@@ -30,6 +30,8 @@ public class VerticalWatchAdapter extends RecyclerView.Adapter<RecyclerView.View
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
+
+
 	}
 
 	@Override

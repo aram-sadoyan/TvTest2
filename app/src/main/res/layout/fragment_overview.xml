@@ -58,4 +58,17 @@
         app:layout_constraintTop_toBottomOf="@+id/colorDescTxtView"
         android:text="Part Number 01038347" />
 
+
+    <TextView
+        android:id="@+id/priceTxtView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="228dp"
+        android:layout_marginEnd="90dp"
+        android:text="899.99 USD"
+        android:textColor="@android:color/black"
+        android:textSize="64sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/colorDescTxtView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
