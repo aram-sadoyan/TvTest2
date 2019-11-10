@@ -24,5 +24,9 @@ public class TabFragment3 extends Fragment {
         Log.d("dwd", "FRG 3 " + isViewShown);
 
 
+
+
+
+
     }
 }
