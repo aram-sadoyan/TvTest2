@@ -1,4 +1,4 @@
-package com.union.travel.tvtest2;
+package com.union.travel.tvtest2.adapter;
 
 
 
@@ -8,13 +8,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import com.union.travel.tvtest2.InfoTab;
+
 import java.util.List;
 
 public class TabAdapter extends FragmentStatePagerAdapter {
     private List<Fragment> fragments;
     private List<InfoTab> infoTabs;
 
-    TabAdapter(FragmentManager fm, List<Fragment> fragments, List<InfoTab> infoTabs) {
+    public TabAdapter(FragmentManager fm, List<Fragment> fragments, List<InfoTab> infoTabs) {
         super(fm);
         this.fragments = fragments;
         this.infoTabs = infoTabs;

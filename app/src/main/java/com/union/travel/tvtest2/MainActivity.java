@@ -1,6 +1,5 @@
 package com.union.travel.tvtest2;
 
-import android.graphics.ColorSpace;
 import android.hardware.usb.UsbDevice;
 
 import android.os.Bundle;
@@ -15,6 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.tabs.TabLayout;
+import com.union.travel.tvtest2.adapter.TabAdapter;
 import com.union.travel.tvtest2.tabFragments.ComparingPageFragment;
 import com.union.travel.tvtest2.tabFragments.DemoVideosFragment;
 import com.union.travel.tvtest2.tabFragments.OverviewFragment;
