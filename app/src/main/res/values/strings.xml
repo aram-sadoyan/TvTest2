@@ -2,4 +2,8 @@
 	<string name="app_name">TvTest2</string>
     <string name="inch_vor_erkar_text">Inch vor erkar text</string>
     <string name="inch_vor_karch_text">Inch vor karch text</string>
+    <string name="inch_vor_urish_erkar_text">inch vor urish erkar text</string>
+    <string name="inch_vor_urish_karch_text">Inch vor urish karch text</string>
+    <string name="select_this_model">Select this model</string>
+    <string name="todo">TODO</string>
 </resources>
