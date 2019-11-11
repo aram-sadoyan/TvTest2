@@ -20,6 +20,9 @@ public class TabAdapter extends FragmentStatePagerAdapter {
         super(fm);
         this.fragments = fragments;
         this.infoTabs = infoTabs;
+
+
+
     }
 
     @Override
