@@ -62,37 +62,37 @@ public class DemoVideosFragment extends Fragment {
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-
-		 exoPlayerView=(SimpleExoPlayerView)getView().findViewById(R.id.esiminch);
-		try {
-			BandwidthMeter bandwidthMeter=new DefaultBandwidthMeter();
-			TrackSelector trackSelector=new DefaultTrackSelector(new AdaptiveTrackSelection.Factory());
-			exoPlayer= ExoPlayerFactory.newSimpleInstance(getActivity());
-			Uri uri=Uri.parse(video_url);
-			DefaultHttpDataSourceFactory dataSourceFactory=new DefaultHttpDataSourceFactory("exoplayer_video");
-			ExtractorsFactory extractorsFactory=new DefaultExtractorsFactory();
-			MediaSource mediaSource=new ExtractorMediaSource(uri,dataSourceFactory,extractorsFactory,null,null);
-
-			exoPlayerView.setPlayer(exoPlayer);
-			exoPlayer.prepare(mediaSource);
-			exoPlayer.setPlayWhenReady(true);
-
-		}catch (Exception e){
-			Log.e("DemoVideosFragment", "exoplayer error"+e.toString());
-		}
-
-
-		recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
-				LinearLayoutManager.VERTICAL, false));
-		recyclerView.setItemViewCacheSize(10);
-		recyclerView.setDrawingCacheEnabled(true);
-		recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-		recyclerView.setHasFixedSize(true);
-
-
-		DemoVideoAdapter DemoVideoAdapter = new DemoVideoAdapter();
-
-		recyclerView.setAdapter(DemoVideoAdapter);
+//
+//		 exoPlayerView=(SimpleExoPlayerView)getView().findViewById(R.id.esiminch);
+//		try {
+//			BandwidthMeter bandwidthMeter=new DefaultBandwidthMeter();
+//			TrackSelector trackSelector=new DefaultTrackSelector(new AdaptiveTrackSelection.Factory());
+//			exoPlayer= ExoPlayerFactory.newSimpleInstance(getActivity());
+//			Uri uri=Uri.parse(video_url);
+//			DefaultHttpDataSourceFactory dataSourceFactory=new DefaultHttpDataSourceFactory("exoplayer_video");
+//			ExtractorsFactory extractorsFactory=new DefaultExtractorsFactory();
+//			MediaSource mediaSource=new ExtractorMediaSource(uri,dataSourceFactory,extractorsFactory,null,null);
+//
+//			exoPlayerView.setPlayer(exoPlayer);
+//			exoPlayer.prepare(mediaSource);
+//			exoPlayer.setPlayWhenReady(true);
+//
+//		}catch (Exception e){
+//			Log.e("DemoVideosFragment", "exoplayer error"+e.toString());
+//		}
+//
+//
+//		recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
+//				LinearLayoutManager.VERTICAL, false));
+//		recyclerView.setItemViewCacheSize(10);
+//		recyclerView.setDrawingCacheEnabled(true);
+//		recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+//		recyclerView.setHasFixedSize(true);
+//
+//
+//		DemoVideoAdapter DemoVideoAdapter = new DemoVideoAdapter();
+//
+//		recyclerView.setAdapter(DemoVideoAdapter);
 
 	}
 	@Override

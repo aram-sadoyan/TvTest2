@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:fresco="http://schemas.android.com/apk/res-auto"
-	android:orientation="vertical"
-	android:layout_width="match_parent"
+	android:layout_marginBottom="15dp"
+	android:orientation="horizontal"
+	android:layout_width="wrap_content"
 	android:layout_height="wrap_content">
 
 	<com.facebook.drawee.view.SimpleDraweeView
 		android:id="@+id/watchitem"
+		android:layout_width="115dp"
+		android:layout_height="115dp"
+
 		android:background="@android:color/black"
-		android:layout_width="115px"
-		android:layout_height="115px"
-		android:layout_marginBottom="4dp"
-		android:layout_gravity="center"
-		fresco:actualImageScaleType="fitCenter"/>
+		fresco:actualImageScaleType="fitCenter" />
+
+	<com.facebook.drawee.view.SimpleDraweeView
+		android:id="@+id/indicatorView"
+		android:layout_width="4dp"
+		android:layout_height="match_parent"
+		android:background="@color/primary_color_orange" />
 
 </LinearLayout>

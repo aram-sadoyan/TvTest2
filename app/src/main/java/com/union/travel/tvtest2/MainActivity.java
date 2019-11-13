@@ -1,5 +1,6 @@
 package com.union.travel.tvtest2;
 
+import android.graphics.Typeface;
 import android.hardware.usb.UsbDevice;
 
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.model.Font;
 import com.google.android.material.tabs.TabLayout;
 import com.union.travel.tvtest2.adapter.TabAdapter;
 import com.union.travel.tvtest2.tabFragments.ComparingPageFragment;
@@ -153,8 +155,20 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 		setDefaultTabs();
 
+
+
+		//todo
 		//for debug
-		startShowingContent(watchMap.get(1));
+		startShowingContent(watchMap.get(1));		//for debug
+		//for debug
+		//for debug
+
+		lottieAnimationView.setVisibility(View.GONE);		//for debug
+		//for debug
+		//for debug
+		//for debug
+		//for debug
+
 
 
 	}
@@ -223,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		for (int i = 0; i < tabLayout.getTabCount(); i++) {
 			View tab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(i);
 			ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tab.getLayoutParams();
-			p.setMargins(0, 0, 50, 0);
+			p.setMargins(0, 0, 100, 0);
 			tab.requestLayout();
 		}
 
@@ -425,4 +439,23 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		initTabLayout(watch);
 		operationRuning = false;
 	}
+
+
+
+//	private void changeTabsFont() {
+//
+//		ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
+//		int tabsCount = vg.getChildCount();
+//		for (int j = 0; j < tabsCount; j++) {
+//			ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+//			int tabChildsCount = vgTab.getChildCount();
+//			for (int i = 0; i < tabChildsCount; i++) {
+//				View tabViewChild = vgTab.getChildAt(i);
+//				if (tabViewChild instanceof TextView) {
+//					((TextView) tabViewChild).setTypeface(Font.getI, Typeface.NORMAL);
+//				}
+//			}
+//		}
+//	}
+
 }

@@ -12,7 +12,7 @@ public class CustomViewPager extends ViewPager {
 
     public CustomViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.enabled = false;
+        this.enabled = true;
     }
 
     @Override
@@ -33,10 +33,10 @@ public class CustomViewPager extends ViewPager {
         return enabled;
     }
 
-    @Override
-    public void setCurrentItem(int item, boolean smoothScroll) {
-        super.setCurrentItem(item, false);
-    }
+//    @Override
+//    public void setCurrentItem(int item, boolean smoothScroll) {
+//        super.setCurrentItem(item, false);
+//    }
 
     @Override
     public void setCurrentItem(int item) {
