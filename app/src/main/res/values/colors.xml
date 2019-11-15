@@ -3,6 +3,7 @@
 
 
 	<color name="primary_color_orange">#F58220</color>
+	<color name="primary_color_gray">#1A000000</color>
 
 	<color name="primary_color_black">#000000</color>
 	<color name="primary_color_white">#E5E5E5</color>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal"
+	android:layout_width="333dp"
+	android:layout_height="181dp"
+	android:layout_marginBottom="30dp">
+
+
+	<com.google.android.exoplayer2.ui.SimpleExoPlayerView
+		android:layout_width="321dp"
+		android:layout_height="181dp"
+		android:id="@+id/esiminch"/>
+
+	<com.facebook.drawee.view.SimpleDraweeView
+		android:id="@+id/verticalLineView"
+		android:layout_marginStart="10dp"
+		android:layout_width="2dp"
+		android:layout_height="match_parent"
+		android:background="@color/primary_color_orange"/>
+
+
+
+</LinearLayout>

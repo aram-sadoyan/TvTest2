@@ -1,8 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:background="@color/primary_color_white">
+
+
+
+	<com.facebook.drawee.view.SimpleDraweeView
+		android:id="@+id/watchId"
+		android:layout_width="590dp"
+		android:layout_height="590dp"
+		android:layout_marginStart="275dp"
+		android:layout_marginTop="97dp"
+		android:background="@color/primary_color_orange"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintStart_toStartOf="parent" />
+
+
+	<TextView
+		android:id="@+id/nameTxtView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="62dp"
+		android:layout_marginStart="66dp"
+		android:text="fēnix® 6 - Pro and Sapphire Editions"
+		android:textColor="@color/primary_color_black"
+		android:textSize="48sp"
+		app:layout_constraintStart_toEndOf="@id/watchId"
+		app:layout_constraintTop_toTopOf="parent" />
+
+	<TextView
+		android:id="@+id/titeTxtView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginEnd="172dp"
+		android:layout_marginStart="66dp"
+		android:text="Sapphire - Titanium with Ember Orange Band"
+		android:textColor="@color/lb_grey"
+		android:textSize="18sp"
+		app:layout_constraintStart_toEndOf="@id/watchId"
+		app:layout_constraintTop_toBottomOf="@id/nameTxtView"/>
+
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/modelRecyclerView"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:layout_marginStart="66dp"
+		android:layout_marginTop="141dp"
+		android:layout_marginBottom="40dp"
+		app:layout_constraintBottom_toTopOf="@+id/bottomTextView"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@+id/watchId"
+		app:layout_constraintTop_toBottomOf="@+id/titeTxtView" />
+
+	<TextView
+		android:id="@+id/bottomTextView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginEnd="172dp"
+		android:layout_marginStart="66dp"
+		android:layout_marginBottom="220dp"
+		android:text="Select this model"
+		android:textColor="@color/primary_color_orange"
+		android:textSize="18sp"
+		app:layout_constraintStart_toEndOf="@id/watchId"
+		app:layout_constraintBottom_toBottomOf="parent"/>
+
+	<com.facebook.drawee.view.SimpleDraweeView
+		android:id="@+id/rightArrowView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+
+		android:layout_marginStart="8dp"
+		android:layout_marginBottom="208dp"
+		android:background="@drawable/ic_arrow_right"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintStart_toEndOf="@id/bottomTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

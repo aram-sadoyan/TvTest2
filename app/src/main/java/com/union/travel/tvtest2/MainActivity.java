@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	private TabLayout tabLayout;
 	private ViewPager viewPager;
 
-	private LottieAnimationView lottieAnimationView;
-	private LottieAnimationView lottieAnimationViewArrow;
+	//private LottieAnimationView lottieAnimationView;
+	//private LottieAnimationView lottieAnimationViewArrow;
 
 	TextView txtv = null;
 	TextView txtv2 = null;
@@ -132,14 +132,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 
 		setContentView(R.layout.activity_main);
-		lottieAnimationView = findViewById(R.id.lmi_menu_item);
-		lottieAnimationView.playAnimation();
 
-		lottieAnimationViewArrow = findViewById(R.id.icArrowDown);
-		lottieAnimationViewArrow.playAnimation();
 
-		lottieAnimationView.loop(true);
-		lottieAnimationViewArrow.loop(true);
 		//lottieAnimationView.setRepeatMode(LottieDrawable.REVERSE);
 
 		viewPager = findViewById(R.id.viewPager);
@@ -163,11 +157,12 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		//for debug
 		//for debug
 
-		lottieAnimationView.setVisibility(View.GONE);		//for debug
 		//for debug
 		//for debug
 		//for debug
 		//for debug
+
+		viewPager.setCurrentItem(1);//for debug //todo
 
 
 
@@ -245,7 +240,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		viewPager.setVisibility(View.VISIBLE);
 		tabLayout.setVisibility(View.VISIBLE);
 
-		lottieAnimationViewArrow.setVisibility(View.INVISIBLE);
 		tabsAreShown = true;
 
 	}
@@ -429,9 +423,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		tabLayout.removeAllTabs();
 		viewPager.setVisibility(View.INVISIBLE);
 		tabLayout.setVisibility(View.INVISIBLE);
-
-		lottieAnimationViewArrow.cancelAnimation();
-		lottieAnimationViewArrow.setVisibility(View.VISIBLE);
 	}
 
 	private void startShowingContent(Watch watch) {

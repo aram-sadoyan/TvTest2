@@ -1,6 +1,5 @@
 package com.union.travel.tvtest2.tabFragments;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,21 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.extractor.ExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.union.travel.tvtest2.R;
-import com.union.travel.tvtest2.adapter.DemoVideoAdapter;
+import com.union.travel.tvtest2.adapter.VideoVerticalAdapter;
 
 public class DemoVideosFragment extends Fragment {
 
@@ -55,13 +43,28 @@ public class DemoVideosFragment extends Fragment {
 
 		recyclerView = view.findViewById(R.id.recvw_demo);
 
+
+
 	}
 
 
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		RecyclerView.RecycledViewPool sharedPool = new RecyclerView.RecycledViewPool();
 
+
+
+		recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
+				LinearLayoutManager.VERTICAL, false));
+		recyclerView.setItemViewCacheSize(10);
+		recyclerView.setDrawingCacheEnabled(true);
+		recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+		recyclerView.setHasFixedSize(true);
+		recyclerView.setRecycledViewPool(sharedPool);
+
+		VideoVerticalAdapter videoVerticalAdapter = new VideoVerticalAdapter();
+		recyclerView.setAdapter(videoVerticalAdapter);
 //
 //		 exoPlayerView=(SimpleExoPlayerView)getView().findViewById(R.id.esiminch);
 //		try {

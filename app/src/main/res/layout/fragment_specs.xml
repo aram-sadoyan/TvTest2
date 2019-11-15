@@ -3,15 +3,15 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:orientation="vertical"
-	android:background="@android:color/white"
+	android:background="@color/primary_color_white"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
 
 	<com.facebook.drawee.view.SimpleDraweeView
 		android:id="@+id/watchId"
-		android:layout_width="590px"
-		android:layout_height="590px"
+		android:layout_width="590dp"
+		android:layout_height="590dp"
 		android:layout_marginStart="275dp"
 		android:layout_marginTop="97dp"
 		android:background="@color/primary_color_orange"
@@ -42,6 +42,27 @@
 		android:textSize="18sp"
 		app:layout_constraintStart_toEndOf="@id/watchId"
 		app:layout_constraintTop_toBottomOf="@id/nameTxtView"/>
+
+	<ScrollView
+		android:id="@+id/paramsScrollView"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:layout_marginStart="66dp"
+		android:paddingTop="20dp"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@+id/watchId"
+		app:layout_constraintTop_toBottomOf="@+id/titeTxtView">
+
+
+<!--		<include layout="@layout/layout_params" />-->
+		<include layout="@layout/layout_params_parent_3"
+			android:id="@+id/parentLayoutContainer"/>
+
+	</ScrollView>
+
+
+
 
 
 

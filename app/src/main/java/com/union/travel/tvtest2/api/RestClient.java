@@ -3,29 +3,47 @@ package com.union.travel.tvtest2.api;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonDeserializer;
+import com.union.travel.tvtest2.api.service.WatchApiService;
 import com.union.travel.tvtest2.utils.AppConstants;
+import com.union.travel.tvtest2.utils.DefaultGsonBuilder;
 
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.webkit.CookieSyncManager.createInstance;
 import static org.apache.http.params.CoreConnectionPNames.CONNECTION_TIMEOUT;
 
 public class RestClient {
 	private static final String TAG = "RestClient";
+	private static RestClient thisInstance = null;
 
-	public RestClient(Context context, boolean enableCaches){
-		if (enableCaches) {
-			createCacheAbleInstance(context);
-		} else {
+	public static final int CACHE_SIZE = 10 * 1024 * 1024;
+
+
+	private WatchApiService watchApiService ;
+
+
+
+	public RestClient(Context context){
+//		if (enableCaches) {
+//			createCacheAbleInstance(context);
+//		} else {
 			createInstance(context);
-		}
+		//}
 	}
 
 	private void createCacheAbleInstance(Context context) {
@@ -34,17 +52,29 @@ public class RestClient {
 
 
 	private void createInstance(Context context) {
-		Retrofit retrofit;
-		OkHttpClient client;
-		String baseUrl = AppConstants.DEFAULT_BASE_URL;
-		client = new OkHttpClient().newBuilder().build();
 
-		retrofit = new Retrofit.Builder()
-				.baseUrl(baseUrl)
-				.client(client)
+//		Map<Type, JsonDeserializer> map = new HashMap<>();
+//		map.put(CardCollectionResponse.class, new CardCollectionResponseDeserializer());
+//		Gson gson = DefaultGsonBuilder.getGsonWithTypeAdapters(map);
+
+		Retrofit retrofit;
+		String baseUrl = AppConstants.DEFAULT_BASE_URL;
+
+		File cacheDir = new File(context.getCacheDir().getAbsolutePath() + "/WatchCache");
+		Cache cache = new Cache(cacheDir, CACHE_SIZE);
+
+		OkHttpClient okHttpClient = new OkHttpClient.Builder()
+				.cache(cache)
+				.addInterceptor(new LoggingInterceptor())
 				.build();
 
-		//shopApiService = retrofit.create(ShopApiService.class);
+		retrofit = new Retrofit.Builder()
+				.baseUrl(AppConstants.TEST_BASE_URL)
+				.addConverterFactory(GsonConverterFactory.create())
+				.client(okHttpClient)
+				.build();
+
+		watchApiService = retrofit.create(WatchApiService.class);
 	}
 
 
@@ -67,5 +97,17 @@ public class RestClient {
 
 			return response;
 		}
+	}
+
+
+	public static RestClient getInstance(Context context) {
+		if (thisInstance == null) {
+			thisInstance = new RestClient(context);
+		}
+		return thisInstance;
+	}
+
+	public WatchApiService getWatchApiService() {
+		return watchApiService;
 	}
 }
