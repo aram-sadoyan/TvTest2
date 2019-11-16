@@ -1,5 +1,6 @@
 package com.union.travel.tvtest2.tabFragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,8 +14,20 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.union.travel.tvtest2.R;
 import com.union.travel.tvtest2.adapter.VideoVerticalAdapter;
 
@@ -79,24 +92,25 @@ public class DemoVideosFragment extends Fragment {
 		VideoVerticalAdapter videoVerticalAdapter = new VideoVerticalAdapter(urls);
 		recyclerView.setAdapter(videoVerticalAdapter);
 //
-//		 exoPlayerView=(SimpleExoPlayerView)getView().findViewById(R.id.esiminch);
-//		try {
-//			BandwidthMeter bandwidthMeter=new DefaultBandwidthMeter();
-//			TrackSelector trackSelector=new DefaultTrackSelector(new AdaptiveTrackSelection.Factory());
-//			exoPlayer= ExoPlayerFactory.newSimpleInstance(getActivity());
-//			Uri uri=Uri.parse(video_url);
-//			DefaultHttpDataSourceFactory dataSourceFactory=new DefaultHttpDataSourceFactory("exoplayer_video");
-//			ExtractorsFactory extractorsFactory=new DefaultExtractorsFactory();
-//			MediaSource mediaSource=new ExtractorMediaSource(uri,dataSourceFactory,extractorsFactory,null,null);
-//
-//			exoPlayerView.setPlayer(exoPlayer);
-//			exoPlayer.prepare(mediaSource);
-//			exoPlayer.setPlayWhenReady(true);
-//
-//		}catch (Exception e){
-//			Log.e("DemoVideosFragment", "exoplayer error"+e.toString());
-//		}
-//
+		 exoPlayerView=(SimpleExoPlayerView)getView().findViewById(R.id.esiminch);
+		try {
+			BandwidthMeter bandwidthMeter=new DefaultBandwidthMeter();
+			TrackSelector trackSelector=new DefaultTrackSelector(new AdaptiveTrackSelection.Factory());
+			exoPlayer= ExoPlayerFactory.newSimpleInstance(getActivity());
+			Uri uri=Uri.parse(videoUrl);
+			DefaultHttpDataSourceFactory dataSourceFactory=new DefaultHttpDataSourceFactory("exoplayer_video");
+			ExtractorsFactory extractorsFactory=new DefaultExtractorsFactory();
+			MediaSource mediaSource=new ExtractorMediaSource(uri,dataSourceFactory,extractorsFactory,null,null);
+
+			exoPlayerView.setPlayer(exoPlayer);
+			exoPlayer.prepare(mediaSource);
+			exoPlayer.setPlayWhenReady(true);
+
+
+		}catch (Exception e){
+			Log.e("DemoVideosFragment", "exoplayer error"+e.toString());
+		}
+
 //
 //		recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
 //				LinearLayoutManager.VERTICAL, false));

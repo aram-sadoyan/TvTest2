@@ -58,7 +58,7 @@ public class RestClient {
 //		Gson gson = DefaultGsonBuilder.getGsonWithTypeAdapters(map);
 
 		Retrofit retrofit;
-		String baseUrl = AppConstants.DEFAULT_BASE_URL;
+		//String baseUrl = AppConstants.DEFAULT_BASE_URL;
 
 		File cacheDir = new File(context.getCacheDir().getAbsolutePath() + "/WatchCache");
 		Cache cache = new Cache(cacheDir, CACHE_SIZE);

@@ -24,6 +24,8 @@ import com.union.travel.tvtest2.R;
 import com.union.travel.tvtest2.adapter.VerticalWatchAdapter;
 import com.union.travel.tvtest2.api.RestClient;
 import com.union.travel.tvtest2.api.UserApiResponse;
+import com.union.travel.tvtest2.model.Brand;
+import com.union.travel.tvtest2.response.WatchApiResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +57,7 @@ public class OverviewFragment extends Fragment {
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 
 	}
 
@@ -115,30 +118,19 @@ public class OverviewFragment extends Fragment {
         VerticalWatchAdapter verticalWatchAdapter = new VerticalWatchAdapter(itemUrls);
         recyclerView.setAdapter(verticalWatchAdapter);
 
-		RestClient.getInstance(getContext()).getWatchApiService().getUser(2).enqueue(new Callback<UserApiResponse>() {
+
+
+		RestClient.getInstance(getContext()).getWatchApiService().getBrandList().enqueue(new Callback<List<Brand>>() {
 			@Override
-			public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {
+			public void onResponse(Call<List<Brand>> call, Response<List<Brand>> response) {
 				Log.d("dwd", response.toString());
 			}
 
 			@Override
-			public void onFailure(Call<UserApiResponse> call, Throwable t) {
+			public void onFailure(Call<List<Brand>> call, Throwable t) {
 				Log.d("dwd", t.getMessage());
 			}
 		});
-//		RestClient.getInstance(getContext()).getWatchApiService().getQiTest().enqueue(new Callback<Response>() {
-//			@Override
-//			public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-//				Log.d("dwd", response.toString());
-//			}
-//
-//			@Override
-//			public void onFailure(Call<Response> call, Throwable t) {
-//				Log.d("dwd", t.getMessage());
-//			}
-//		});
-
-
 
 
 

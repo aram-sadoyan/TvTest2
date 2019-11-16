@@ -4,7 +4,9 @@ import android.graphics.Typeface;
 import android.hardware.usb.UsbDevice;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,15 +15,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.material.tabs.TabLayout;
+import com.pierfrancescosoffritti.youtubeplayer.player.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.youtubeplayer.player.YouTubePlayerView;
 import com.union.travel.tvtest2.adapter.TabAdapter;
+import com.union.travel.tvtest2.model.YoutubeVideo;
 import com.union.travel.tvtest2.tabFragments.ComparingPageFragment;
 import com.union.travel.tvtest2.tabFragments.DemoVideosFragment;
 import com.union.travel.tvtest2.tabFragments.OverviewFragment;
 import com.union.travel.tvtest2.tabFragments.BrandFragment;
 import com.union.travel.tvtest2.tabFragments.ModelFragment;
 import com.union.travel.tvtest2.tabFragments.SpecsFragment;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,13 +45,13 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	private TabAdapter adapter;
 	private TabLayout tabLayout;
 	private ViewPager viewPager;
+	private YouTubePlayerView youTubePlayerView = null;
+	private SimpleDraweeView appLogoIc = null;
+	CountDownTimer countDownTimer;
+	private ExoPlayerManager exoManager;
 
-	//private SimpleExoPlayer simpleExoPlayer = null;
-	private PlayerView videoView;
 
-
-	//private LottieAnimationView lottieAnimationView;
-	//private LottieAnimationView lottieAnimationViewArrow;
+	private PlayerView playerView = null;
 
 	TextView txtv = null;
 	TextView txtv2 = null;
@@ -69,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 	private List<Integer> sensorsList = new ArrayList<>();
 
+	private SimpleDraweeView btnPlay = null;
+
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -78,6 +88,9 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		//ButterKnife.bind(this);
+
 		watchMap.put(1, new Watch(
 						"Watch 1 Lorem ipsum",
 						"header1",
@@ -134,14 +147,16 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 //        );
 
 
-		setContentView(R.layout.activity_main);
 
 
 		//lottieAnimationView.setRepeatMode(LottieDrawable.REVERSE);
 
 		viewPager = findViewById(R.id.viewPager);
 		tabLayout = findViewById(R.id.tabLayout);
-		videoView = findViewById(R.id.mainVideoView);
+		playerView = findViewById(R.id.exoplayerview_activity_video);
+		btnPlay = findViewById(R.id.btnPlay);
+		youTubePlayerView = findViewById(R.id.youtubeView);
+		appLogoIc = findViewById(R.id.app_logo);
 
 
 		arduino = new Arduino(this);
@@ -155,22 +170,78 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 
 
-		//todo
-		//for debug
-		startShowingContent(watchMap.get(1));		//for debug
-		//for debug
-		//for debug
 
-		//for debug
-		//for debug
-		//for debug
-		//for debug
+		//todo move to methods
+		exoManager = ExoPlayerManager.createInstance(this, getApplicationContext(), playerView);
+		exoManager.setVideoPath("https://mysmartech.ru/esiminch.mp4");
+		exoManager.playStream(0L);
+
+		exoManager.setVideoCallback(new ExoPlayerManager.VideoCallback() {
+			@Override
+			public void onVideoStart(@NotNull String url) {
+				Log.d("dwd","on video start");
+
+			}
+
+			@Override
+			public void onVideoEnd(@NotNull String url) {
+				Log.d("dwd","on video end");
+
+			}
+
+			@Override
+			public void onVideoFail(@NotNull String url, @NotNull String errorMsg) {
+				Log.d("dwd","fail video ");
+
+			}
+
+			@Override
+			public void onVideoBufferingEnd() {
+				Log.d("dwd","video buffering end");
+			}
+		});
+
+
+
+
+		//todo  		//for debug		//for debug		//for debug		//for debug		//for debug		//for debug		//for debug
+		startShowingContent(watchMap.get(1));		//for debug
 
 		viewPager.setCurrentItem(1);//for debug //todo
 
+		btnPlay.setOnClickListener(onPlayBtnClickListener);
+
+
+
+		//todo set app time off delay 10000 = 10 secon
+		 countDownTimer = new CountDownTimer(10000, 1000) {
+			public void onTick(long millisUntilFinished) {
+				//TODO: Do something every second
+			}
+			public void onFinish() {
+
+				//todo remove comments for release
+			//	hideWatchLayout();
+			//	visibleVideoWithPLayBtn();
+				Log.d("dwd", "time offf");
+			}
+		}.start();
 
 
 	}
+
+	private void hideWatchLayout() {
+		appLogoIc.setVisibility(View.GONE);
+		tabLayout.setVisibility(View.GONE);
+		viewPager.setVisibility(View.GONE);
+	}
+
+	private void visibleWatchLayout() {
+		appLogoIc.setVisibility(View.VISIBLE);
+		tabLayout.setVisibility(View.VISIBLE);
+		viewPager.setVisibility(View.VISIBLE);
+	}
+
 
 	private void initTabLayout(Watch watch) {
 		for (InfoTab tab : infoTabs) {
@@ -248,6 +319,14 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 	}
 
+
+	@Override
+	public void onUserInteraction() {
+		super.onUserInteraction();
+		countDownTimer.cancel();
+		countDownTimer.start();
+		Log.d("dwd","USER INTERACTS");
+	}
 
 	private void setDefaultTabs() {
 		infoTabs = new ArrayList<>();
@@ -457,5 +536,36 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		//todo add time delay fro swiping tabs
 		viewPager.setCurrentItem(position, true);
 	}
+
+
+
+	private View.OnClickListener onPlayBtnClickListener = v -> {
+		Log.d("dwd","on PLay button click");
+		//visibleVideoWithPLayBtn();
+		//prepareAndStartVideo();
+	};
+
+	private void visibleVideoWithPLayBtn(){
+		youTubePlayerView.setVisibility(View.VISIBLE);
+		btnPlay.setVisibility(View.VISIBLE);
+	}
+
+	private void hideVideoWithPLayBtn(){
+		youTubePlayerView.setVisibility(View.GONE);
+		btnPlay.setVisibility(View.GONE);
+	}
+
+
+	private void prepareAndStartVideo(){
+		youTubePlayerView.initialize(
+				initializedYouTubePlayer -> initializedYouTubePlayer.addListener(
+						new AbstractYouTubePlayerListener() {
+							@Override
+							public void onReady() {
+								initializedYouTubePlayer.loadVideo("https://www.youtube.com/watch?v=GZUEyGcKrec", 0);
+							}
+						}), false);
+	}
+
 
 }

@@ -144,8 +144,7 @@
 			android:button="@android:color/transparent"
 			android:checked="true"
 			android:gravity="center"
-
-			android:text="Daily"
+			android:text="42 mm"
 			android:textColor="@drawable/radio_flat_text_selector" />
 
 		<RadioButton
@@ -156,7 +155,7 @@
 			android:background="@drawable/radio_flat_selector"
 			android:button="@android:color/transparent"
 			android:gravity="center"
-			android:text="Weekly"
+			android:text="47 mm"
 			android:textColor="@drawable/radio_flat_text_selector" />
 
 		<RadioButton
@@ -164,14 +163,28 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="20dp"
-
+			android:background="@drawable/radio_flat_selector"
 			android:button="@android:color/transparent"
 			android:gravity="center"
 
-			android:text="Weekly"
+			android:text="51 mm"
 			android:textColor="@drawable/radio_flat_text_selector" />
 
 	</RadioGroup>
+
+
+	<TextView
+		android:id="@+id/musicMapsTxtView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="65dp"
+		android:layout_marginTop="88dp"
+		android:includeFontPadding="false"
+		android:text="Case Size"
+		android:textColor="@android:color/black"
+		android:textSize="18sp"
+		app:layout_constraintStart_toEndOf="@id/watchId"
+		app:layout_constraintTop_toBottomOf="@+id/size_radioGroup" />
 
 
 	<TextView

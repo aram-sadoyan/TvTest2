@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_gravity="center"
+	android:background="#CC000000"
+	android:orientation="vertical">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:paddingTop="4dp"
+		android:orientation="horizontal">
+
+		<ImageButton
+			android:id="@id/exo_prev"
+			android:layout_width="100dp"
+			android:layout_height="100dp"
+			android:layout_gravity="center"
+			style="@style/ExoMediaButton.Previous" />
+
+		<ImageButton
+			android:id="@id/exo_play"
+			android:layout_width="100dp"
+			android:layout_height="100dp"
+			android:layout_gravity="center"
+			android:tint="#cc63c866"
+			style="@style/ExoMediaButton.Play" />
+
+		<ImageButton
+			android:id="@id/exo_pause"
+			android:layout_width="100dp"
+			android:layout_height="100dp"
+			android:layout_gravity="center"
+			android:tint="#ccc76185"
+			style="@style/ExoMediaButton.Pause" />
+
+		<ImageButton
+			android:id="@id/exo_next"
+			android:layout_width="100dp"
+			android:layout_height="100dp"
+			android:layout_gravity="center"
+			style="@style/ExoMediaButton.Next" />
+
+	</LinearLayout>
+
+</LinearLayout>
