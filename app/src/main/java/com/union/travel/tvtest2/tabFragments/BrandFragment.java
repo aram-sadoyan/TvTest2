@@ -1,11 +1,13 @@
 package com.union.travel.tvtest2.tabFragments;
 
+import android.app.Activity;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,13 +15,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.union.travel.tvtest2.MainActivity;
 import com.union.travel.tvtest2.R;
 import com.union.travel.tvtest2.adapter.BrandAdapter;
+import com.union.travel.tvtest2.model.BrandItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BrandFragment extends Fragment {
     private boolean isViewShown;
     private RecyclerView recyclerView = null;
     private BrandAdapter brandAdapter = null;
+    private SimpleDraweeView rightArrovView = null;
+    private TextView selectBrandTxtView = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,6 +42,8 @@ public class BrandFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         recyclerView = view.findViewById(R.id.brandRecyclerView);
+        rightArrovView = view.findViewById(R.id.rightArrowView);
+        selectBrandTxtView = view.findViewById(R.id.brandSelectTxtView);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 6);
 
 
@@ -43,11 +55,22 @@ public class BrandFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
 
-        brandAdapter = new BrandAdapter();
+        List<BrandItem> items = new ArrayList<>();
+        BrandItem brandItem = new BrandItem();
+        BrandItem brandItem2 = new BrandItem();
+        brandItem.setIcUrl("eeee");
+        brandItem.setName("oooooo");
+        brandItem2.setIcUrl("eee222");
+        brandItem2.setName("0022");
+        items.add(brandItem);
+        items.add(brandItem2);
+        brandAdapter = new BrandAdapter(items);
         recyclerView.setAdapter(brandAdapter);
 
 
 
+        rightArrovView.setOnClickListener(selectBrandClickListener);
+        selectBrandTxtView.setOnClickListener(selectBrandClickListener);
 
     }
 
@@ -108,4 +131,11 @@ public class BrandFragment extends Fragment {
 //            outRect.right = PicsartUtils.convertDpToPixel(4);
         }
     }
+
+
+    private View.OnClickListener selectBrandClickListener = v -> {
+        Log.d("dwd", "comparing click " + brandAdapter.getSelectedPosition());
+        Activity activity = getActivity();
+        ((MainActivity) activity).changeTab(2);
+    };
 }

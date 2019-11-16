@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,12 +17,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.union.travel.tvtest2.MainActivity;
 import com.union.travel.tvtest2.R;
 import com.union.travel.tvtest2.adapter.ModelGridAdapter;
 import com.union.travel.tvtest2.adapter.OverViewAdapter;
 
 public class ModelFragment extends Fragment {
     private boolean isViewShown;
+
+
+    SimpleDraweeView arrowRightIc = null;
+    TextView selectTxtView = null;
 
 
 
@@ -46,6 +53,13 @@ public class ModelFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // titleTxtView = view.findViewById(R.id.titleTxtView);
         RecyclerView recyclerView = view.findViewById(R.id.modelRecyclerView);
+
+        arrowRightIc = view.findViewById(R.id.rightArrowView);
+        selectTxtView = view.findViewById(R.id.bottomTextView);
+
+        arrowRightIc.setOnClickListener(selectModelClickListener);
+        selectTxtView.setOnClickListener(selectModelClickListener);
+
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new GridRecyclerViewDecoration());
@@ -94,5 +108,12 @@ public class ModelFragment extends Fragment {
 //            outRect.right = PicsartUtils.convertDpToPixel(4);
         }
     }
+
+
+    View.OnClickListener selectModelClickListener = v -> {
+        Log.d("dwd", "comparing click");
+        Activity activity = getActivity();
+        ((MainActivity) activity).changeTab(4);
+    };
 
 }

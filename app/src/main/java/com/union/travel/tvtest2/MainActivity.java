@@ -13,8 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.airbnb.lottie.LottieAnimationView;
-import com.airbnb.lottie.model.Font;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.material.tabs.TabLayout;
 import com.union.travel.tvtest2.adapter.TabAdapter;
 import com.union.travel.tvtest2.tabFragments.ComparingPageFragment;
@@ -38,6 +37,10 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	private TabAdapter adapter;
 	private TabLayout tabLayout;
 	private ViewPager viewPager;
+
+	//private SimpleExoPlayer simpleExoPlayer = null;
+	private PlayerView videoView;
+
 
 	//private LottieAnimationView lottieAnimationView;
 	//private LottieAnimationView lottieAnimationViewArrow;
@@ -138,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 		viewPager = findViewById(R.id.viewPager);
 		tabLayout = findViewById(R.id.tabLayout);
+		videoView = findViewById(R.id.mainVideoView);
 
 
 		arduino = new Arduino(this);
@@ -448,5 +452,10 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 //			}
 //		}
 //	}
+
+	public void changeTab(int position){
+		//todo add time delay fro swiping tabs
+		viewPager.setCurrentItem(position, true);
+	}
 
 }

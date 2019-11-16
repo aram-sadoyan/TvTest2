@@ -25,6 +25,7 @@
 		android:id="@+id/underLineView"
 		android:layout_width="match_parent"
 		android:background="@color/primary_color_orange"
+		android:visibility="invisible"
 		android:layout_marginTop="13dp"
 		android:layout_height="2dp"/>
 

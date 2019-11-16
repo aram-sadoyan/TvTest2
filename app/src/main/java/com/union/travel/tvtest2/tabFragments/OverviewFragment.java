@@ -1,5 +1,6 @@
 package com.union.travel.tvtest2.tabFragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -8,22 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
-import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
-import com.union.travel.tvtest2.CustomVerticalViewPager;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.union.travel.tvtest2.MainActivity;
 import com.union.travel.tvtest2.R;
-import com.union.travel.tvtest2.adapter.OverViewAdapter;
 import com.union.travel.tvtest2.adapter.VerticalWatchAdapter;
 import com.union.travel.tvtest2.api.RestClient;
 import com.union.travel.tvtest2.api.UserApiResponse;
@@ -37,6 +34,9 @@ public class OverviewFragment extends Fragment {
 	//public RecyclerView recyclerView;
 	RecyclerView recyclerView = null;
 	RadioGroup radioGroup = null;
+
+	SimpleDraweeView plusView = null;
+	TextView compareTxtView = null;
 
 
 	String name = "Grzo";
@@ -67,6 +67,12 @@ public class OverviewFragment extends Fragment {
 		// titleTxtView = view.findViewById(R.id.titleTxtView);
 		recyclerView = view.findViewById(R.id.watchesRecyclerView);
 		radioGroup = view.findViewById(R.id.size_radioGroup);
+
+		plusView = view.findViewById(R.id.icPlus);
+		compareTxtView = view.findViewById(R.id.selectForComapirTxtView);
+		plusView.setOnClickListener(compareClickListener);
+		compareTxtView.setOnClickListener(compareClickListener);
+
 
 
 		//  titleTxtView.setText(name);
@@ -137,4 +143,11 @@ public class OverviewFragment extends Fragment {
 		// isViewShown = getView() != null && isVisibleToUser;
 		// Log.d("dwd", "fragment 1 " + isViewShown);
 	}
+
+
+	View.OnClickListener compareClickListener = v -> {
+		Log.d("dwd", "comparing click");
+		Activity activity = getActivity();
+		((MainActivity) activity).changeTab(0);
+	};
 }
