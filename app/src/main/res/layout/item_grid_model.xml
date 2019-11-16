@@ -6,14 +6,14 @@
 
 
 	<com.facebook.drawee.view.SimpleDraweeView
-		android:id="@+id/watchItemView"
+		android:id="@+id/watchIc"
 		android:layout_width="100dp"
 		android:layout_height="100dp"
 		android:background="@drawable/ic_arrow_down"/>
 
 
-	<View
-		android:id="@+id/bottomView"
+	<com.facebook.drawee.view.SimpleDraweeView
+		android:id="@+id/underLineView"
 		android:layout_width="match_parent"
 		android:layout_height="2dp"
 		android:background="@color/primary_color_orange"/>

@@ -10,7 +10,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.union.travel.tvtest2.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class VideoVerticalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+	List<String> urls = new ArrayList<>();
+
+
+
+	public VideoVerticalAdapter(List<String> urls) {
+		this.urls = urls;
+	}
+
 	@NonNull
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -24,7 +35,7 @@ public class VideoVerticalAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 	@Override
 	public int getItemCount() {
-		return 8;
+		return urls.size();
 	}
 
 

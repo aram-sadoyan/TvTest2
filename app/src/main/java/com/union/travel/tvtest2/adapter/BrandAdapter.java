@@ -22,7 +22,7 @@ public class BrandAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 	private List<BrandItem> items = new ArrayList<>();
 	private FrescoLoader frescoLoader;
-	int selectedPosition = 0;
+	private int selectedPosition = 0;
 
 
 
@@ -101,8 +101,6 @@ public class BrandAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 			notifyItemChanged(selectedPosition);
 			selectedPosition = getAdapterPosition();
 			notifyItemChanged(selectedPosition);
-
-			Log.d("dwd", "i tut je");
 
 
 			// Do your another stuff for your onClick

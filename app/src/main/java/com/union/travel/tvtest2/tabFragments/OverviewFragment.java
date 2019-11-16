@@ -25,6 +25,9 @@ import com.union.travel.tvtest2.adapter.VerticalWatchAdapter;
 import com.union.travel.tvtest2.api.RestClient;
 import com.union.travel.tvtest2.api.UserApiResponse;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,6 +39,7 @@ public class OverviewFragment extends Fragment {
 	RadioGroup radioGroup = null;
 
 	SimpleDraweeView plusView = null;
+	SimpleDraweeView arrowDownView = null;
 	TextView compareTxtView = null;
 
 
@@ -70,12 +74,20 @@ public class OverviewFragment extends Fragment {
 
 		plusView = view.findViewById(R.id.icPlus);
 		compareTxtView = view.findViewById(R.id.selectForComapirTxtView);
+		arrowDownView = view.findViewById(R.id.arrowDownView);
 		plusView.setOnClickListener(compareClickListener);
 		compareTxtView.setOnClickListener(compareClickListener);
 
 
 
 		//  titleTxtView.setText(name);
+
+		arrowDownView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.d("dwd","arrowDown clicked");
+			}
+		});
 
 	}
 
@@ -91,7 +103,16 @@ public class OverviewFragment extends Fragment {
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         recyclerView.setHasFixedSize(true);
 
-        VerticalWatchAdapter verticalWatchAdapter = new VerticalWatchAdapter();
+
+		List<String> itemUrls = new ArrayList<>();
+		itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
+		itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
+		itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
+		itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
+		itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
+		itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
+
+        VerticalWatchAdapter verticalWatchAdapter = new VerticalWatchAdapter(itemUrls);
         recyclerView.setAdapter(verticalWatchAdapter);
 
 		RestClient.getInstance(getContext()).getWatchApiService().getUser(2).enqueue(new Callback<UserApiResponse>() {

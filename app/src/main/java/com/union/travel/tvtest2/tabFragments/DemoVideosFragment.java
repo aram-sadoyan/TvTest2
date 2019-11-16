@@ -18,10 +18,13 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.union.travel.tvtest2.R;
 import com.union.travel.tvtest2.adapter.VideoVerticalAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DemoVideosFragment extends Fragment {
 
 		VideoView video;
-		String video_url="https://mysmartech.ru/esiminch.mp4";
+		String videoUrl="https://mysmartech.ru/esiminch.mp4";
 		SimpleExoPlayerView exoPlayerView;
 		SimpleExoPlayer exoPlayer;
 
@@ -63,7 +66,17 @@ public class DemoVideosFragment extends Fragment {
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setRecycledViewPool(sharedPool);
 
-		VideoVerticalAdapter videoVerticalAdapter = new VideoVerticalAdapter();
+
+		List<String> urls = new ArrayList<>();
+		urls.add(videoUrl);
+		urls.add(videoUrl);
+		urls.add(videoUrl);
+		urls.add(videoUrl);
+		urls.add(videoUrl);
+		urls.add(videoUrl);
+		urls.add(videoUrl);
+		urls.add(videoUrl);
+		VideoVerticalAdapter videoVerticalAdapter = new VideoVerticalAdapter(urls);
 		recyclerView.setAdapter(videoVerticalAdapter);
 //
 //		 exoPlayerView=(SimpleExoPlayerView)getView().findViewById(R.id.esiminch);

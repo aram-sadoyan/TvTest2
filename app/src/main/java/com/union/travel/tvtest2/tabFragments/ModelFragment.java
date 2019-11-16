@@ -21,7 +21,9 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.union.travel.tvtest2.MainActivity;
 import com.union.travel.tvtest2.R;
 import com.union.travel.tvtest2.adapter.ModelGridAdapter;
-import com.union.travel.tvtest2.adapter.OverViewAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModelFragment extends Fragment {
     private boolean isViewShown;
@@ -67,7 +69,17 @@ public class ModelFragment extends Fragment {
         recyclerView.setDrawingCacheEnabled(true);
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         recyclerView.setHasFixedSize(true);
-        ModelGridAdapter modelGridAdapter = new ModelGridAdapter();
+
+
+        List<String> itemUrls = new ArrayList<>();
+        itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
+        itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
+        itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
+        itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
+        itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
+        itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
+
+        ModelGridAdapter modelGridAdapter = new ModelGridAdapter(itemUrls);
         recyclerView.setAdapter(modelGridAdapter);
 
 
