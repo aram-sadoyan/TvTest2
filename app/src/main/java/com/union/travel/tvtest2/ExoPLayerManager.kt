@@ -201,6 +201,8 @@ class ExoPlayerManager(
 
 	override fun setVideoPath(path: String) {
 		_videoPath = path
+
+
 	}
 
 	override fun stopPlayer() {
@@ -220,6 +222,19 @@ class ExoPlayerManager(
 	override fun onSaveInstanceState(outState: Bundle) {
 		outState.putLong(TAG_SAVE_POS, getCurrentPosition())
 		outState.putBoolean(TAG_SAVE_IS_PLAY, player.playWhenReady)
+	}
+
+	fun seekToMls(i: Int) {
+		val userAgent = Util.getUserAgent(_context, "")
+
+		val mediaSource = ExtractorMediaSource
+				.Factory(DefaultDataSourceFactory(_context, userAgent))
+				.setExtractorsFactory(DefaultExtractorsFactory())
+				.createMediaSource(Uri.parse(_videoPath))
+		player.seekTo(10000L)
+		player.prepare(mediaSource)
+		player.seekTo(10, 1000L)
+
 	}
 
 	interface VideoCallback {

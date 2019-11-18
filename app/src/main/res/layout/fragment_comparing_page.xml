@@ -8,90 +8,546 @@
 	android:orientation="vertical"
 	android:paddingStart="90dp"
 	android:paddingTop="100dp">
-
-
-	<TextView
-		android:id="@+id/nameTxtView"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="Lens Material"
-		android:textColor="@color/primary_color_black"
-		android:textSize="18dp"
-		android:layout_marginTop="@dimen/compairing_top_margin_first_param"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent" />
-
-	<com.facebook.drawee.view.SimpleDraweeView
-		android:id="@+id/line1"
+	<ScrollView
 		android:layout_width="match_parent"
-		android:layout_height="1dp"
-		android:layout_marginTop="3dp"
-		android:background="@color/primary_color_gray"
-		app:layout_constraintTop_toBottomOf="@id/nameTxtView" />
+		android:layout_height="match_parent" >
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
 
 
-	<TextView
-		android:id="@+id/nameTxtView2"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="Benzel Material"
-		android:textColor="@color/primary_color_black"
-		android:textSize="18dp"
-		android:layout_marginTop="3dp"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@id/line1" />
+			<TextView
+				android:id="@+id/nameTxtView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="@dimen/compairing_top_margin_first_param"
+				android:text="Android"
+				android:textColor="@color/lb_grey"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent" />
 
-	<com.facebook.drawee.view.SimpleDraweeView
-		android:id="@+id/line2"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="3dp"
-		android:background="@color/primary_color_gray"
-		app:layout_constraintTop_toBottomOf="@id/nameTxtView2" />
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line1"
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView" />
+
+			<TextView
+				android:id="@+id/nameTxtView2"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="IOS"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line1" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView2" />
+
+			<TextView
+				android:id="@+id/nameTxtView3"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Windows Phone"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line2" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line3"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView3" />
 
 
-	<include
-		android:id="@+id/layoutComparingItem1"
-		layout="@layout/layout_comparing_item"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+			<TextView
+				android:id="@+id/nameTxtView4"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Mac"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line3" />
 
-		app:layout_constraintStart_toEndOf="@id/guideline2"/>
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line4"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView4" />
 
-	<include
-		android:id="@+id/layoutComparingItem2"
-		layout="@layout/layout_comparing_item"
-		android:layout_marginStart="30dp"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		app:layout_constraintStart_toEndOf="@id/layoutComparingItem1"/>
+			<TextView
+				android:id="@+id/nameTxtView5"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Windows"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line4" />
 
-	<include
-		android:id="@+id/layoutComparingItem3"
-		layout="@layout/layout_comparing_item"
-		android:layout_marginStart="30dp"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		app:layout_constraintStart_toEndOf="@id/layoutComparingItem2"/>
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line5"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView5" />
 
-	<androidx.constraintlayout.widget.Guideline
-		android:id="@+id/guideline2"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		app:layout_constraintGuide_begin="200dp" />
+			<TextView
+				android:id="@+id/nameTxtView6"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Size"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line5" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line6"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView6" />
+
+			<TextView
+				android:id="@+id/nameTxtView7"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Material"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line6" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line7"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView7" />
+
+			<TextView
+				android:id="@+id/nameTxtView8"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Battery"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line7" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line8"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView8" />
 
 
-	<com.facebook.drawee.view.SimpleDraweeView
-		android:id="@+id/addView"
-		android:layout_width="88dp"
-		android:layout_height="88dp"
-		android:layout_marginEnd="70dp"
-		android:rotation="45"
-		android:layout_marginTop="40dp"
-		android:background="@drawable/ic_remove_model"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintTop_toTopOf="parent" />
+			<TextView
+				android:id="@+id/nameTxtView9"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Battery life"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line8" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line9"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView9" />
+
+			<TextView
+				android:id="@+id/nameTxtView10"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Water-resistance"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line9" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line10"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView10" />
+
+			<TextView
+				android:id="@+id/nameTxtView11"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Weight"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line10" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line11"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView11" />
+
+			<TextView
+				android:id="@+id/nameTxtView12"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Sensor"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line11" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line12"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView12" />
+
+			<TextView
+				android:id="@+id/nameTxtView13"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Display"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line12" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line13"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView13" />
+
+			<TextView
+				android:id="@+id/nameTxtView14"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Screen size"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line13" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line14"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView14" />
+
+			<TextView
+				android:id="@+id/nameTxtView15"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Platform"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line14" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line15"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView15" />
+
+
+			<TextView
+				android:id="@+id/nameTxtView16"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Processor"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line15" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line16"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView16" />
+
+			<TextView
+				android:id="@+id/nameTxtView17"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Memory"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line16" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line17"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView17" />
+
+			<TextView
+				android:id="@+id/nameTxtView18"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Connectivity"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line17" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line18"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView18" />
+
+			<TextView
+				android:id="@+id/nameTxtView19"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Steps"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line18" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line19"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView19" />
+
+			<TextView
+				android:id="@+id/nameTxtView20"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Distance"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line19" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line20"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView20" />
+
+			<TextView
+				android:id="@+id/nameTxtView21"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Calories burned"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line20" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line21"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView21" />
+
+			<TextView
+				android:id="@+id/nameTxtView22"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Activity"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line21" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line22"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView22" />
+
+			<TextView
+				android:id="@+id/nameTxtView23"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Floors"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line22" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line23"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView23" />
+
+			<TextView
+				android:id="@+id/nameTxtView24"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Sleep"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line23" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line24"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView24" />
+
+			<TextView
+				android:id="@+id/nameTxtView25"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:text="Heart rate"
+				android:textColor="@color/color_comparing_name"
+				android:textSize="18dp"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/line24" />
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/line25"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@color/primary_color_gray"
+				app:layout_constraintTop_toBottomOf="@id/nameTxtView25" />
+
+
+
+
+
+			<include
+				android:id="@+id/layoutComparingItem1"
+				layout="@layout/layout_comparing_item"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+
+				app:layout_constraintStart_toEndOf="@id/guideline2" />
+
+			<include
+				android:id="@+id/layoutComparingItem2"
+				layout="@layout/layout_comparing_item"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="30dp"
+				app:layout_constraintStart_toEndOf="@id/layoutComparingItem1" />
+
+			<include
+				android:id="@+id/layoutComparingItem3"
+				layout="@layout/layout_comparing_item"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="30dp"
+				app:layout_constraintStart_toEndOf="@id/layoutComparingItem2" />
+
+			<androidx.constraintlayout.widget.Guideline
+				android:id="@+id/guideline2"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				app:layout_constraintGuide_begin="200dp" />
+
+
+			<com.facebook.drawee.view.SimpleDraweeView
+				android:id="@+id/addView"
+				android:layout_width="88dp"
+				android:layout_height="88dp"
+				android:layout_marginTop="40dp"
+				android:layout_marginEnd="70dp"
+				android:background="@drawable/ic_remove_model"
+				android:rotation="45"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintTop_toTopOf="parent" />
+
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+	</ScrollView>
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

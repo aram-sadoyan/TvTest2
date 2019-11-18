@@ -2,11 +2,16 @@ package com.union.travel.tvtest2.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Model {
+public class Model implements Serializable {
 
+
+	@SerializedName("ID")
+	private
+	int id;
 
 	@SerializedName("Name")
 	private
@@ -51,6 +56,24 @@ public class Model {
 	private
 	List<String> videoUrls = new ArrayList<>();
 
+	@SerializedName("Specs")
+	private Spec spec;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Spec getSpec() {
+		return spec;
+	}
+
+	public void setSpec(Spec spec) {
+		this.spec = spec;
+	}
 
 	public List<Color> getColors() {
 		return colors;
@@ -92,13 +115,6 @@ public class Model {
 		this.partNumber = partNumber;
 	}
 
-
-
-
-
-
-
-
 	public String getCategory() {
 		return category;
 	}
@@ -123,11 +139,6 @@ public class Model {
 		this.description = description;
 	}
 
-
-
-
-
-
 	public String getName() {
 		return name;
 	}
@@ -143,8 +154,4 @@ public class Model {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
-
-
-
 }

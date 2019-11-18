@@ -2,9 +2,10 @@ package com.union.travel.tvtest2.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Color {
+public class Color  implements Serializable {
 
 
 	@SerializedName("Name")

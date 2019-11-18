@@ -110,18 +110,18 @@
 		app:layout_constraintStart_toEndOf="@id/watchId"
 		app:layout_constraintTop_toBottomOf="@+id/serialTxtView" />
 
-	<TextView
-		android:id="@+id/moreDetailsSize"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginStart="20dp"
-		android:layout_marginTop="90dp"
-		android:includeFontPadding="false"
-		android:text="more details"
-		android:textColor="@color/primary_color_orange"
-		android:textSize="18sp"
-		app:layout_constraintStart_toEndOf="@id/caseSizeTxtView"
-		app:layout_constraintTop_toBottomOf="@+id/serialTxtView" />
+<!--	<TextView-->
+<!--		android:id="@+id/moreDetailsSize"-->
+<!--		android:layout_width="wrap_content"-->
+<!--		android:layout_height="wrap_content"-->
+<!--		android:layout_marginStart="20dp"-->
+<!--		android:layout_marginTop="90dp"-->
+<!--		android:includeFontPadding="false"-->
+<!--		android:text="more details"-->
+<!--		android:textColor="@color/primary_color_orange"-->
+<!--		android:textSize="18sp"-->
+<!--		app:layout_constraintStart_toEndOf="@id/caseSizeTxtView"-->
+<!--		app:layout_constraintTop_toBottomOf="@+id/serialTxtView" />-->
 
 
 	<RadioGroup
@@ -166,25 +166,37 @@
 			android:background="@drawable/radio_flat_selector"
 			android:button="@android:color/transparent"
 			android:gravity="center"
-
 			android:text="51 mm"
 			android:textColor="@drawable/radio_flat_text_selector" />
 
 	</RadioGroup>
 
-
 	<TextView
-		android:id="@+id/musicMapsTxtView"
+		android:id="@+id/colorTxtView"
+		android:text="Color"
+		android:textSize="18sp"
+		android:layout_marginStart="65dp"
+		android:layout_marginTop="30dp"
+		android:textColor="@android:color/black"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginStart="65dp"
-		android:layout_marginTop="88dp"
-		android:includeFontPadding="false"
-		android:text="Case Size"
-		android:textColor="@android:color/black"
-		android:textSize="18sp"
 		app:layout_constraintStart_toEndOf="@id/watchId"
-		app:layout_constraintTop_toBottomOf="@+id/size_radioGroup" />
+		app:layout_constraintTop_toBottomOf="@id/size_radioGroup"/>
+
+
+	<GridLayout
+		android:id="@+id/overviewGrid"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:alignmentMode="alignBounds"
+		android:layout_marginStart="45dp"
+		android:columnCount="6"
+		android:layout_marginTop="8dp"
+		app:layout_constraintBottom_toTopOf="@+id/selectForComapirTxtView"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@+id/watchId"
+		app:layout_constraintTop_toBottomOf="@+id/colorTxtView" />
+
 
 
 	<TextView

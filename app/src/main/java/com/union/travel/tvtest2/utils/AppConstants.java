@@ -9,4 +9,16 @@ public class AppConstants {
 
 	public static final String TEST_BASE_URL = "https://www.qicharge.am/"; //todo rename
 
+
+
+
+
+	public static final String EXTRA_KEY_WATCH_NAME = "watchName";
+	public static final String EXTRA_KEY_WATCH_TITLE = "watchTitle";
+	public static final String EXTRA_KEY_MAIN_ICON_URL = "mainIconUrl";
+
+
+
+	public static final String EXTRA_SERIALIZABLE_KEY_SPEC = "serializableSpec";
+
 }

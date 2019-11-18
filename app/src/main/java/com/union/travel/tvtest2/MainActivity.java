@@ -1,14 +1,13 @@
 package com.union.travel.tvtest2;
 
-import android.graphics.Typeface;
 import android.hardware.usb.UsbDevice;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,16 +17,18 @@ import androidx.viewpager.widget.ViewPager;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.material.tabs.TabLayout;
-import com.pierfrancescosoffritti.youtubeplayer.player.AbstractYouTubePlayerListener;
-import com.pierfrancescosoffritti.youtubeplayer.player.YouTubePlayerView;
 import com.union.travel.tvtest2.adapter.TabAdapter;
-import com.union.travel.tvtest2.model.YoutubeVideo;
+import com.union.travel.tvtest2.api.RestClient;
+import com.union.travel.tvtest2.model.AppSettings;
+import com.union.travel.tvtest2.model.Brand;
+import com.union.travel.tvtest2.model.Model;
 import com.union.travel.tvtest2.tabFragments.ComparingPageFragment;
 import com.union.travel.tvtest2.tabFragments.DemoVideosFragment;
 import com.union.travel.tvtest2.tabFragments.OverviewFragment;
 import com.union.travel.tvtest2.tabFragments.BrandFragment;
 import com.union.travel.tvtest2.tabFragments.ModelFragment;
 import com.union.travel.tvtest2.tabFragments.SpecsFragment;
+import com.union.travel.tvtest2.utils.AppConstants;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -39,203 +40,172 @@ import java.util.Map;
 
 import me.aflak.arduino.Arduino;
 import me.aflak.arduino.ArduinoListener;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 	private TabAdapter adapter;
 	private TabLayout tabLayout;
 	private ViewPager viewPager;
-	private YouTubePlayerView youTubePlayerView = null;
 	private SimpleDraweeView appLogoIc = null;
-	CountDownTimer countDownTimer;
+	private CountDownTimer countDownTimer;
 	private ExoPlayerManager exoManager;
-
-
 	private PlayerView playerView = null;
-
-	TextView txtv = null;
-	TextView txtv2 = null;
-
-	Arduino arduino;
+	private TextView txtv = null;
+	private TextView txtv2 = null;
+	private Arduino arduino;
 	private boolean operationRuning = false;
 	private boolean tabsAreShown = false;
 	private int currentId = -2;
-	Map<Integer, Watch> watchMap = new HashMap<>();
-
+	private Map<Integer, Watch> watchMap = new HashMap<>();
 	private ArrayList<InfoTab> infoTabs;
-
 	private OverviewFragment overViewFragment;
 	private BrandFragment brandFragment;
 	private ModelFragment modelFragment;
-
 	private DemoVideosFragment demoVideosFragment;
 	private SpecsFragment specsFragment;
 	private ComparingPageFragment comparingPageFragment;
-
 	private List<Fragment> fragmentItemList = new ArrayList<>();
-
-
 	private List<Integer> sensorsList = new ArrayList<>();
+	//private SimpleDraweeView btnPlay = null;
 
-	private SimpleDraweeView btnPlay = null;
+
+	private boolean isDataRecevied = false;
+	private List<Brand> brandList = new ArrayList<>();
+
+
+	private boolean debugBooleanStarted = false;
 
 	@Override
 	protected void onStart() {
 		super.onStart();
 		arduino.setArduinoListener(this);
+
+		initWatchMap();
+		setDefaultTabs();
+
+		RestClient.getInstance(getApplicationContext()).getWatchApiService().getBrandList().enqueue(new Callback<List<Brand>>() {
+			@Override
+			public void onResponse(Call<List<Brand>> call, Response<List<Brand>> response) {
+				Log.d("dwd", response.toString());
+				brandList = response.body();
+				if (brandList != null && !brandList.isEmpty()){
+					AppSettings.getInstance().setBrandList(brandList);
+					isDataRecevied = true;
+				}
+
+
+			}
+
+			@Override
+			public void onFailure(Call<List<Brand>> call, Throwable t) {
+				Log.d("dwd", t.getMessage());
+			}
+		});
+
 	}
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		//ButterKnife.bind(this);
-
-		watchMap.put(1, new Watch(
-						"Watch 1 Lorem ipsum",
-						"header1",
-						"title1",
-						"mainDescription1",
-						"smallDescription1",
-						"iconUrlMain1",
-						"iconUrlMain1"
-				)
-		);
-
-		watchMap.put(2, new Watch(
-						"Watch 2 Lorem ipsum",
-						"header2",
-						"title2",
-						"mainDescription2",
-						"smallDescription2",
-						"iconUrlMain2",
-						"iconUrlMain2"
-				)
-		);
-
-		watchMap.put(3, new Watch(
-						"Watch 3 Lorem ipsum",
-						"header3",
-						"title3",
-						"mainDescription3",
-						"smallDescription3",
-						"iconUrlMain3",
-						"iconUrlMain3"
-				)
-		);
-
-		watchMap.put(4, new Watch(
-						"Watch 4 Lorem ipsum",
-						"header4",
-						"title4",
-						"mainDescription4",
-						"smallDescription4",
-						"iconUrlMain4",
-						"iconUrlMain4"
-				)
-		);
-
-//        watchMap.put(5, new Watch(
-//                        "name5",
-//                        "header5",
-//                        "title5",
-//                        "mainDescription5",
-//                        "smallDescription5",
-//                        "iconUrlMain5",
-//                        "iconUrlMain5"
-//                )
-//        );
-
-
-
-
-		//lottieAnimationView.setRepeatMode(LottieDrawable.REVERSE);
-
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		viewPager = findViewById(R.id.viewPager);
 		tabLayout = findViewById(R.id.tabLayout);
 		playerView = findViewById(R.id.exoplayerview_activity_video);
-		btnPlay = findViewById(R.id.btnPlay);
-		youTubePlayerView = findViewById(R.id.youtubeView);
+	//	btnPlay = findViewById(R.id.btnPlay);
 		appLogoIc = findViewById(R.id.app_logo);
 
+		txtv = findViewById(R.id.textView);
+		txtv2 = findViewById(R.id.textView2);
 
 		arduino = new Arduino(this);
 		arduino.addVendorId(6790);
 
 
-		txtv = findViewById(R.id.textView);
-		txtv2 = findViewById(R.id.textView2);
-
-		setDefaultTabs();
+		hideVideoWithPLayBtn();
+		visibleWatchLayout();
 
 
-
-
-		//todo move to methods
-		exoManager = ExoPlayerManager.createInstance(this, getApplicationContext(), playerView);
-		exoManager.setVideoPath("https://mysmartech.ru/esiminch.mp4");
-		exoManager.playStream(0L);
-
-		exoManager.setVideoCallback(new ExoPlayerManager.VideoCallback() {
-			@Override
-			public void onVideoStart(@NotNull String url) {
-				Log.d("dwd","on video start");
-
-			}
-
-			@Override
-			public void onVideoEnd(@NotNull String url) {
-				Log.d("dwd","on video end");
-
-			}
-
-			@Override
-			public void onVideoFail(@NotNull String url, @NotNull String errorMsg) {
-				Log.d("dwd","fail video ");
-
-			}
-
-			@Override
-			public void onVideoBufferingEnd() {
-				Log.d("dwd","video buffering end");
-			}
-		});
-
-
-
-
-		//todo  		//for debug		//for debug		//for debug		//for debug		//for debug		//for debug		//for debug
-		startShowingContent(watchMap.get(1));		//for debug
-
-		viewPager.setCurrentItem(1);//for debug //todo
-
-		btnPlay.setOnClickListener(onPlayBtnClickListener);
-
-
+		//btnPlay.setOnClickListener(onPlayBtnClickListener);
 
 		//todo set app time off delay 10000 = 10 secon
-		 countDownTimer = new CountDownTimer(10000, 1000) {
+		countDownTimer = new CountDownTimer(10000, 1000) {
 			public void onTick(long millisUntilFinished) {
 				//TODO: Do something every second
 			}
+
 			public void onFinish() {
 
-				//todo remove comments for release
-			//	hideWatchLayout();
-			//	visibleVideoWithPLayBtn();
-				Log.d("dwd", "time offf");
+				//todo remove for debud
+//				hideWatchLayout();
+//				visibleVideoWithPLayBtn();
+//				startVideo();
 			}
 		}.start();
 
 
 	}
 
+
+
+	private void startVideo() {
+		exoManager = ExoPlayerManager.createInstance(this, getApplicationContext(), playerView);
+		exoManager.setVideoPath("https://mysmartech.ru/esiminch.mp4");
+		exoManager.playStream(0L);
+		exoManager.setVideoCallback(new ExoPlayerManager.VideoCallback() {
+			@Override
+			public void onVideoStart(@NotNull String url) {
+				Log.d("dwd", "on video start");
+
+			}
+
+			@Override
+			public void onVideoEnd(@NotNull String url) {
+				Log.d("dwd", "on video end");
+
+			}
+
+			@Override
+			public void onVideoFail(@NotNull String url, @NotNull String errorMsg) {
+				Log.d("dwd", "fail video ");
+
+
+			}
+
+			@Override
+			public void onVideoBufferingEnd() {
+				Log.d("dwd", "video buffering end");
+			}
+		});
+	}
+
+
+
+
+//////// SWITCHER VIDEO / WATCH   LAYOUT
+	private void setVideoLayout(){
+		visibleVideoWithPLayBtn();
+		hideWatchLayout();
+	}
+	private void setWatchLayout(){
+		hideVideoWithPLayBtn();
+		visibleWatchLayout();
+	}
+
+
+
+	//////////////WATCH LAYOUT
 	private void hideWatchLayout() {
 		appLogoIc.setVisibility(View.GONE);
 		tabLayout.setVisibility(View.GONE);
 		viewPager.setVisibility(View.GONE);
 	}
-
 	private void visibleWatchLayout() {
 		appLogoIc.setVisibility(View.VISIBLE);
 		tabLayout.setVisibility(View.VISIBLE);
@@ -243,7 +213,25 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	}
 
 
-	private void initTabLayout(Watch watch) {
+	//////////////VIDEO LAYOUT
+	private void visibleVideoWithPLayBtn() {
+		playerView.setVisibility(View.VISIBLE);
+	}
+	private void hideVideoWithPLayBtn() {
+		playerView.setVisibility(View.GONE);
+	}
+
+
+	private void initTabLayout(Watch watch, List<Brand> brands, int key) {
+		//todo get Brand by Sensor Key
+		Brand brand = brands.get(0);
+		Model currentModel = new Model();
+		for (Model model : brand.getModels()){
+			if (model.getId() == key){
+				currentModel = model;
+			}
+		}
+
 		for (InfoTab tab : infoTabs) {
 			Bundle args = new Bundle();
 			TabLayout.Tab newTab = tabLayout.newTab();
@@ -272,6 +260,9 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 				}
 				modelFragment.setArguments(args);
 			} else if ("tabId4".equals(tab.tabId)) {
+
+				args.putSerializable(AppConstants.EXTRA_SERIALIZABLE_KEY_SPEC, currentModel.getSpec());
+
 				args.putString("smallDesc", watch.getSmallDescription());
 				if (specsFragment == null) {
 					specsFragment = new SpecsFragment();
@@ -325,7 +316,17 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		super.onUserInteraction();
 		countDownTimer.cancel();
 		countDownTimer.start();
-		Log.d("dwd","USER INTERACTS");
+
+		//todo for debug
+		if (!debugBooleanStarted){
+			if (isDataRecevied) {
+				//todo  		//for debug		//for debug		//for debug		//for debug		//for debug		//for debug		//for debug
+				startShowingContent(watchMap.get(1));
+				debugBooleanStarted = true; //for debug
+			}
+		}
+
+
 	}
 
 	private void setDefaultTabs() {
@@ -510,10 +511,9 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 	private void startShowingContent(Watch watch) {
 		//todo start showing fragments
-		initTabLayout(watch);
+		initTabLayout(watch, brandList, 2); //todo get watch key
 		operationRuning = false;
 	}
-
 
 
 //	private void changeTabsFont() {
@@ -532,39 +532,68 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 //		}
 //	}
 
-	public void changeTab(int position){
+	public void changeTab(int position) {
 		//todo add time delay fro swiping tabs
 		viewPager.setCurrentItem(position, true);
 	}
 
 
-
-	private View.OnClickListener onPlayBtnClickListener = v -> {
-		Log.d("dwd","on PLay button click");
-		//visibleVideoWithPLayBtn();
-		//prepareAndStartVideo();
-	};
-
-	private void visibleVideoWithPLayBtn(){
-		youTubePlayerView.setVisibility(View.VISIBLE);
-		btnPlay.setVisibility(View.VISIBLE);
-	}
-
-	private void hideVideoWithPLayBtn(){
-		youTubePlayerView.setVisibility(View.GONE);
-		btnPlay.setVisibility(View.GONE);
-	}
+//	private View.OnClickListener onPlayBtnClickListener = v -> {
+//		Log.d("dwd", "on PLay button click");
+//		//visibleVideoWithPLayBtn();
+//		//prepareAndStartVideo();
+//	};
 
 
-	private void prepareAndStartVideo(){
-		youTubePlayerView.initialize(
-				initializedYouTubePlayer -> initializedYouTubePlayer.addListener(
-						new AbstractYouTubePlayerListener() {
-							@Override
-							public void onReady() {
-								initializedYouTubePlayer.loadVideo("https://www.youtube.com/watch?v=GZUEyGcKrec", 0);
-							}
-						}), false);
+
+
+
+
+
+	private void initWatchMap() {
+		watchMap.put(1, new Watch(
+						"Watch 1 Lorem ipsum",
+						"header1",
+						"title1",
+						"mainDescription1",
+						"smallDescription1",
+						"iconUrlMain1",
+						"iconUrlMain1"
+				)
+		);
+
+		watchMap.put(2, new Watch(
+						"Watch 2 Lorem ipsum",
+						"header2",
+						"title2",
+						"mainDescription2",
+						"smallDescription2",
+						"iconUrlMain2",
+						"iconUrlMain2"
+				)
+		);
+
+		watchMap.put(3, new Watch(
+						"Watch 3 Lorem ipsum",
+						"header3",
+						"title3",
+						"mainDescription3",
+						"smallDescription3",
+						"iconUrlMain3",
+						"iconUrlMain3"
+				)
+		);
+
+		watchMap.put(4, new Watch(
+						"Watch 4 Lorem ipsum",
+						"header4",
+						"title4",
+						"mainDescription4",
+						"smallDescription4",
+						"iconUrlMain4",
+						"iconUrlMain4"
+				)
+		);
 	}
 
 

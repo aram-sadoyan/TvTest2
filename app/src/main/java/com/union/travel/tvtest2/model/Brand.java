@@ -2,10 +2,11 @@ package com.union.travel.tvtest2.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Brand {
+public class Brand implements Serializable {
 
 	@SerializedName("BrendName")
 	private String name;
