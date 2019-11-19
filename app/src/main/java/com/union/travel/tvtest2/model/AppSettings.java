@@ -12,6 +12,9 @@ public class AppSettings {
 	private List<String> videoUrlList = new ArrayList<>();
 
 
+	private List<Model> comparingModelList = new ArrayList<>();
+
+
 	public static AppSettings getInstance() {
 		if (instance == null) {
 			instance = new AppSettings();
@@ -78,7 +81,23 @@ public class AppSettings {
 
 	public Size getSizeByModelId(int i) {
 
-
 		return null;
+	}
+
+
+
+
+	public List<Model> getComparingModelList() {
+		List<Model> models = new ArrayList<>();
+
+		if (brandList.isEmpty()){
+			return models;
+		}
+
+		models.add(brandList.get(0).getModels().get(1));
+		//models.add(brandList.get(0).getModels().get(1));
+		//models.add(brandList.get(0).getModels().get(1));
+
+		return models;
 	}
 }

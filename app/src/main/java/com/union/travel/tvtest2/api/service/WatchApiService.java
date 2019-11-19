@@ -18,8 +18,8 @@ public interface WatchApiService {
 //	@GET("")
 //	Call<Response> addShopPackage();
 
-//	@GET("/api/users/{id}")
-//	public Call<UserApiResponse> getUser(@Path("id") long id);
+	@GET("/api/users/{id}")
+	public Call<UserApiResponse> getUser(@Path("id") long id);
 
 
 //	@GET("TimeWatch/NewJson.php")

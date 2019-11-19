@@ -19,6 +19,7 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.material.tabs.TabLayout;
 import com.union.travel.tvtest2.adapter.TabAdapter;
 import com.union.travel.tvtest2.api.RestClient;
+import com.union.travel.tvtest2.api.UserApiResponse;
 import com.union.travel.tvtest2.model.AppSettings;
 import com.union.travel.tvtest2.model.Brand;
 import com.union.travel.tvtest2.model.Model;
@@ -104,6 +105,18 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 				Log.d("dwd", t.getMessage());
 			}
 		});
+
+//		RestClient.getInstance(getApplicationContext()).getWatchApiService().getUser(1).enqueue(new Callback<UserApiResponse>() {
+//			@Override
+//			public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {
+//				Log.d("dwd", response.toString());
+//			}
+//
+//			@Override
+//			public void onFailure(Call<UserApiResponse> call, Throwable t) {
+//				Log.d("dwd", t.getMessage());
+//			}
+		//});
 
 	}
 
@@ -307,6 +320,11 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		tabLayout.setVisibility(View.VISIBLE);
 
 		tabsAreShown = true;
+
+
+
+		//todo remove for debug
+		viewPager.setCurrentItem(4);
 
 	}
 

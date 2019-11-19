@@ -4,4 +4,12 @@
 
 	<dimen name="compairing_top_margin_first_param">164dp</dimen>
 
+
+
+	<dimen name="compairing_cvalue_left_margin">0dp</dimen>
+	<dimen name="compairing_cvalue_right_margin">20dp</dimen>
+
+	<dimen name="compairing_cvalue_left_padding">50dp</dimen>
+	<dimen name="compairing_cvalue_right_padding">50dp</dimen>
+
 </resources>
