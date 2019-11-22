@@ -1,5 +1,6 @@
 package com.union.travel.tvtest2.tabFragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,9 +16,10 @@ import androidx.fragment.app.Fragment;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.union.travel.tvtest2.FrescoLoader;
 import com.union.travel.tvtest2.R;
-import com.union.travel.tvtest2.model.Model;
+import com.union.travel.tvtest2.model.AppSettings;
+import com.union.travel.tvtest2.model.CompabilitySpec;
+import com.union.travel.tvtest2.model.GeneralSpec;
 import com.union.travel.tvtest2.model.Spec;
-import com.union.travel.tvtest2.utils.AppConstants;
 
 public class SpecsFragment extends Fragment {
 
@@ -28,18 +30,18 @@ public class SpecsFragment extends Fragment {
 	private TextView titleTxtView = null;
 	private Spec currentSpec = null;
 
+
+
+
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		isViewShown = getView() != null && isVisibleToUser;
+		Log.d("dwd", "fragment 2 " + isViewShown);
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-		Bundle bundle = getArguments();
-		if (bundle != null){
-
-			currentSpec = (Spec) bundle.getSerializable(AppConstants.EXTRA_SERIALIZABLE_KEY_SPEC);
-
-
-
-
-		}
 		return inflater.inflate(R.layout.fragment_specs, container, false);
 	}
 
@@ -57,56 +59,75 @@ public class SpecsFragment extends Fragment {
 		nameTxtView = view.findViewById(R.id.nameTxtView);
 		titleTxtView = view.findViewById(R.id.titelTxtView);
 
-		initSpecTextLayouts();
-		initIcon();
+		currentSpec = AppSettings.getInstance().getCurrentSpec();
+		initSpecFragment(currentSpec);
 
 
 
 	}
 
-	private void initIcon() {
+	private void initSpecFragment(Spec currentSpec) {
+		if (currentSpec == null){
+			return;
+		}
+
+		//todo here we need current selected model
 		FrescoLoader frescoLoader = new FrescoLoader();
+		frescoLoader.loadWithParams(Uri.parse(getCurrentModelIcUrl()), icView, false);
+
+		nameTxtView.setText("current model name");
+		titleTxtView.setText("current model title");
+
+		initSpecTextLayouts(currentSpec);
 
 	}
 
+	private String getCurrentModelIcUrl() {
+		String mainicUrl = "";
 
 
+		return mainicUrl;
+	}
 
 
-
-	private void initSpecTextLayouts() {
+	private void initSpecTextLayouts(Spec currentSpec) {
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
 		//View view = inflater.inflate(android.R.layout.list_item_recyclerView, parent, false);
 		///////// CompabilitySupport 4 field ////////
+		GeneralSpec generalSpec = currentSpec.getGeneralSpec();
+		CompabilitySpec comSpec = currentSpec.getCompabilitySpec();
+		if (generalSpec == null || comSpec == null){
+			return;
+		}
 		View v = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name1 = v.findViewById(R.id.startText);
 		TextView textView1 = v.findViewById(R.id.valueTxtView);
 		name1.setText("Android");
-		textView1.setText("Yes");   //////todo set value from Spec -> CompabilitySupport class
+		textView1.setText(comSpec.getAndroid() ? "Yes" : "");
 
 		View v2 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name2 = v2.findViewById(R.id.startText);
 		TextView textView2 = v2.findViewById(R.id.valueTxtView);
 		name2.setText("IOS");
-		textView2.setText("Yes");   //////todo set value from Spec -> CompabilitySupport class
+		textView2.setText(comSpec.getIos() ? "Yes" : "");   //////todo set value from Spec -> CompabilitySupport class
 
 		View v3 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name3 = v3.findViewById(R.id.startText);
 		TextView textView3 = v3.findViewById(R.id.valueTxtView);
 		name3.setText("Windows Phone");
-		textView3.setText("");   //////todo set value from Spec -> CompabilitySupport class if no set ""
+		textView3.setText(comSpec.getWindowsPhone() ? "Yes" : "");   //////todo set value from Spec -> CompabilitySupport class if no set ""
 
 		View v4 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name4 = v4.findViewById(R.id.startText);
 		TextView textView4 = v4.findViewById(R.id.valueTxtView);
 		name4.setText("Mac");
-		textView4.setText("Yes");   //////todo set value from Spec -> CompabilitySupport class if no set ""
+		textView4.setText(comSpec.getMac() ? "Yes" : "");   //////todo set value from Spec -> CompabilitySupport class if no set ""
 
 		View v5 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name5 = v5.findViewById(R.id.startText);
 		TextView textView5 = v5.findViewById(R.id.valueTxtView);
 		name5.setText("Windows");
-		textView5.setText("");   //////todo set value from Spec -> CompabilitySupport class if no set ""
+		textView5.setText(comSpec.getWindows() ? "Yes" : "");   //////todo set value from Spec -> CompabilitySupport class if no set ""
 
 		///////// General 20 field ////////
 		View generalViewTextLayout = inflater.inflate(R.layout.layout_general_spec, parentParamsLayout, false);
@@ -115,123 +136,122 @@ public class SpecsFragment extends Fragment {
 		TextView name6 = v6.findViewById(R.id.startText);
 		TextView textView6 = v6.findViewById(R.id.valueTxtView);
 		name6.setText("Size");
-		textView6.setText("46 mm diameter");   //////todo set value from Spec -> CompabilitySupport class if no set ""
+		textView6.setText(generalSpec.getSize());   //////todo set value from Spec -> CompabilitySupport class if no set ""
 
 
 		View v7 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name7 = v7.findViewById(R.id.startText);
 		TextView textView7 = v7.findViewById(R.id.valueTxtView);
 		name7.setText("Material");
-		textView7.setText("Ceramic Bezel, Silicone strap");   //////todo set value from Spec -> CompabilitySupport class if no set ""
+		textView7.setText(generalSpec.getMaterial());
 
 
 		View v8 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name8 = v8.findViewById(R.id.startText);
 		TextView textView8 = v8.findViewById(R.id.valueTxtView);
 		name8.setText("Battery");
-		textView8.setText("Lithum Polymor battery 280mAh");//////todo set value from Spec -> CompabilitySupport class if no set ""
+		textView8.setText(generalSpec.getBattery());
 
 		View v9 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name9 = v9.findViewById(R.id.startText);
 		TextView textView9 = v9.findViewById(R.id.valueTxtView);
 		name9.setText("Battery Life");
-		textView9.setText("Normal Usage five days : pure watch mode 11.6 days");
+		textView9.setText(generalSpec.getBatterylife());
 
 		View v10 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name10 = v10.findViewById(R.id.startText);
 		TextView textView10 = v10.findViewById(R.id.valueTxtView);
 		name10.setText("Water-resistance");
-		textView10.setText("Ip6 dustermode and watreproof");
+		textView10.setText(generalSpec.getWaterResistance());
 
 		View v11 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name11 = v11.findViewById(R.id.startText);
 		TextView textView11 = v11.findViewById(R.id.valueTxtView);
 		name11.setText("Weight");
-		textView11.setText("54 grams");
+		textView11.setText(generalSpec.getWeight());
 
 
 		View v12 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name12 = v12.findViewById(R.id.startText);
 		TextView textView12 = v12.findViewById(R.id.valueTxtView);
 		name12.setText("Sensor");
-		textView12.setText("Accelsahsdsdtn, PPg geart rate, gyrscope, geometry sensor ight or gps, glomas");
+		textView12.setText(generalSpec.getSensor());
 
 
 		View v13 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name13 = v13.findViewById(R.id.startText);
 		TextView textView13 = v13.findViewById(R.id.valueTxtView);
 		name13.setText("Display");
-		textView13.setText("Transactive color always-on LCD touch screen");
+		textView13.setText(generalSpec.getDisplay());
 
 
 		View v14 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name14 = v14.findViewById(R.id.startText);
 		TextView textView14 = v14.findViewById(R.id.valueTxtView);
 		name14.setText("Platform");
-		textView14.setText("Properiaty");
+		textView14.setText(generalSpec.getPlatform());
 
 
 		View v15 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name15 = v15.findViewById(R.id.startText);
 		TextView textView15 = v15.findViewById(R.id.valueTxtView);
 		name15.setText("Processor");
-		textView15.setText("1.2 Ghz dual- core kljb");
+		textView15.setText(generalSpec.getProcessor());
 
 
 		View v16 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name16 = v16.findViewById(R.id.startText);
 		TextView textView16 = v16.findViewById(R.id.valueTxtView);
 		name16.setText("Memory");
-		textView16.setText("4 Gb storage capacity, 512MB RAM");
+		textView16.setText(generalSpec.getMemory());
 
 		View v17 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name17 = v17.findViewById(R.id.startText);
 		TextView textView17 = v17.findViewById(R.id.valueTxtView);
 		name17.setText("Connectivity");
-		textView17.setText("Bluetoot, WIFI");
+		textView17.setText(generalSpec.getConnectivity());
 
 		View v18 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name18 = v18.findViewById(R.id.startText);
 		TextView textView18 = v18.findViewById(R.id.valueTxtView);
 		name18.setText("Steps");
-		textView18.setText("Yes");
+		textView18.setText(generalSpec.getSteps()?"Yes":"");
 
 		View v19 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name19 = v19.findViewById(R.id.startText);
 		TextView textView19 = v19.findViewById(R.id.valueTxtView);
 		name19.setText("Distance");
-		textView19.setText("Yes");
+		textView19.setText(generalSpec.getDistance()?"Yes":"");
 
 		View v20 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name20 = v20.findViewById(R.id.startText);
 		TextView textView20 = v20.findViewById(R.id.valueTxtView);
 		name20.setText("Calories burned");
-		textView20.setText("Yes");
+		textView20.setText(generalSpec.getColories()?"Yes":"");
 
 		View v21 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name21 = v21.findViewById(R.id.startText);
 		TextView textView21 = v21.findViewById(R.id.valueTxtView);
 		name21.setText("Activity");
-		textView21.setText("Yes");
+		textView21.setText(generalSpec.getActivity()?"Yes":"");
 
 		View v22 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name22 = v22.findViewById(R.id.startText);
 		TextView textView22 = v22.findViewById(R.id.valueTxtView);
 		name22.setText("Floors");
-		textView22.setText("");
+		textView22.setText(generalSpec.getFloors()?"Yes":"");
 
 		View v23 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name23 = v23.findViewById(R.id.startText);
 		TextView textView23 = v23.findViewById(R.id.valueTxtView);
 		name23.setText("Sleep");
-		textView23.setText("Yes");
+		textView23.setText(generalSpec.getSleep()?"Yes":"");
 
 		View v24 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name24 = v24.findViewById(R.id.startText);
 		TextView textView24 = v24.findViewById(R.id.valueTxtView);
 		name24.setText("Heart rate");
-		textView24.setText("Yes");
-
+		textView24.setText(generalSpec.getHeart()?"Yes":"");
 
 		parentParamsLayout.addView(v);
 		parentParamsLayout.addView(v2);
@@ -260,12 +280,7 @@ public class SpecsFragment extends Fragment {
 		parentParamsLayout.addView(v24);
 	}
 
-	@Override
-	public void setUserVisibleHint(boolean isVisibleToUser) {
-		super.setUserVisibleHint(isVisibleToUser);
-		isViewShown = getView() != null && isVisibleToUser;
-		Log.d("dwd", "fragment 2 " + isViewShown);
-	}
+
 
 
 }

@@ -12,7 +12,6 @@ public class Color  implements Serializable {
 	private
 	String colorName;
 
-
 	@SerializedName("ColorURL")
 	private List<String> colorUrls;
 

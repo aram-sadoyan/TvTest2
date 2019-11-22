@@ -1,10 +1,10 @@
 package com.union.travel.tvtest2.tabFragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.util.Log;
-import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +20,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.union.travel.tvtest2.FrescoLoader;
 import com.union.travel.tvtest2.MainActivity;
 import com.union.travel.tvtest2.R;
 import com.union.travel.tvtest2.adapter.VerticalWatchAdapter;
 import com.union.travel.tvtest2.model.AppSettings;
+import com.union.travel.tvtest2.model.Color;
 import com.union.travel.tvtest2.model.Model;
 import com.union.travel.tvtest2.model.Price;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class OverviewFragment extends Fragment {
@@ -40,17 +43,43 @@ public class OverviewFragment extends Fragment {
 	private SimpleDraweeView mainIcView = null;
 
 	private GridLayout gridLayout = null;
-
 	private List<Price> prices = new ArrayList<>();
 	private Model model = null;
+	private List<Color> colorList = new ArrayList<>();
 
+	VerticalWatchAdapter verticalWatchAdapter = null;
 
-	String name = "Grzo";
-	//  private TextView titleTxtView = null;
+	private FrescoLoader frescoLoader = null;
+	private TextView titleTxtView = null;
+	private TextView nameTxtView = null;
+	private TextView colorDescTxtView = null;
+	private TextView serialTxtView = null;
+
+	private AtomicBoolean dataIsSelectedFromHint = new AtomicBoolean();
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_overview, container, false);
+	}
+
+
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		boolean isViewShown = getView() != null && isVisibleToUser;
+		if (isViewShown) {
+			//TODO SET Fragment components when is from global clicks
+			boolean isSelectedFromModel = AppSettings.getInstance().isSelectedFromModel();
+			if (isSelectedFromModel) {
+				initOverViewfragment();
+				dataIsSelectedFromHint.set(true);
+				AppSettings.getInstance().setSelectedFromModel(false);
+			}
+		} else {
+			dataIsSelectedFromHint.set(false);
+		}
+
 	}
 
 
@@ -71,6 +100,11 @@ public class OverviewFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+		titleTxtView = view.findViewById(R.id.titleTxtView);
+		nameTxtView = view.findViewById(R.id.nameTxtView);
+		colorDescTxtView = view.findViewById(R.id.colorDescTxtView);
+		serialTxtView = view.findViewById(R.id.serialTxtView);
 		recyclerView = view.findViewById(R.id.watchesRecyclerView);
 		radioGroup = view.findViewById(R.id.size_radioGroup);
 		plusView = view.findViewById(R.id.icPlus);
@@ -81,32 +115,62 @@ public class OverviewFragment extends Fragment {
 		plusView.setOnClickListener(compareClickListener);
 		compareTxtView.setOnClickListener(compareClickListener);
 
-		model = AppSettings.getInstance().getModelById(1);
-		if (model != null) {
-			prices = model.getPrices();
+
+		if (!dataIsSelectedFromHint.get()) {
+			initOverViewfragment();
 		}
 
 
+	}
+
+	private void initOverViewfragment() {
+		frescoLoader = new FrescoLoader();
+
+		model = AppSettings.getInstance().getModelByModelId();
+		if (model != null) {
+			prices = model.getPrices();
+			colorList = model.getColors();
+		}
+		if (colorList.isEmpty()) {
+			return;
+		}
+
+		initNameAndTitles();
 		initGridLayoutForColors();
+		initOverviewTabVerticalRecView();
 
-
-		//  titleTxtView.setText(name);
-
-		arrowDownView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Log.d("dwd", "arrowDown clicked");
-			}
+		arrowDownView.setOnClickListener(v -> {
+			Log.d("dwd", "arrowDown clicked");
+			Log.d("dwd", "arrowDown clicked");
 		});
 
 	}
 
+	private void initNameAndTitles() {
+		titleTxtView.setText(model.getTitle());
+		nameTxtView.setText(model.getName());
+		colorDescTxtView.setText(model.getColors().get(0).getColorName());
+		serialTxtView.setText(model.getSdDescription());
+	}
+
 	private void initGridLayoutForColors() {
+		if (colorList.isEmpty()) {
+			return;
+		}
+
+		gridLayout.removeAllViews();
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < colorList.size(); i++) {
 			View v = inflater.inflate(R.layout.overview_grid_item, gridLayout, false);
 			v.setTag(i);
 			v.setOnClickListener(v1 -> {
+				int indexOfChild = gridLayout.indexOfChild(v1);
+				frescoLoader.loadWithParams(Uri.parse(getColorUrlByPosition(indexOfChild)), mainIcView, false);
+				if (verticalWatchAdapter != null) {
+					verticalWatchAdapter.setItemsList(colorList.get(indexOfChild).getColorUrls());
+					verticalWatchAdapter.notifyDataSetChanged();
+				}
+
 				int count = gridLayout.getChildCount();
 				for (int i1 = 0; i1 < count; i1++) {
 					View childView = gridLayout.getChildAt(i1);
@@ -117,15 +181,30 @@ public class OverviewFragment extends Fragment {
 					}
 				}
 			});
+
+			SimpleDraweeView colorIc = v.findViewById(R.id.gridItemIc);
+			frescoLoader.loadWithParams(Uri.parse(getColorUrlByPosition(i)), colorIc, false);
+
 			gridLayout.addView(v);
+
+			if (i == 0) {
+				View childView = gridLayout.getChildAt(0);
+				childView.findViewById(R.id.gridUnderLineView).setVisibility(View.VISIBLE);
+			}
+		}
+	}
+
+	private String getColorUrlByPosition(int i) {
+		Color color = colorList.get(i);
+		if (color != null && !color.getColorUrls().isEmpty()) {
+			return color.getColorUrls().get(0);
+		} else {
+			return "";
 		}
 	}
 
 
-	@Override
-	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
+	private void initOverviewTabVerticalRecView() {
 		recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
 				LinearLayoutManager.VERTICAL, false));
 		recyclerView.setItemViewCacheSize(10);
@@ -133,17 +212,23 @@ public class OverviewFragment extends Fragment {
 		recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 		recyclerView.setHasFixedSize(true);
 
-
-		List<String> itemUrls = new ArrayList<>();
-		itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
-		itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
-		itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
-		itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
-		itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
-		itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
-
-		VerticalWatchAdapter verticalWatchAdapter = new VerticalWatchAdapter(itemUrls);
+		List<String> itemUrls = new ArrayList<>(colorList.get(0).getColorUrls());
+		verticalWatchAdapter = new VerticalWatchAdapter(itemUrls, icUrl -> {
+			frescoLoader.loadWithParams(Uri.parse(icUrl), mainIcView, false);
+		});
 		recyclerView.setAdapter(verticalWatchAdapter);
+	}
+
+
+
+	public interface OnItemClickListener {
+		void onItemClick(String icUrl);
+	}
+
+
+	@Override
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 
 
 		//todo radio button click listener
@@ -155,19 +240,11 @@ public class OverviewFragment extends Fragment {
 			// If the radiobutton that has changed in check state is now checked...
 			if (isChecked) {
 
-
 				// Changes the textview's text to "Checked: example radiobutton text"
 				//tv.setText("Checked:" + checkedRadioButton.getText());
 			}
 		});
 
-	}
-
-	@Override
-	public void setUserVisibleHint(boolean isVisibleToUser) {
-		super.setUserVisibleHint(isVisibleToUser);
-		// isViewShown = getView() != null && isVisibleToUser;
-		// Log.d("dwd", "fragment 1 " + isViewShown);
 	}
 
 

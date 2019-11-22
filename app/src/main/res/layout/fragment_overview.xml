@@ -48,8 +48,9 @@
 		android:layout_marginStart="65dp"
 		android:layout_marginTop="32dp"
 		android:includeFontPadding="false"
-		android:text="Sports and Fitness"
-		android:textColor="@android:color/black"
+		android:text="SPORTS &amp; FITNESS | MULTISPORT"
+		android:textColor="@color/lb_grey"
+		android:fontFamily="@font/lato"
 
 		android:textSize="18sp"
 		app:layout_constraintStart_toEndOf="@id/watchId"
@@ -62,10 +63,11 @@
 		android:layout_marginStart="65dp"
 		android:layout_marginTop="8dp"
 		android:includeFontPadding="false"
-
+		android:textStyle="bold"
 		android:text="fenix - Pro and Safir"
 		android:textColor="@android:color/black"
 		android:textSize="48sp"
+		android:fontFamily="@font/lato"
 
 		app:layout_constraintStart_toEndOf="@id/watchId"
 		app:layout_constraintTop_toBottomOf="@+id/titleTxtView" />
@@ -77,7 +79,8 @@
 		android:layout_marginStart="65dp"
 		android:includeFontPadding="false"
 		android:text="Saphier - Titanium with"
-		android:textColor="@android:color/black"
+		android:textColor="@color/lb_grey"
+		android:fontFamily="@font/lato"
 
 		android:textSize="18sp"
 		app:layout_constraintStart_toEndOf="@id/watchId"
@@ -90,8 +93,10 @@
 		android:layout_marginStart="65dp"
 		android:layout_marginTop="6dp"
 		android:includeFontPadding="false"
+		android:fontFamily="@font/lato"
 		android:text="Part Number 01038347"
-		android:textColor="@android:color/black"
+		android:textColor="@color/lb_grey"
+
 		android:textSize="18sp"
 		app:layout_constraintStart_toEndOf="@id/watchId"
 		app:layout_constraintTop_toBottomOf="@+id/colorDescTxtView" />
@@ -105,6 +110,8 @@
 		android:layout_marginTop="88dp"
 		android:includeFontPadding="false"
 		android:text="Case Size"
+		android:fontFamily="@font/lato"
+
 		android:textColor="@android:color/black"
 		android:textSize="18sp"
 		app:layout_constraintStart_toEndOf="@id/watchId"

@@ -37,6 +37,7 @@ public class RestClient {
 	private WatchApiService watchApiService ;
 
 
+	public static final String TEST_BASE_URL = "https://www.qicharge.am/"; //todo rename
 
 	public RestClient(Context context){
 //		if (enableCaches) {
@@ -60,16 +61,16 @@ public class RestClient {
 		Retrofit retrofit;
 		//String baseUrl = AppConstants.DEFAULT_BASE_URL;
 
-		File cacheDir = new File(context.getCacheDir().getAbsolutePath() + "/WatchCache");
+		File cacheDir = new File(context.getCacheDir().getAbsolutePath() + "/NewWatchCache2");
 		Cache cache = new Cache(cacheDir, CACHE_SIZE);
 
 		OkHttpClient okHttpClient = new OkHttpClient.Builder()
-				.cache(cache)
+				//.cache(cache)
 				.addInterceptor(new LoggingInterceptor())
 				.build();
 
 		retrofit = new Retrofit.Builder()
-				.baseUrl(AppConstants.TEST_BASE_URL)
+				.baseUrl(TEST_BASE_URL)
 				.addConverterFactory(GsonConverterFactory.create())
 				.client(okHttpClient)
 				.build();

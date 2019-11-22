@@ -1,35 +1,46 @@
 package com.union.travel.tvtest2.tabFragments;
 
 import android.app.Activity;
-import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.union.travel.tvtest2.FrescoLoader;
 import com.union.travel.tvtest2.MainActivity;
 import com.union.travel.tvtest2.R;
-import com.union.travel.tvtest2.adapter.BrandAdapter;
-import com.union.travel.tvtest2.model.BrandItem;
+import com.union.travel.tvtest2.model.AppSettings;
+import com.union.travel.tvtest2.model.tabModel.BrandTabModelItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BrandFragment extends Fragment {
+
+    //TODO check with Hayk for BrandId String or int
+    private String selectedBrandName = "";
+
     private boolean isViewShown;
-    private RecyclerView recyclerView = null;
-    private BrandAdapter brandAdapter = null;
+   // private RecyclerView recyclerView = null;
+    //private BrandAdapter brandAdapter = null;
     private SimpleDraweeView rightArrovView = null;
     private TextView selectBrandTxtView = null;
+    private GridLayout gridLayout = null;
+
+    private List<BrandTabModelItem> brandTabModelItemList = new ArrayList<>();
+
+
+    private FrescoLoader frescoLoader = null;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,102 +51,87 @@ public class BrandFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        brandTabModelItemList = AppSettings.getInstance().getBrandItemListForBrandTab();
+        frescoLoader = new FrescoLoader();
+        if (brandTabModelItemList.isEmpty()){
+            return;
+        }
 
-        recyclerView = view.findViewById(R.id.brandRecyclerView);
         rightArrovView = view.findViewById(R.id.rightArrowView);
         selectBrandTxtView = view.findViewById(R.id.brandSelectTxtView);
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 6);
+        gridLayout = view.findViewById(R.id.brandGridLayout);
+
+        initBrandTab();
 
 
-        recyclerView.addItemDecoration(new BrandGridRecyclerViewDecoration());
-        recyclerView.setItemViewCacheSize(10);
-        recyclerView.setDrawingCacheEnabled(true);
-        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(layoutManager);
+    }
 
-
-        List<BrandItem> items = new ArrayList<>();
-        BrandItem brandItem = new BrandItem();
-        BrandItem brandItem2 = new BrandItem();
-        brandItem.setIcUrl("eeee");
-        brandItem.setName("oooooo");
-        brandItem2.setIcUrl("eee222");
-        brandItem2.setName("0022");
-        items.add(brandItem);
-        items.add(brandItem2);
-        brandAdapter = new BrandAdapter(items);
-        recyclerView.setAdapter(brandAdapter);
-
-
-
+    private void initBrandTab() {
+        initBrandGridLayout();
         rightArrovView.setOnClickListener(selectBrandClickListener);
         selectBrandTxtView.setOnClickListener(selectBrandClickListener);
+    }
 
+    private void initBrandGridLayout() {
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        setGlobalSelectedBrandItemName(0);
+        int columnCount = brandTabModelItemList.size() < 7 ? brandTabModelItemList.size() : 6 ;
+        gridLayout.setColumnCount(columnCount);
+        for (int i = 0; i < brandTabModelItemList.size(); i++) {
+            View v = inflater.inflate(R.layout.item_brand_layout, gridLayout, false);
+            v.setTag(i);
+            v.setOnClickListener(v1 -> {
+                int indexOfChild = gridLayout.indexOfChild(v1);
+                setGlobalSelectedBrandItemName(indexOfChild);
+                int count = gridLayout.getChildCount();
+                for (int i1 = 0; i1 < count; i1++) {
+                    View childView = gridLayout.getChildAt(i1);
+                    if (childView.getTag() == v1.getTag()) {
+                        childView.findViewById(R.id.underLineView).setVisibility(View.VISIBLE);
+                    } else {
+                        childView.findViewById(R.id.underLineView).setVisibility(View.INVISIBLE);
+                    }
+                }
+            });
+
+            BrandTabModelItem brandTabModelItem = brandTabModelItemList.get(i);
+            SimpleDraweeView brandIcView = v.findViewById(R.id.icBrandView);
+            frescoLoader.loadWithParams(Uri.parse(brandTabModelItem.getBrandIcUrl()), brandIcView, false);
+            TextView brandNameTxtView = v.findViewById(R.id.textBrandView);
+            brandNameTxtView.setText(brandTabModelItem.getBrandName());
+
+            gridLayout.addView(v);
+            if (i == 0) {
+                View childView = gridLayout.getChildAt(0);
+                childView.findViewById(R.id.underLineView).setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+
+    private void setGlobalSelectedBrandItemName(int position){
+        selectedBrandName = brandTabModelItemList.get(position).getBrandName();
+        AppSettings.getInstance().setCurrentBrandName(selectedBrandName);
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         isViewShown = getView() != null && isVisibleToUser;
-        Log.d("dwd", "fragment 2 " + isViewShown);
-    }
+        Log.d("dwd", "BrandFragment " + isViewShown);
+        if (isViewShown){
+            //TODO SET Fragment components when is from global clicks
 
-
-    private class BrandGridRecyclerViewDecoration extends RecyclerView.ItemDecoration {
-
-        private int bottomSpace = 0;
-
-        public BrandGridRecyclerViewDecoration() {
-//            Activity activity = getActivity();
-//            if (activity != null && !activity.isFinishing()) {
-//                bottomSpace = PicsartUtils.convertDpToPixel(94);
-//            }
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            super.getItemOffsets(outRect, view, parent, state);
-            int n = parent.getAdapter().getItemCount();
-            int k = n % 6;
-            if (k == 0) {
-                k = 6;
-            }
-            if (parent.getChildAdapterPosition(view) >= 6) {//get last items for set offset
-                Log.d("dwd","1ket " + String.valueOf(parent.getChildAdapterPosition(view)));
-                outRect.set(0, 0, 0, 0);
-            } else {
-                Log.d("dwd","2ket " + String.valueOf(parent.getChildAdapterPosition(view)));
-                outRect.set(0, 0, 0, 0);
-            }
-
-            if (parent.getChildAdapterPosition(view) < 6) {
-                // outRect.top = 16;
-               // Log.d("dwd","3ket " + String.valueOf(parent.getChildAdapterPosition(view)));
-
-            } else {
-               // Log.d("dwd","4ket " + String.valueOf(parent.getChildAdapterPosition(view)));
-
-                outRect.top = 50;
-            }
-
-
-            if (parent.getChildAdapterPosition(view) % 6 == 0){
-              //  outRect.left = 90;
-            }
-
-            if (parent.getChildAdapterPosition(view) % 5 == 0){
-                 // outRect.right = 90;
-            }
-//            outRect.left = PicsartUtils.convertDpToPixel(4);
-//            outRect.right = PicsartUtils.convertDpToPixel(4);
         }
     }
 
 
     private View.OnClickListener selectBrandClickListener = v -> {
-        Log.d("dwd", "comparing click " + brandAdapter.getSelectedPosition());
+        //Log.d("dwd", "comparing click " + brandAdapter.getSelectedPosition());
+        AppSettings.getInstance().setCurrentBrandName(selectedBrandName);
+        AppSettings.getInstance().setSelectedFromBrand(true);
         Activity activity = getActivity();
         ((MainActivity) activity).changeTab(2);
+
     };
 }

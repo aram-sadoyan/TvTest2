@@ -7,15 +7,27 @@
 	android:background="@color/primary_color_white">
 
 
-	<androidx.recyclerview.widget.RecyclerView
-		android:id="@+id/brandRecyclerView"
+	<GridLayout
+		android:id="@+id/brandGridLayout"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="140dp"
+		android:layout_marginStart="45dp"
+		android:columnCount="6"
+		android:layout_marginTop="78dp"
 		app:layout_constraintBottom_toTopOf="@+id/brandSelectTxtView"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent" />
+
+<!--	<androidx.recyclerview.widget.RecyclerView-->
+<!--		android:id="@+id/brandRecyclerView"-->
+<!--		android:layout_width="wrap_content"-->
+<!--		android:layout_height="wrap_content"-->
+<!--		android:layout_marginTop="140dp"-->
+<!--		app:layout_constraintBottom_toTopOf="@+id/brandSelectTxtView"-->
+<!--		app:layout_constraintEnd_toEndOf="parent"-->
+<!--		app:layout_constraintStart_toStartOf="parent"-->
+<!--		app:layout_constraintTop_toTopOf="parent" />-->
 
 
 	<TextView

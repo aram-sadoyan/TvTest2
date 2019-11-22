@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.union.travel.tvtest2.FrescoLoader;
 import com.union.travel.tvtest2.R;
+import com.union.travel.tvtest2.tabFragments.OverviewFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +25,19 @@ public class VerticalWatchAdapter extends RecyclerView.Adapter<RecyclerView.View
 	private int selectedPosition = 0;
 	private FrescoLoader frescoLoader;
 
+	private final OverviewFragment.OnItemClickListener listener;
 
 
-	public VerticalWatchAdapter(List<String> itemUrls) {
+	public VerticalWatchAdapter(List<String> itemUrls, OverviewFragment.OnItemClickListener onItemClickListener) {
 		this.itemUrls = itemUrls;
 		frescoLoader = new FrescoLoader();
+		this.listener = onItemClickListener;
+	}
 
+
+	public void setItemsList(List<String> itemUrls) {
+		this.itemUrls.clear();
+		this.itemUrls.addAll(itemUrls);
 	}
 
 	@NonNull
@@ -50,19 +58,11 @@ public class VerticalWatchAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 		if (selectedPosition == position) {
 			holder.indicatorView.setVisibility(View.VISIBLE);
-			Log.d("dwd","true");
+			Log.d("dwd", "true");
 		} else {
-			Log.d("dwd","false");
+			Log.d("dwd", "false");
 			holder.indicatorView.setVisibility(View.INVISIBLE);
 		}
-
-
-//		holder.itemView.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				holder.indicatorView.setVisibility(View.VISIBLE);
-//			}
-//		});
 
 
 	}
@@ -71,7 +71,6 @@ public class VerticalWatchAdapter extends RecyclerView.Adapter<RecyclerView.View
 	public int getItemCount() {
 		return itemUrls.size();
 	}
-
 
 
 	public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -93,6 +92,9 @@ public class VerticalWatchAdapter extends RecyclerView.Adapter<RecyclerView.View
 // Below line is just like a safety check, because sometimes holder could be null,
 			// in that case, getAdapterPosition() will return RecyclerView.NO_POSITION
 			if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+			if (selectedPosition != getAdapterPosition()) {
+				listener.onItemClick(itemUrls.get(getAdapterPosition()));
+			}
 
 			// Updating old as well as new positions
 			notifyItemChanged(selectedPosition);

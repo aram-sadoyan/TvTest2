@@ -1,131 +1,163 @@
 package com.union.travel.tvtest2.tabFragments;
 
 import android.app.Activity;
-import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.union.travel.tvtest2.FrescoLoader;
 import com.union.travel.tvtest2.MainActivity;
 import com.union.travel.tvtest2.R;
-import com.union.travel.tvtest2.adapter.ModelGridAdapter;
+import com.union.travel.tvtest2.model.AppSettings;
+import com.union.travel.tvtest2.model.tabModel.ModelTabModelItem;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 
 public class ModelFragment extends Fragment {
-    private boolean isViewShown;
+	private boolean isViewShown;
+	private SimpleDraweeView arrowRightIc = null;
+	private SimpleDraweeView watchIc = null;
+	private TextView nameTxtView = null;
+	private TextView selectTxtView = null;
+	private GridLayout gridLayout = null;
+
+	private ModelTabModelItem modelTabModelItem = null;
+	private FrescoLoader frescoLoader = null;
+	private String selectedModelName = "";
+	private int selectedModelId = -1;
+
+	private AtomicBoolean dataIsSelectedFromHint = new AtomicBoolean();
 
 
-    SimpleDraweeView arrowRightIc = null;
-    TextView selectTxtView = null;
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.fragment_model, container, false);
+	}
 
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_model, container, false);
-    }
-
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        isViewShown = getView() != null && isVisibleToUser;
-        Log.d("dwd", "FRG 3 " + isViewShown);
-
-
-    }
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        // titleTxtView = view.findViewById(R.id.titleTxtView);
-        RecyclerView recyclerView = view.findViewById(R.id.modelRecyclerView);
-
-        arrowRightIc = view.findViewById(R.id.rightArrowView);
-        selectTxtView = view.findViewById(R.id.bottomTextView);
-
-        arrowRightIc.setOnClickListener(selectModelClickListener);
-        selectTxtView.setOnClickListener(selectModelClickListener);
-
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new GridRecyclerViewDecoration());
-        recyclerView.setItemViewCacheSize(10);
-        recyclerView.setDrawingCacheEnabled(true);
-        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        recyclerView.setHasFixedSize(true);
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		isViewShown = getView() != null && isVisibleToUser;
+		Log.d("dwd", "ModelFragment is " + isViewShown);
+		if (isViewShown) {
+			//TODO SET Fragment components when is from global clicks
+			boolean isSelectedFromBrand = AppSettings.getInstance().isSelectedFromBrand();
+			if (isSelectedFromBrand) {
+				initModelFragment();
+				dataIsSelectedFromHint.set(true);
+				AppSettings.getInstance().setSelectedFromBrand(false);
+			} else {
+				dataIsSelectedFromHint.set(false);
+			}
+		}
 
 
-        List<String> itemUrls = new ArrayList<>();
-        itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
-        itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
-        itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
-        itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
-        itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
-        itemUrls.add("https://png.pngtree.com/element_our/20190528/ourmid/pngtree-small-url-icon-opened-on-the-computer-image_1132275.jpg");
-
-        ModelGridAdapter modelGridAdapter = new ModelGridAdapter(itemUrls);
-        recyclerView.setAdapter(modelGridAdapter);
+	}
 
 
-    }
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		frescoLoader = new FrescoLoader();
+
+		arrowRightIc = view.findViewById(R.id.rightArrowView);
+		selectTxtView = view.findViewById(R.id.bottomTextView);
+		gridLayout = view.findViewById(R.id.modelGridView);
+		watchIc = view.findViewById(R.id.watchId);
+		nameTxtView = view.findViewById(R.id.nameTxtView);
+
+		if (!dataIsSelectedFromHint.get()) {
+			initModelFragment();
+		}
 
 
+	}
 
-    private class GridRecyclerViewDecoration extends RecyclerView.ItemDecoration {
+	private void initModelFragment() {
+		modelTabModelItem = null;
+		modelTabModelItem = AppSettings.getInstance().getModelTabItem();
+		if (modelTabModelItem == null || modelTabModelItem.getModelItemList().isEmpty()) {
+			return;
+		}
 
-        private int bottomSpace = 0;
+		initGridModelItems();
 
-        public GridRecyclerViewDecoration() {
-//            Activity activity = getActivity();
-//            if (activity != null && !activity.isFinishing()) {
-//                bottomSpace = PicsartUtils.convertDpToPixel(94);
-//            }
-        }
+		arrowRightIc.setOnClickListener(selectModelClickListener);
+		selectTxtView.setOnClickListener(selectModelClickListener);
+	}
 
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            super.getItemOffsets(outRect, view, parent, state);
-            int n = parent.getAdapter().getItemCount();
-            int k = n % 7;
-            if (k == 0) {
-                k = 7;
-            }
-            if (parent.getChildAdapterPosition(view) >= n - k) { //get last items for set offset
-                outRect.set(0, 0, 30, 0);
-            } else {
-                outRect.set(0, 0, 34, 0);
-            }
-            if (parent.getChildAdapterPosition(view) < 7) {
-               // outRect.top = 16;
-            } else {
-                outRect.top = 42;
-            }
-//            outRect.left = PicsartUtils.convertDpToPixel(4);
-//            outRect.right = PicsartUtils.convertDpToPixel(4);
-        }
-    }
+	private void initGridModelItems() {
+		setGlobalSelectedModelItemName(0);
+		LayoutInflater inflater = LayoutInflater.from(getActivity());
+		nameTxtView.setText(getNameStringFromModelByPosition(0));
+		gridLayout.removeAllViews();
+		for (int i = 0; i < modelTabModelItem.getModelItemList().size(); i++) {
+			View v = inflater.inflate(R.layout.overview_grid_item, gridLayout, false);
+			v.setTag(i);
+			v.setOnClickListener(v1 -> {
+				int indexOfChild = gridLayout.indexOfChild(v1);
+				setGlobalSelectedModelItemName(indexOfChild);
+				nameTxtView.setText(getNameStringFromModelByPosition(indexOfChild));
+				frescoLoader.loadWithParams(Uri.parse(modelTabModelItem.getModelItemList().get(indexOfChild).getModelUrl()), watchIc, false);
+				int count = gridLayout.getChildCount();
+				for (int i1 = 0; i1 < count; i1++) {
+					View childView = gridLayout.getChildAt(i1);
+					if (childView.getTag() == v1.getTag()) {
+						childView.findViewById(R.id.gridUnderLineView).setVisibility(View.VISIBLE);
+					} else {
+						childView.findViewById(R.id.gridUnderLineView).setVisibility(View.INVISIBLE);
+					}
+				}
+			});
+
+			SimpleDraweeView modelGridItemIcView = v.findViewById(R.id.gridItemIc);
+			frescoLoader.loadWithParams(Uri.parse(getColorIcUrlByPosition(i)), modelGridItemIcView, false);
+			gridLayout.addView(v);
+
+			if (i == 0) {
+				View childView = gridLayout.getChildAt(0);
+				childView.findViewById(R.id.gridUnderLineView).setVisibility(View.VISIBLE);
+			}
+		}
+	}
 
 
-    View.OnClickListener selectModelClickListener = v -> {
-        Log.d("dwd", "comparing click");
-        Activity activity = getActivity();
-        ((MainActivity) activity).changeTab(4);
-    };
+	private void setGlobalSelectedModelItemName(int position) {
+		selectedModelName = modelTabModelItem.getModelItemList().get(position).getModelName();
+		selectedModelId = modelTabModelItem.getModelItemList().get(position).getModelId();
+		AppSettings.getInstance().setCurrentModelId(selectedModelId);
+	}
+
+
+	private String getNameStringFromModelByPosition(int position) {
+		return modelTabModelItem.getModelItemList().get(position).getModelName();
+	}
+
+	private String getColorIcUrlByPosition(int position) {
+		return modelTabModelItem.getModelItemList().get(position).getModelUrl();
+	}
+
+
+	private View.OnClickListener selectModelClickListener = v -> {
+		Log.d("dwd", "comparing click");
+		AppSettings.getInstance().setCurrentModelId(selectedModelId);
+		AppSettings.getInstance().setSelectedFromModel(true);
+		Activity activity = getActivity();
+		if (activity != null) {
+			((MainActivity) activity).voidSetOverviewFragmentFromModelTabSelection();
+		}
+	};
 
 }

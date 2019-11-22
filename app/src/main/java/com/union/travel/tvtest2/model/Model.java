@@ -26,6 +26,7 @@ public class Model implements Serializable {
 	String title;
 
 
+	/// serialTxtView  ex.  PART NUMBER 010-02158-13
 	@SerializedName("SDescription")
 	private
 	String sdDescription;

@@ -19,7 +19,6 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.material.tabs.TabLayout;
 import com.union.travel.tvtest2.adapter.TabAdapter;
 import com.union.travel.tvtest2.api.RestClient;
-import com.union.travel.tvtest2.api.UserApiResponse;
 import com.union.travel.tvtest2.model.AppSettings;
 import com.union.travel.tvtest2.model.Brand;
 import com.union.travel.tvtest2.model.Model;
@@ -93,10 +92,9 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 				Log.d("dwd", response.toString());
 				brandList = response.body();
 				if (brandList != null && !brandList.isEmpty()){
-					AppSettings.getInstance().setBrandList(brandList);
+					AppSettings.getInstance().setAllBrandList(brandList);
 					isDataRecevied = true;
 				}
-
 
 			}
 
@@ -246,57 +244,57 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		}
 
 		for (InfoTab tab : infoTabs) {
-			Bundle args = new Bundle();
+			//Bundle args = new Bundle();
 			TabLayout.Tab newTab = tabLayout.newTab();
 			newTab.setText(tab.getTabNameForLocale());
 			newTab.setTag(tab);
 
 			if ("tabId1".equals(tab.tabId)) {
-				args.putString("name", watch.getName());
+				//args.putString("name", watch.getName());
 				if (brandFragment == null) {
 					brandFragment = new BrandFragment();
 					fragmentItemList.add(brandFragment);
 				}
-				brandFragment.setArguments(args);
+				//brandFragment.setArguments(args);
 			} else if ("tabId2".equals(tab.tabId)) {
-				args.putString("name", watch.getName());
+				//args.putString("name", watch.getName());
 				if (overViewFragment == null) {
 					overViewFragment = new OverviewFragment();
 					fragmentItemList.add(overViewFragment);
 				}
-				overViewFragment.setArguments(args);
+				//overViewFragment.setArguments(args);
 			} else if ("tabId3".equals(tab.tabId)) {
-				args.putString("mainDesc", watch.getMainDescription());
+				//args.putString("mainDesc", watch.getMainDescription());
 				if (modelFragment == null) {
 					modelFragment = new ModelFragment();
 					fragmentItemList.add(modelFragment);
 				}
-				modelFragment.setArguments(args);
+				//modelFragment.setArguments(args);
 			} else if ("tabId4".equals(tab.tabId)) {
 
-				args.putSerializable(AppConstants.EXTRA_SERIALIZABLE_KEY_SPEC, currentModel.getSpec());
+			//	args.putSerializable(AppConstants.EXTRA_SERIALIZABLE_KEY_SPEC, currentModel.getSpec());
 
-				args.putString("smallDesc", watch.getSmallDescription());
+				//args.putString("smallDesc", watch.getSmallDescription());
 				if (specsFragment == null) {
 					specsFragment = new SpecsFragment();
 					fragmentItemList.add(specsFragment);
 				}
-				specsFragment.setArguments(args);
+				//specsFragment.setArguments(args);
 			} else if ("tabId5".equals(tab.tabId)) {
-				args.putString("smallDesc", watch.getSmallDescription());
+				//args.putString("smallDesc", watch.getSmallDescription());
 				if (comparingPageFragment == null) {
 					comparingPageFragment = new ComparingPageFragment();
 					fragmentItemList.add(comparingPageFragment);
 				}
-				comparingPageFragment.setArguments(args);
+			//	comparingPageFragment.setArguments(args);
 			} else if ("tabId6".equals(tab.tabId)) {
-				args.putString("smallDesc", watch.getSmallDescription());
+				//args.putString("smallDesc", watch.getSmallDescription());
 
 				if (demoVideosFragment == null) {
 					demoVideosFragment = new DemoVideosFragment();
 					fragmentItemList.add(demoVideosFragment);
 				}
-				demoVideosFragment.setArguments(args);
+				//demoVideosFragment.setArguments(args);
 			}
 		}
 
@@ -324,7 +322,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 
 		//todo remove for debug
-		viewPager.setCurrentItem(4);
+		viewPager.setCurrentItem(2);
 
 	}
 
@@ -521,7 +519,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 
 	private void closeTabs() {
-
 		tabLayout.removeAllTabs();
 		viewPager.setVisibility(View.INVISIBLE);
 		tabLayout.setVisibility(View.INVISIBLE);
@@ -529,6 +526,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 	private void startShowingContent(Watch watch) {
 		//todo start showing fragments
+
 		initTabLayout(watch, brandList, 2); //todo get watch key
 		operationRuning = false;
 	}
@@ -555,16 +553,16 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		viewPager.setCurrentItem(position, true);
 	}
 
+	public void voidSetOverviewFragmentFromModelTabSelection(){
+		viewPager.setCurrentItem(1, true);
+	}
+
 
 //	private View.OnClickListener onPlayBtnClickListener = v -> {
 //		Log.d("dwd", "on PLay button click");
 //		//visibleVideoWithPLayBtn();
 //		//prepareAndStartVideo();
 //	};
-
-
-
-
 
 
 

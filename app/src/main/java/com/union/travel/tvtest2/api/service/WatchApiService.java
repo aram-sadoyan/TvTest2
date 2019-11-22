@@ -26,7 +26,7 @@ public interface WatchApiService {
 //	public Call<Response> getQiTest();
 
 
-	@GET("/TimeWatch/NewJson.php")
+	@GET("/TimeWatch/uploads/NewJson.php")
 	public Call<List<Brand>> getBrandList();
 
 }

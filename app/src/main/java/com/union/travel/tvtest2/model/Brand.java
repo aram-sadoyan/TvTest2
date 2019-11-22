@@ -18,8 +18,6 @@ public class Brand implements Serializable {
 	private
 	List<Model> models = new ArrayList<>();
 
-
-
 	public String getName() {
 		return name;
 	}
@@ -43,7 +41,6 @@ public class Brand implements Serializable {
 	public void setModels(List<Model> models) {
 		this.models = models;
 	}
-
 
 
 
