@@ -92,18 +92,12 @@ public class SpecsFragment extends Fragment {
 		//todo set current selected color name
 		titleTxtView.setText("current model title");
 
-		Runnable r = () -> initSpecTextLayouts(currentSpec);
-		//initSpecTextLayouts(currentSpec);
-
-		parentParamsLayout.post(r);
+		initSpecTextLayouts(currentSpec);
 
 	}
 
 	private String getCurrentModelIcUrl() {
-		String mainicUrl = "";
-
-
-		return mainicUrl;
+		return AppSettings.getInstance().getCurentIcUrl();
 	}
 
 

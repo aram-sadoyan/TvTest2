@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Guideline;
 import androidx.fragment.app.Fragment;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -24,7 +25,6 @@ import com.union.travel.tvtest2.R;
 import com.union.travel.tvtest2.model.AppSettings;
 import com.union.travel.tvtest2.model.CompabilitySpec;
 import com.union.travel.tvtest2.model.GeneralSpec;
-import com.union.travel.tvtest2.model.Model;
 import com.union.travel.tvtest2.model.Spec;
 import com.union.travel.tvtest2.model.tabModel.ComparingItemWithTopModel;
 
@@ -67,7 +67,7 @@ public class ComparingPageFragment extends Fragment {
 
 
 	private AtomicBoolean dataIsSelectedFromHint = new AtomicBoolean();
-
+	private Guideline guideline = null;
 
 	@Override
 	public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -100,6 +100,7 @@ public class ComparingPageFragment extends Fragment {
 		compairingItemsContainer = view.findViewById(R.id.layoutComparingContainer);
 		layoutComparingKeysContainer = view.findViewById(R.id.layoutComparingKeys);
 		addViewIcView = view.findViewById(R.id.addView);
+		guideline = view.findViewById(R.id.guidelineEnd);
 
 
 		if (!dataIsSelectedFromHint.get()) {
@@ -116,14 +117,35 @@ public class ComparingPageFragment extends Fragment {
 		compareItemCount = comparingModelList.size();
 
 		initComparingItems();
+		setGuideLineEnd();
 		initComparingKeyItems();
-
 		addViewIcView.setOnClickListener(onAdViewClickListener);
+	}
+
+	private void setGuideLineEnd() {
+		addViewIcView.setVisibility(View.VISIBLE);
+		switch (compareItemCount) {
+			case 0:
+				guideline.setGuidelineBegin(250);
+				break;
+			case 1:
+				guideline.setGuidelineBegin(600);
+				break;
+			case 2:
+				guideline.setGuidelineBegin(1400);
+				break;
+			case 3:
+				//addViewIcView.setVisibility(View.GONE);
+				guideline.setGuidelineBegin(1700);
+
+				break;
+		}
+
 	}
 
 
 	private void initComparingItems() {
-		if (compareItemCount == 0){
+		if (compareItemCount == 0) {
 			return;
 		}
 		LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -137,17 +159,14 @@ public class ComparingPageFragment extends Fragment {
 			String name = model.getName();
 			String title = model.getTitle();
 			String price = model.getPrice();
-
 			SimpleDraweeView closeBtnIc = v.findViewById(R.id.closeIcView);
 			closeBtnIc.setOnClickListener(v1 -> {
 				comparingModelList.remove(0);
 				recreateComparingFragmentAfterRemoving();
-				Log.d("dwd","removing model");
-				Log.d("dwd","removing model");
 			});
 
 			SimpleDraweeView modelIc = v.findViewById(R.id.modelIconView);
-			frescoLoader.loadWithParams(Uri.parse(icUrl),modelIc,false);
+			frescoLoader.loadWithParams(Uri.parse(icUrl), modelIc, false);
 
 			TextView nameTxtView = v.findViewById(R.id.modelNameTxtView);
 			nameTxtView.setText(name);
@@ -162,17 +181,65 @@ public class ComparingPageFragment extends Fragment {
 			compairingItemsContainer.addView(v);
 		}
 
-
 		if (compareItemCount > 1) {
 			ViewGroup v2 = (ViewGroup) inflater.inflate(R.layout.layout_comparing_item, compairingItemsContainer, false);
-			((LinearLayout.LayoutParams) v2.getLayoutParams()).weight = 1;
 
+			ComparingItemWithTopModel model = comparingModelList.get(1);
+			String icUrl = model.getIcUrl();
+			String name = model.getName();
+			String title = model.getTitle();
+			String price = model.getPrice();
+			SimpleDraweeView closeBtnIc = v2.findViewById(R.id.closeIcView);
+			closeBtnIc.setOnClickListener(v1 -> {
+				comparingModelList.remove(1);
+				recreateComparingFragmentAfterRemoving();
+			});
+
+			SimpleDraweeView modelIc = v2.findViewById(R.id.modelIconView);
+			frescoLoader.loadWithParams(Uri.parse(icUrl), modelIc, false);
+
+			TextView nameTxtView = v2.findViewById(R.id.modelNameTxtView);
+			nameTxtView.setText(name);
+
+			TextView titleTxtView = v2.findViewById(R.id.modelTitleTxtView);
+			titleTxtView.setText(title);
+
+			TextView priceTxtView = v2.findViewById(R.id.priceTxtView);
+			priceTxtView.setText(price);
+
+			((LinearLayout.LayoutParams) v2.getLayoutParams()).weight = 1;
 
 			compairingItemsContainer.addView(v2);
 		}
 
 		if (compareItemCount > 2) {
 			ViewGroup v3 = (ViewGroup) inflater.inflate(R.layout.layout_comparing_item, compairingItemsContainer, false);
+
+
+			ComparingItemWithTopModel model = comparingModelList.get(2);
+			String icUrl = model.getIcUrl();
+			String name = model.getName();
+			String title = model.getTitle();
+			String price = model.getPrice();
+			SimpleDraweeView closeBtnIc = v3.findViewById(R.id.closeIcView);
+			closeBtnIc.setOnClickListener(v1 -> {
+				comparingModelList.remove(2);
+				recreateComparingFragmentAfterRemoving();
+			});
+
+			SimpleDraweeView modelIc = v3.findViewById(R.id.modelIconView);
+			frescoLoader.loadWithParams(Uri.parse(icUrl), modelIc, false);
+
+			TextView nameTxtView = v3.findViewById(R.id.modelNameTxtView);
+			nameTxtView.setText(name);
+
+			TextView titleTxtView = v3.findViewById(R.id.modelTitleTxtView);
+			titleTxtView.setText(title);
+
+			TextView priceTxtView = v3.findViewById(R.id.priceTxtView);
+			priceTxtView.setText(price);
+
+
 			((LinearLayout.LayoutParams) v3.getLayoutParams()).weight = 1;
 
 
@@ -225,7 +292,6 @@ public class ComparingPageFragment extends Fragment {
 		//layoutComparingKeysContainer.removeAllViews();
 
 
-
 	}
 
 
@@ -234,7 +300,7 @@ public class ComparingPageFragment extends Fragment {
 		List<String> valuesList1 = new ArrayList<>();
 		List<String> valuesList2 = new ArrayList<>();
 		List<String> valuesList3 = new ArrayList<>();
-
+		layoutComparingKeysContainer.removeAllViews();
 		if (compareItemCount > 0) {
 			valuesList1 = getCreatedValuesList(valuesList1, 0);
 		}
@@ -263,11 +329,16 @@ public class ComparingPageFragment extends Fragment {
 		for (int i = 0; i < stringKeys.size(); i++) {
 			View comparingValuesParentView = inflater.inflate(resource, layoutComparingKeysContainer, false);
 			TextView keyTxtView = comparingValuesParentView.findViewById(R.id.keyKeyTxtview);
+			View underLView = comparingValuesParentView.findViewById(R.id.value1underline);
+			if (i == stringKeys.size()-1){
+				underLView.setVisibility(View.INVISIBLE);
+			}
 			keyTxtView.setText(stringKeys.get(i));
 			if (compareItemCount > 0) {
 				TextView valueTxtView = comparingValuesParentView.findViewById(R.id.value1);
 				if (!valuesList1.isEmpty()) {
 					valueTxtView.setText(valuesList1.get(i));
+
 				}
 				if (compareItemCount > 1) {
 					TextView valueTxtView2 = comparingValuesParentView.findViewById(R.id.value2);
@@ -279,6 +350,7 @@ public class ComparingPageFragment extends Fragment {
 					TextView valueTxtView3 = comparingValuesParentView.findViewById(R.id.value3);
 					if (!valuesList3.isEmpty()) {
 						valueTxtView3.setText(valuesList3.get(i));
+
 					}
 				}
 			}

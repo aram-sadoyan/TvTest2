@@ -106,6 +106,9 @@ public class ModelFragment extends Fragment {
 		nameTxtView.setText(getNameStringFromModelByPosition(0));
 		gridLayout.removeAllViews();
 		selectedModelId = modelTabModelItem.getModelItemList().get(0).getModelId();
+
+		frescoLoader.loadWithParams(Uri.parse(modelTabModelItem.getModelItemList().get(0).getModelUrl()), watchIc, false);
+
 		for (int i = 0; i < modelTabModelItem.getModelItemList().size(); i++) {
 			View v = inflater.inflate(R.layout.overview_grid_item, gridLayout, false);
 			v.setTag(i);

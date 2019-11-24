@@ -12,13 +12,14 @@
 		android:id="@+id/icBrandView"
 		android:layout_width="200dp"
 		android:layout_height="200dp"
-		android:background="@color/primary_color_orange"/>
+		android:background="@color/primary_color_white"/>
 
 	<TextView
 		android:id="@+id/textBrandView"
 		android:text="Swatch"
 		android:textSize="24sp"
 		android:layout_gravity="center"
+		android:textColor="@color/lb_grey"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"/>
 

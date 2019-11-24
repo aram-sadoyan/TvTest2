@@ -28,7 +28,7 @@
 				layout="@layout/compare_item_layout"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
+				app:layout_constraintEnd_toStartOf="@id/guidelineEnd5"
 				app:layout_constraintStart_toEndOf="@id/guideline2" />
 
 
@@ -58,12 +58,19 @@
 				android:orientation="vertical"
 				app:layout_constraintGuide_end="100dp" />
 
+			<androidx.constraintlayout.widget.Guideline
+				android:id="@+id/guidelineEnd5"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				app:layout_constraintGuide_end="100dp" />
+
 
 			<com.facebook.drawee.view.SimpleDraweeView
 				android:id="@+id/addView"
 				android:layout_width="88dp"
 				android:layout_height="88dp"
-				android:layout_marginTop="40dp"
+				android:layout_marginTop="65dp"
 
 				android:background="@drawable/ic_remove_model"
 				android:rotation="45"

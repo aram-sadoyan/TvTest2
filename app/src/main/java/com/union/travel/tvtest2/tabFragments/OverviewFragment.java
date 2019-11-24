@@ -218,6 +218,10 @@ public class OverviewFragment extends Fragment {
 
 		gridLayout.removeAllViews();
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
+		String curentIcUrl = getColorUrlByPosition(0);
+		selectedColorUrl = curentIcUrl;
+		frescoLoader.loadWithParams(Uri.parse(curentIcUrl), mainIcView, false);
+		AppSettings.getInstance().setCurrentMainIcUrl(curentIcUrl);
 		for (int i = 0; i < colorList.size(); i++) {
 			View v = inflater.inflate(R.layout.overview_grid_item, gridLayout, false);
 			v.setTag(i);
@@ -226,9 +230,10 @@ public class OverviewFragment extends Fragment {
 				String colorTitle = getColorNameByPosition(indexOfChild);
 				selectedColorTitle = colorTitle;
 				colorDescTxtView.setText(colorTitle);
-				String curentIcUrl = getColorUrlByPosition(indexOfChild);
-				selectedColorUrl = curentIcUrl;
-				frescoLoader.loadWithParams(Uri.parse(curentIcUrl), mainIcView, false);
+				String curentIcUrl2 = getColorUrlByPosition(indexOfChild);
+				selectedColorUrl = curentIcUrl2;
+				frescoLoader.loadWithParams(Uri.parse(curentIcUrl2), mainIcView, false);
+				AppSettings.getInstance().setCurrentMainIcUrl(curentIcUrl2);
 				if (verticalWatchAdapter != null) {
 					verticalWatchAdapter.setItemsList(colorList.get(indexOfChild).getColorUrls());
 					verticalWatchAdapter.notifyDataSetChanged();
@@ -246,9 +251,8 @@ public class OverviewFragment extends Fragment {
 			});
 
 			SimpleDraweeView colorIc = v.findViewById(R.id.gridItemIc);
-			String curentIcUrl = getColorUrlByPosition(i);
-			selectedColorUrl = curentIcUrl;
-			frescoLoader.loadWithParams(Uri.parse(curentIcUrl), colorIc, false);
+			String curentIcUrl3 = getColorUrlByPosition(i);
+			frescoLoader.loadWithParams(Uri.parse(curentIcUrl3), colorIc, false);
 
 			gridLayout.addView(v);
 
@@ -295,6 +299,8 @@ public class OverviewFragment extends Fragment {
 		List<String> itemUrls = new ArrayList<>(colorList.get(0).getColorUrls());
 		verticalWatchAdapter = new VerticalWatchAdapter(itemUrls, icUrl -> {
 			frescoLoader.loadWithParams(Uri.parse(icUrl), mainIcView, false);
+			AppSettings.getInstance().setCurrentMainIcUrl(icUrl);
+
 		});
 		recyclerView.setAdapter(verticalWatchAdapter);
 	}

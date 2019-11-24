@@ -9,7 +9,7 @@
 		android:id="@+id/gridItemIc"
 		android:layout_width="100dp"
 		android:layout_height="100dp"
-		android:background="@color/primary_color_black"/>
+		android:background="@color/primary_color_white"/>
 
 	<View
 		android:id="@+id/gridUnderLineView"

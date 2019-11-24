@@ -14,7 +14,7 @@
 		android:layout_height="590dp"
 		android:layout_marginStart="275dp"
 		android:layout_marginTop="97dp"
-		android:background="@color/primary_color_orange"
+		android:background="@color/primary_color_white"
 		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintStart_toStartOf="parent" />
 
@@ -25,6 +25,8 @@
 		android:layout_height="wrap_content"
 		android:layout_marginTop="62dp"
 		android:layout_marginStart="66dp"
+		android:textStyle="bold"
+		android:fontFamily="@font/lato"
 		android:text="fēnix® 6 - Pro and Sapphire Editions"
 		android:textColor="@color/primary_color_black"
 		android:textSize="48sp"

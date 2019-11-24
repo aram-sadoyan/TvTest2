@@ -32,6 +32,7 @@ public class AppSettings {
 	private int currentModelId = -1;
 
 	private String currentBrandName = "Samsung";
+	private String curentIcUrl = "";
 
 	private AtomicBoolean selectedFromBrand = new AtomicBoolean();
 	private AtomicBoolean selectedFromModel = new AtomicBoolean();
@@ -325,5 +326,11 @@ public class AppSettings {
 	}
 
 
+	public void setCurrentMainIcUrl(String curentIcUrl) {
+		this.curentIcUrl = curentIcUrl;
+	}
 
+	public String getCurentIcUrl() {
+		return curentIcUrl;
+	}
 }

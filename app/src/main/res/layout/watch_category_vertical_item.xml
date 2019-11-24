@@ -11,7 +11,7 @@
 		android:layout_width="115dp"
 		android:layout_height="115dp"
 
-		android:background="@android:color/black"
+		android:background="@color/primary_color_white"
 		fresco:actualImageScaleType="fitCenter" />
 
 	<com.facebook.drawee.view.SimpleDraweeView

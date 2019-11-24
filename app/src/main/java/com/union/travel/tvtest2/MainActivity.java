@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.ToxicBakery.viewpager.transforms.DefaultTransformer;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.material.tabs.TabLayout;
@@ -300,7 +301,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 		viewPager.setAdapter(adapter);
 		//todo check this
-		viewPager.setOffscreenPageLimit(2);
+		viewPager.setPageTransformer(true, new DefaultTransformer());
+		viewPager.setOffscreenPageLimit(6);
 		tabLayout.setupWithViewPager(viewPager);
 		Log.d("flow", "init Tabs");
 
