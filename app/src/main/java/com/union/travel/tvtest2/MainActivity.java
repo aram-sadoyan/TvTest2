@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -17,18 +18,20 @@ import androidx.viewpager.widget.ViewPager;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.material.tabs.TabLayout;
+import com.pierfrancescosoffritti.youtubeplayer.player.YouTubePlayer;
+import com.pierfrancescosoffritti.youtubeplayer.player.YouTubePlayerInitListener;
+import com.pierfrancescosoffritti.youtubeplayer.player.YouTubePlayerView;
 import com.union.travel.tvtest2.adapter.TabAdapter;
 import com.union.travel.tvtest2.api.RestClient;
 import com.union.travel.tvtest2.model.AppSettings;
 import com.union.travel.tvtest2.model.Brand;
-import com.union.travel.tvtest2.model.Model;
+import com.union.travel.tvtest2.model.SensorModelData;
 import com.union.travel.tvtest2.tabFragments.ComparingPageFragment;
 import com.union.travel.tvtest2.tabFragments.DemoVideosFragment;
 import com.union.travel.tvtest2.tabFragments.OverviewFragment;
 import com.union.travel.tvtest2.tabFragments.BrandFragment;
 import com.union.travel.tvtest2.tabFragments.ModelFragment;
 import com.union.travel.tvtest2.tabFragments.SpecsFragment;
-import com.union.travel.tvtest2.utils.AppConstants;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -89,10 +92,19 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		RestClient.getInstance(getApplicationContext()).getWatchApiService().getBrandList().enqueue(new Callback<List<Brand>>() {
 			@Override
 			public void onResponse(Call<List<Brand>> call, Response<List<Brand>> response) {
-				Log.d("dwd", response.toString());
+				//Log.d("dwd", response.toString());
 				brandList = response.body();
 				if (brandList != null && !brandList.isEmpty()){
-					AppSettings.getInstance().setAllBrandList(brandList);
+					AppSettings.getInstance().setFirstRequestedData(brandList);
+					//Todo get SensorModelData
+					SensorModelData sensorModelData = new SensorModelData();
+					sensorModelData.setSensorFirst(125);
+					sensorModelData.setSensorSecond(2);
+					sensorModelData.setSensorThree(6);
+					sensorModelData.setSensorFour(5);
+					sensorModelData.setSensorFive(423434);
+					AppSettings.getInstance().setSensorMoelData(sensorModelData);
+
 					isDataRecevied = true;
 				}
 
@@ -104,17 +116,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 			}
 		});
 
-//		RestClient.getInstance(getApplicationContext()).getWatchApiService().getUser(1).enqueue(new Callback<UserApiResponse>() {
-//			@Override
-//			public void onResponse(Call<UserApiResponse> call, Response<UserApiResponse> response) {
-//				Log.d("dwd", response.toString());
-//			}
-//
-//			@Override
-//			public void onFailure(Call<UserApiResponse> call, Throwable t) {
-//				Log.d("dwd", t.getMessage());
-//			}
-		//});
 
 	}
 
@@ -129,8 +130,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		viewPager = findViewById(R.id.viewPager);
 		tabLayout = findViewById(R.id.tabLayout);
 		playerView = findViewById(R.id.exoplayerview_activity_video);
-	//	btnPlay = findViewById(R.id.btnPlay);
 		appLogoIc = findViewById(R.id.app_logo);
+
 
 		txtv = findViewById(R.id.textView);
 		txtv2 = findViewById(R.id.textView2);
@@ -142,8 +143,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		hideVideoWithPLayBtn();
 		visibleWatchLayout();
 
-
-		//btnPlay.setOnClickListener(onPlayBtnClickListener);
 
 		//todo set app time off delay 10000 = 10 secon
 		countDownTimer = new CountDownTimer(10000, 1000) {
@@ -233,15 +232,15 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	}
 
 
-	private void initTabLayout(Watch watch, List<Brand> brands, int key) {
+	private void initTabLayout() {
 		//todo get Brand by Sensor Key
-		Brand brand = brands.get(0);
-		Model currentModel = new Model();
-		for (Model model : brand.getModels()){
-			if (model.getId() == key){
-				currentModel = model;
-			}
-		}
+//		Brand brand = brands.get(0);
+//		Model currentModel = new Model();
+//		for (Model model : brand.getModels()){
+//			if (model.getId() == key){
+//				currentModel = model;
+//			}
+//		}
 
 		for (InfoTab tab : infoTabs) {
 			//Bundle args = new Bundle();
@@ -273,7 +272,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 			} else if ("tabId4".equals(tab.tabId)) {
 
 			//	args.putSerializable(AppConstants.EXTRA_SERIALIZABLE_KEY_SPEC, currentModel.getSpec());
-
 				//args.putString("smallDesc", watch.getSmallDescription());
 				if (specsFragment == null) {
 					specsFragment = new SpecsFragment();
@@ -322,7 +320,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 
 		//todo remove for debug
-		viewPager.setCurrentItem(2);
+		viewPager.setCurrentItem(1);
 
 	}
 
@@ -337,7 +335,11 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		if (!debugBooleanStarted){
 			if (isDataRecevied) {
 				//todo  		//for debug		//for debug		//for debug		//for debug		//for debug		//for debug		//for debug
-				startShowingContent(watchMap.get(1));
+
+
+				//todo get sensor id Rom PROCESSS when it was picked up
+				AppSettings.getInstance().setCurrentModelIdFromSensorModelData(1);
+				startShowingContent();
 				debugBooleanStarted = true; //for debug
 			}
 		}
@@ -512,7 +514,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 			operationRuning = false;
 		} else {
 			currentId = sensorId;
-			startShowingContent(watch);
+			startShowingContent();
 		}
 
 	}
@@ -524,10 +526,10 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		tabLayout.setVisibility(View.INVISIBLE);
 	}
 
-	private void startShowingContent(Watch watch) {
+	private void startShowingContent() {
 		//todo start showing fragments
 
-		initTabLayout(watch, brandList, 2); //todo get watch key
+		initTabLayout(); //todo get watch key
 		operationRuning = false;
 	}
 

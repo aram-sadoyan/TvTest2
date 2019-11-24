@@ -42,16 +42,27 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@+id/titeTxtView" />
 
-	<com.google.android.exoplayer2.ui.SimpleExoPlayerView
-		android:id="@+id/centreVideoView"
-		android:layout_width="1074dp"
-		android:layout_height="603dp"
-		android:layout_marginTop="30dp"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toEndOf="@+id/recvw_demo"
-		app:layout_constraintTop_toBottomOf="@+id/titeTxtView" />
+
 
 <!--	<com.google.android.exoplayer2.ui.SimpleExoPlayerView-->
+<!--		android:id="@+id/centreVideoView"-->
+<!--		android:layout_width="1074dp"-->
+<!--		android:layout_height="603dp"-->
+<!--		android:layout_marginTop="30dp"-->
+<!--		app:layout_constraintEnd_toEndOf="parent"-->
+<!--		app:layout_constraintStart_toEndOf="@+id/recvw_demo"-->
+<!--		app:layout_constraintTop_toBottomOf="@+id/titeTxtView" />-->
+
+<!--	<com.pierfrancescosoffritti.youtubeplayer.player.YouTubePlayerView-->
+<!--		android:id="@+id/youtubePlayerView"-->
+<!--		android:layout_width="1074dp"-->
+<!--		android:layout_height="603dp"-->
+<!--		android:layout_marginTop="30dp"-->
+<!--		app:layout_constraintEnd_toEndOf="parent"-->
+<!--		app:layout_constraintStart_toEndOf="@+id/recvw_demo"-->
+<!--		app:layout_constraintTop_toBottomOf="@+id/titeTxtView"/>-->
+
+	<!--	<com.google.android.exoplayer2.ui.SimpleExoPlayerView-->
 <!--		android:layout_width="321dp"-->
 <!--		android:layout_height="181dp"-->
 <!--		android:id="@+id/esiminch"/>-->
@@ -78,16 +89,6 @@
 		app:layout_constraintTop_toTopOf="@+id/exoplayerview_activity_video" />
 
 
-<!--	<ImageView-->
-<!--		android:id="@+id/testIc"-->
-<!--		android:layout_width="100dp"-->
-<!--		android:layout_height="100dp"-->
-<!--		android:layout_marginEnd="1120dp"-->
-<!--		android:background="@color/lb_grey"-->
-<!--		app:layout_constraintBottom_toBottomOf="@+id/exoplayerview_activity_video"-->
-
-<!--		app:layout_constraintEnd_toEndOf="@+id/exoplayerview_activity_video"-->
-<!--		app:layout_constraintTop_toTopOf="@+id/exoplayerview_activity_video" />-->
 
 	<androidx.constraintlayout.widget.Guideline
 		android:id="@+id/verticalGuideline"

@@ -56,7 +56,8 @@
 
 
 		<include layout="@layout/layout_params_parent_3"
-			android:id="@+id/parentLayoutContainer"/>
+			android:id="@+id/parentLayoutContainer"
+			/>
 
 	</ScrollView>
 

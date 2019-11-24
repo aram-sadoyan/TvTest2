@@ -1,5 +1,9 @@
 package com.union.travel.tvtest2.tabFragments;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,27 +17,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.union.travel.tvtest2.FrescoLoader;
+import com.union.travel.tvtest2.MainActivity;
 import com.union.travel.tvtest2.R;
 import com.union.travel.tvtest2.model.AppSettings;
 import com.union.travel.tvtest2.model.CompabilitySpec;
 import com.union.travel.tvtest2.model.GeneralSpec;
 import com.union.travel.tvtest2.model.Model;
 import com.union.travel.tvtest2.model.Spec;
+import com.union.travel.tvtest2.model.tabModel.ComparingItemWithTopModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ComparingPageFragment extends Fragment {
 
 	private boolean isViewShown;
-	private List<Model> comparingModelList = new ArrayList<>();
+	private List<ComparingItemWithTopModel> comparingModelList = new ArrayList<>();
+
 
 	private LinearLayout compairingItemsContainer = null;
 	private LinearLayout layoutComparingKeysContainer = null;
-
-
 	private int compareItemCount = 0;
+	private SimpleDraweeView addViewIcView = null;
 
 	//25 constants
 	List<String> stringKeys = Arrays.asList(
@@ -56,6 +65,27 @@ public class ComparingPageFragment extends Fragment {
 			"Sleep",
 			"Heart rate");
 
+
+	private AtomicBoolean dataIsSelectedFromHint = new AtomicBoolean();
+
+
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		isViewShown = getView() != null && isVisibleToUser;
+		Log.d("dwd", "fragment 2 " + isViewShown);
+		if (isViewShown) {
+			initComparingragment();
+			dataIsSelectedFromHint.set(true);
+
+		} else {
+			dataIsSelectedFromHint.set(false);
+
+		}
+
+	}
+
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_comparing_page, container, false);
@@ -69,25 +99,69 @@ public class ComparingPageFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 		compairingItemsContainer = view.findViewById(R.id.layoutComparingContainer);
 		layoutComparingKeysContainer = view.findViewById(R.id.layoutComparingKeys);
+		addViewIcView = view.findViewById(R.id.addView);
 
-		comparingModelList = AppSettings.getInstance().getComparingModelList();
+
+		if (!dataIsSelectedFromHint.get()) {
+			initComparingragment();
+		}
+
+
+	}
+
+
+	private void initComparingragment() {
+		comparingModelList = AppSettings.getInstance().getComparingItemWithTopModel();
+
 		compareItemCount = comparingModelList.size();
 
 		initComparingItems();
 		initComparingKeyItems();
 
+		addViewIcView.setOnClickListener(onAdViewClickListener);
 	}
 
 
 	private void initComparingItems() {
+		if (compareItemCount == 0){
+			return;
+		}
 		LayoutInflater inflater = LayoutInflater.from(getContext());
-
+		FrescoLoader frescoLoader = new FrescoLoader();
+		compairingItemsContainer.removeAllViews();
 		if (compareItemCount > 0) {
 			ViewGroup v = (ViewGroup) inflater.inflate(R.layout.layout_comparing_item, compairingItemsContainer, false);
-			((LinearLayout.LayoutParams) v.getLayoutParams()).weight = 1;
 
+			ComparingItemWithTopModel model = comparingModelList.get(0);
+			String icUrl = model.getIcUrl();
+			String name = model.getName();
+			String title = model.getTitle();
+			String price = model.getPrice();
+
+			SimpleDraweeView closeBtnIc = v.findViewById(R.id.closeIcView);
+			closeBtnIc.setOnClickListener(v1 -> {
+				comparingModelList.remove(0);
+				recreateComparingFragmentAfterRemoving();
+				Log.d("dwd","removing model");
+				Log.d("dwd","removing model");
+			});
+
+			SimpleDraweeView modelIc = v.findViewById(R.id.modelIconView);
+			frescoLoader.loadWithParams(Uri.parse(icUrl),modelIc,false);
+
+			TextView nameTxtView = v.findViewById(R.id.modelNameTxtView);
+			nameTxtView.setText(name);
+
+			TextView titleTxtView = v.findViewById(R.id.modelTitleTxtView);
+			titleTxtView.setText(title);
+
+			TextView priceTxtView = v.findViewById(R.id.priceTxtView);
+			priceTxtView.setText(price);
+
+			((LinearLayout.LayoutParams) v.getLayoutParams()).weight = 1;
 			compairingItemsContainer.addView(v);
 		}
+
 
 		if (compareItemCount > 1) {
 			ViewGroup v2 = (ViewGroup) inflater.inflate(R.layout.layout_comparing_item, compairingItemsContainer, false);
@@ -105,7 +179,55 @@ public class ComparingPageFragment extends Fragment {
 			compairingItemsContainer.addView(v3);
 		}
 
+
+		compairingItemsContainer.animate()
+				.translationX(0)
+				.alpha(1.0f)
+				.setDuration(100)
+				.setListener(new AnimatorListenerAdapter() {
+					@Override
+					public void onAnimationEnd(Animator animation) {
+						super.onAnimationEnd(animation);
+						//compairingItemsContainer.removeAllViews();
+					}
+				});
+
+
 	}
+
+	private void recreateComparingFragmentAfterRemoving() {
+		compairingItemsContainer.animate()
+				.translationX(-compairingItemsContainer.getWidth())
+				.alpha(0.0f)
+				.setDuration(300)
+				.setListener(new AnimatorListenerAdapter() {
+					@Override
+					public void onAnimationEnd(Animator animation) {
+						super.onAnimationEnd(animation);
+						compairingItemsContainer.removeAllViews();
+					}
+				});
+
+		layoutComparingKeysContainer.animate()
+				.translationX(-layoutComparingKeysContainer.getWidth())
+				.alpha(0.0f)
+				.setDuration(310)
+				.setListener(new AnimatorListenerAdapter() {
+					@Override
+					public void onAnimationEnd(Animator animation) {
+						super.onAnimationEnd(animation);
+						layoutComparingKeysContainer.removeAllViews();
+						initComparingragment();
+					}
+				});
+
+		//compairingItemsContainer.removeAllViews();
+		//layoutComparingKeysContainer.removeAllViews();
+
+
+
+	}
+
 
 	private void initComparingKeyItems() {
 		LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -142,35 +264,56 @@ public class ComparingPageFragment extends Fragment {
 			View comparingValuesParentView = inflater.inflate(resource, layoutComparingKeysContainer, false);
 			TextView keyTxtView = comparingValuesParentView.findViewById(R.id.keyKeyTxtview);
 			keyTxtView.setText(stringKeys.get(i));
-
 			if (compareItemCount > 0) {
 				TextView valueTxtView = comparingValuesParentView.findViewById(R.id.value1);
-				valueTxtView.setText(valuesList1.get(i));
+				if (!valuesList1.isEmpty()) {
+					valueTxtView.setText(valuesList1.get(i));
+				}
 				if (compareItemCount > 1) {
 					TextView valueTxtView2 = comparingValuesParentView.findViewById(R.id.value2);
-					valueTxtView2.setText(valuesList2.get(i));
+					if (!valuesList2.isEmpty()) {
+						valueTxtView2.setText(valuesList2.get(i));
+					}
 				}
 				if (compareItemCount > 2) {
 					TextView valueTxtView3 = comparingValuesParentView.findViewById(R.id.value3);
-					valueTxtView3.setText(valuesList3.get(i));
+					if (!valuesList3.isEmpty()) {
+						valueTxtView3.setText(valuesList3.get(i));
+					}
 				}
 			}
 			layoutComparingKeysContainer.addView(comparingValuesParentView);
-
 		}
+
+		layoutComparingKeysContainer.animate()
+				.translationX(0)
+				.alpha(1.0f)
+				.setDuration(100)
+				.setListener(new AnimatorListenerAdapter() {
+					@Override
+					public void onAnimationEnd(Animator animation) {
+						super.onAnimationEnd(animation);
+//						layoutComparingKeysContainer.removeAllViews();
+//						initComparingragment();
+					}
+				});
 
 
 	}
 
 	private List<String> getCreatedValuesList(List<String> valuesList1, int position) {
-		Model model = comparingModelList.get(position);
-		Spec spec = model.getSpec();
+
+		Spec spec = comparingModelList.get(position).getSpec();
+		if (spec == null) {
+			return new ArrayList<>();
+		}
 		CompabilitySpec compabilitySpec = spec.getCompabilitySpec();
 		GeneralSpec generalSpec = spec.getGeneralSpec();
+		if (compabilitySpec == null || generalSpec == null) {
+			return new ArrayList<>();
+		}
 
-		boolean compabilitySpecIsNotNull = compabilitySpec != null;
-
-		valuesList1.add((compabilitySpecIsNotNull && compabilitySpec.getAndroid()) ? "Yes" : "");  //todo add non nulls
+		valuesList1.add(compabilitySpec.getAndroid() ? "Yes" : "");
 		valuesList1.add(compabilitySpec.getIos() ? "Yes" : "");
 		valuesList1.add(compabilitySpec.getWindowsPhone() ? "Yes" : "");
 		valuesList1.add(compabilitySpec.getMac() ? "Yes" : "");
@@ -205,16 +348,13 @@ public class ComparingPageFragment extends Fragment {
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
-
 	}
 
-	@Override
-	public void setUserVisibleHint(boolean isVisibleToUser) {
-		super.setUserVisibleHint(isVisibleToUser);
-		isViewShown = getView() != null && isVisibleToUser;
-		Log.d("dwd", "fragment 2 " + isViewShown);
-	}
+
+	private View.OnClickListener onAdViewClickListener = v -> {
+		Activity activity = getActivity();
+		((MainActivity) activity).changeTab(0);
+	};
 
 
 }

@@ -1,8 +1,10 @@
 package com.union.travel.tvtest2.model;
 
 import android.util.Size;
+import android.widget.Switch;
 
 import com.union.travel.tvtest2.model.tabModel.BrandTabModelItem;
+import com.union.travel.tvtest2.model.tabModel.ComparingItemWithTopModel;
 import com.union.travel.tvtest2.model.tabModel.ModelTabModelItem;
 
 import java.util.ArrayList;
@@ -13,27 +15,40 @@ public class AppSettings {
 
 	private static AppSettings instance;
 	private List<Brand> allBrandList = new ArrayList<>();
+	private List<Model> modelListAll = new ArrayList<>();
 	private List<String> videoUrlList = new ArrayList<>();
+	private SensorModelData sensorModelData = null;
+
+	private List<ComparingItemWithTopModel> comparingItemWithTopModelList = new ArrayList<>();
+
+
+
+	public Model getCurrentModel() {
+		return currentModel;
+	}
+
+	private Model currentModel = null;
+
 	private int currentModelId = -1;
+
 	private String currentBrandName = "Samsung";
-	private List<Model> comparingModelList = new ArrayList<>();
 
 	private AtomicBoolean selectedFromBrand = new AtomicBoolean();
 	private AtomicBoolean selectedFromModel = new AtomicBoolean();
 
-	public void setSelectedFromBrand(boolean b){
+	public void setSelectedFromBrand(boolean b) {
 		selectedFromBrand.set(b);
 	}
 
-	public boolean isSelectedFromBrand(){
+	public boolean isSelectedFromBrand() {
 		return selectedFromBrand.get();
 	}
 
-	public void setSelectedFromModel(boolean b){
+	public void setSelectedFromModel(boolean b) {
 		selectedFromModel.set(b);
 	}
 
-	public boolean isSelectedFromModel(){
+	public boolean isSelectedFromModel() {
 		return selectedFromModel.get();
 	}
 
@@ -52,10 +67,21 @@ public class AppSettings {
 //		loadSharedPreferences(false);
 	}
 
-	public void setAllBrandList(List<Brand> allBrandList) {
-		this.allBrandList = allBrandList;
+
+	public void setFirstRequestedData(List<Brand> brandList) {
+		this.allBrandList = brandList;
+		modelListAll.clear();
+		for (Brand brand : brandList) {
+			modelListAll.addAll(brand.getModels());
+		}
 		setVideoUrlList();
 	}
+
+
+	public void setSensorMoelData(SensorModelData sensorModelData) {
+		this.sensorModelData = sensorModelData;
+	}
+
 
 	private void setVideoUrlList() {
 		if (!allBrandList.isEmpty()) {
@@ -103,18 +129,18 @@ public class AppSettings {
 	}
 
 
-	public List<Model> getComparingModelList() {
-		List<Model> models = new ArrayList<>();
-
-		if (allBrandList.isEmpty()) {
-			return models;
-		}
-		models.add(allBrandList.get(0).getModels().get(1));
-		//models.add(allBrandList.get(0).getModels().get(1));
-		//models.add(allBrandList.get(0).getModels().get(1));
-
-		return models;
-	}
+//	public List<Model> getComparingModelList() {
+//		List<Model> models = new ArrayList<>();
+//
+//		if (allBrandList.isEmpty()) {
+//			return models;
+//		}
+//		models.add(allBrandList.get(0).getModels().get(1));
+//		//models.add(allBrandList.get(0).getModels().get(1));
+//		//models.add(allBrandList.get(0).getModels().get(1));
+//
+//		return models;
+//	}
 
 
 	///////////	///	//	/	/	////////////	////////////	//////									FOR  BRAND FRAGMENT COMPONENTS
@@ -206,8 +232,6 @@ public class AppSettings {
 //	}
 
 
-
-
 	public String getCurrentBrandName() {
 		return currentBrandName;
 	}
@@ -229,13 +253,77 @@ public class AppSettings {
 
 	public void setCurrentModelId(int currentModelId) {
 		this.currentModelId = currentModelId;
+		for (Model model : modelListAll){
+			if (currentModelId == model.getId()){
+				currentModel = model;
+			}
+		}
+
+
 	}
 
 
-
-
-	public Spec getCurrentSpec(){
-		return new Spec();
+	public Spec getCurrentSpec() {
+		if (currentModel == null){
+			return null;
+		}
+		return currentModel.getSpec();
 	}
+
+
+	public void setCurrentModelIdFromSensorModelData(int selectedSensorNum) {
+		switch (selectedSensorNum) {
+			case 1:
+				setCurrentModelId(sensorModelData.getSensorFirst());
+				break;
+			case 2:
+				setCurrentModelId(sensorModelData.getSensorSecond());
+				break;
+			case 3:
+				setCurrentModelId(sensorModelData.getSensorThree());
+				break;
+			case 4:
+				setCurrentModelId(sensorModelData.getSensorFour());
+				break;
+			case 5:
+				setCurrentModelId(sensorModelData.getSensorFive());
+				break;
+			case 6:
+				setCurrentModelId(sensorModelData.getSensorSix());
+				break;
+			case 7:
+				setCurrentModelId(sensorModelData.getSensorSeven());
+				break;
+		}
+	}
+
+	///////////	///	//	/	/	////////////	////////////	//////									FOR  COMPARING FRAGMENT COMPONENTS
+
+	public void addToComparingList(Spec spec, String name, int modelId, String title, String price, String icUrl) {
+		if (comparingItemWithTopModelList.size() > 2) {
+			comparingItemWithTopModelList.remove(2);
+		}
+
+		ComparingItemWithTopModel comparingItemWithTopModel = new ComparingItemWithTopModel();
+
+		comparingItemWithTopModel.setSpec(spec);
+		comparingItemWithTopModel.setName(name);
+
+		comparingItemWithTopModel.setPrice(price);
+		comparingItemWithTopModel.setTitle(title);
+		comparingItemWithTopModel.setIcUrl(icUrl);
+		comparingItemWithTopModel.setId(modelId);
+		comparingItemWithTopModelList.add(comparingItemWithTopModel);
+
+		//todo create comparing list for TOP Values
+
+	}
+
+
+	public List<ComparingItemWithTopModel> getComparingItemWithTopModel() {
+		return comparingItemWithTopModelList;
+	}
+
+
 
 }

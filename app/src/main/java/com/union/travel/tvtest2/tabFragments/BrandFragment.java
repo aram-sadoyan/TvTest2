@@ -74,9 +74,10 @@ public class BrandFragment extends Fragment {
 
     private void initBrandGridLayout() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        setGlobalSelectedBrandItemName(0);
+       // setGlobalSelectedBrandItemName(0);
         int columnCount = brandTabModelItemList.size() < 7 ? brandTabModelItemList.size() : 6 ;
         gridLayout.setColumnCount(columnCount);
+        selectedBrandName = brandTabModelItemList.get(0).getBrandName();
         for (int i = 0; i < brandTabModelItemList.size(); i++) {
             View v = inflater.inflate(R.layout.item_brand_layout, gridLayout, false);
             v.setTag(i);
@@ -111,7 +112,7 @@ public class BrandFragment extends Fragment {
 
     private void setGlobalSelectedBrandItemName(int position){
         selectedBrandName = brandTabModelItemList.get(position).getBrandName();
-        AppSettings.getInstance().setCurrentBrandName(selectedBrandName);
+       // AppSettings.getInstance().setCurrentBrandName(selectedBrandName);
     }
 
     @Override

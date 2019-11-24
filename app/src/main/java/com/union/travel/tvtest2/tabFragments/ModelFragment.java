@@ -89,20 +89,23 @@ public class ModelFragment extends Fragment {
 		modelTabModelItem = null;
 		modelTabModelItem = AppSettings.getInstance().getModelTabItem();
 		if (modelTabModelItem == null || modelTabModelItem.getModelItemList().isEmpty()) {
-			return;
+
+		} else {
+			initGridModelItems();
+
+			arrowRightIc.setOnClickListener(selectModelClickListener);
+			selectTxtView.setOnClickListener(selectModelClickListener);
 		}
 
-		initGridModelItems();
 
-		arrowRightIc.setOnClickListener(selectModelClickListener);
-		selectTxtView.setOnClickListener(selectModelClickListener);
 	}
 
 	private void initGridModelItems() {
-		setGlobalSelectedModelItemName(0);
+		//setGlobalSelectedModelItemName(0);
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
 		nameTxtView.setText(getNameStringFromModelByPosition(0));
 		gridLayout.removeAllViews();
+		selectedModelId = modelTabModelItem.getModelItemList().get(0).getModelId();
 		for (int i = 0; i < modelTabModelItem.getModelItemList().size(); i++) {
 			View v = inflater.inflate(R.layout.overview_grid_item, gridLayout, false);
 			v.setTag(i);
@@ -137,7 +140,7 @@ public class ModelFragment extends Fragment {
 	private void setGlobalSelectedModelItemName(int position) {
 		selectedModelName = modelTabModelItem.getModelItemList().get(position).getModelName();
 		selectedModelId = modelTabModelItem.getModelItemList().get(position).getModelId();
-		AppSettings.getInstance().setCurrentModelId(selectedModelId);
+		//AppSettings.getInstance().setCurrentModelId(selectedModelId);
 	}
 
 

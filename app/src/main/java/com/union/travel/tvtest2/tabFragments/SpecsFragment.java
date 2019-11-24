@@ -19,7 +19,10 @@ import com.union.travel.tvtest2.R;
 import com.union.travel.tvtest2.model.AppSettings;
 import com.union.travel.tvtest2.model.CompabilitySpec;
 import com.union.travel.tvtest2.model.GeneralSpec;
+import com.union.travel.tvtest2.model.Model;
 import com.union.travel.tvtest2.model.Spec;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SpecsFragment extends Fragment {
 
@@ -30,14 +33,21 @@ public class SpecsFragment extends Fragment {
 	private TextView titleTxtView = null;
 	private Spec currentSpec = null;
 
-
+	private AtomicBoolean dataIsSelectedFromHint = new AtomicBoolean();
 
 
 	@Override
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
 		isViewShown = getView() != null && isVisibleToUser;
-		Log.d("dwd", "fragment 2 " + isViewShown);
+		if (isViewShown) {
+			Log.d("dwd", "fragment 2 " + isViewShown);
+			initSpecFragment();
+			dataIsSelectedFromHint.set(true);
+		} else {
+			dataIsSelectedFromHint.set(false);
+
+		}
 	}
 
 	@Override
@@ -59,15 +69,17 @@ public class SpecsFragment extends Fragment {
 		nameTxtView = view.findViewById(R.id.nameTxtView);
 		titleTxtView = view.findViewById(R.id.titelTxtView);
 
-		currentSpec = AppSettings.getInstance().getCurrentSpec();
-		initSpecFragment(currentSpec);
-
+		if (!dataIsSelectedFromHint.get()) {
+			initSpecFragment();
+		}
 
 
 	}
 
-	private void initSpecFragment(Spec currentSpec) {
-		if (currentSpec == null){
+	private void initSpecFragment() {
+		currentSpec = AppSettings.getInstance().getCurrentSpec();
+
+		if (currentSpec == null) {
 			return;
 		}
 
@@ -75,10 +87,15 @@ public class SpecsFragment extends Fragment {
 		FrescoLoader frescoLoader = new FrescoLoader();
 		frescoLoader.loadWithParams(Uri.parse(getCurrentModelIcUrl()), icView, false);
 
-		nameTxtView.setText("current model name");
+		Model currentModel = AppSettings.getInstance().getCurrentModel();
+		nameTxtView.setText(currentModel.getName());
+		//todo set current selected color name
 		titleTxtView.setText("current model title");
 
-		initSpecTextLayouts(currentSpec);
+		Runnable r = () -> initSpecTextLayouts(currentSpec);
+		//initSpecTextLayouts(currentSpec);
+
+		parentParamsLayout.post(r);
 
 	}
 
@@ -96,7 +113,7 @@ public class SpecsFragment extends Fragment {
 		///////// CompabilitySupport 4 field ////////
 		GeneralSpec generalSpec = currentSpec.getGeneralSpec();
 		CompabilitySpec comSpec = currentSpec.getCompabilitySpec();
-		if (generalSpec == null || comSpec == null){
+		if (generalSpec == null || comSpec == null) {
 			return;
 		}
 		View v = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
@@ -215,43 +232,45 @@ public class SpecsFragment extends Fragment {
 		TextView name18 = v18.findViewById(R.id.startText);
 		TextView textView18 = v18.findViewById(R.id.valueTxtView);
 		name18.setText("Steps");
-		textView18.setText(generalSpec.getSteps()?"Yes":"");
+		textView18.setText(generalSpec.getSteps() ? "Yes" : "");
 
 		View v19 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name19 = v19.findViewById(R.id.startText);
 		TextView textView19 = v19.findViewById(R.id.valueTxtView);
 		name19.setText("Distance");
-		textView19.setText(generalSpec.getDistance()?"Yes":"");
+		textView19.setText(generalSpec.getDistance() ? "Yes" : "");
 
 		View v20 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name20 = v20.findViewById(R.id.startText);
 		TextView textView20 = v20.findViewById(R.id.valueTxtView);
 		name20.setText("Calories burned");
-		textView20.setText(generalSpec.getColories()?"Yes":"");
+		textView20.setText(generalSpec.getColories() ? "Yes" : "");
 
 		View v21 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name21 = v21.findViewById(R.id.startText);
 		TextView textView21 = v21.findViewById(R.id.valueTxtView);
 		name21.setText("Activity");
-		textView21.setText(generalSpec.getActivity()?"Yes":"");
+		textView21.setText(generalSpec.getActivity() ? "Yes" : "");
 
 		View v22 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name22 = v22.findViewById(R.id.startText);
 		TextView textView22 = v22.findViewById(R.id.valueTxtView);
 		name22.setText("Floors");
-		textView22.setText(generalSpec.getFloors()?"Yes":"");
+		textView22.setText(generalSpec.getFloors() ? "Yes" : "");
 
 		View v23 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name23 = v23.findViewById(R.id.startText);
 		TextView textView23 = v23.findViewById(R.id.valueTxtView);
 		name23.setText("Sleep");
-		textView23.setText(generalSpec.getSleep()?"Yes":"");
+		textView23.setText(generalSpec.getSleep() ? "Yes" : "");
 
 		View v24 = inflater.inflate(R.layout.layout_params_2, parentParamsLayout, false);
 		TextView name24 = v24.findViewById(R.id.startText);
 		TextView textView24 = v24.findViewById(R.id.valueTxtView);
 		name24.setText("Heart rate");
-		textView24.setText(generalSpec.getHeart()?"Yes":"");
+		textView24.setText(generalSpec.getHeart() ? "Yes" : "");
+
+		parentParamsLayout.removeAllViews();
 
 		parentParamsLayout.addView(v);
 		parentParamsLayout.addView(v2);
@@ -279,8 +298,6 @@ public class SpecsFragment extends Fragment {
 		parentParamsLayout.addView(v23);
 		parentParamsLayout.addView(v24);
 	}
-
-
 
 
 }

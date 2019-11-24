@@ -37,7 +37,8 @@ public class RestClient {
 	private WatchApiService watchApiService ;
 
 
-	public static final String TEST_BASE_URL = "https://www.qicharge.am/"; //todo rename
+	//public static final String TEST_BASE_URL = "https://www.qicharge.am/"; //todo rename
+	public static final String TEST_BASE_URL = "https://www.Qicharge.am/"; //todo rename   Qicharge.am/TimeWatch/kyaj.html
 
 	public RestClient(Context context){
 //		if (enableCaches) {

@@ -25,6 +25,10 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.pierfrancescosoffritti.youtubeplayer.player.YouTubePlayer;
+import com.pierfrancescosoffritti.youtubeplayer.player.YouTubePlayerInitListener;
+import com.pierfrancescosoffritti.youtubeplayer.player.YouTubePlayerView;
+import com.pierfrancescosoffritti.youtubeplayer.ui.PlayerUIController;
 import com.union.travel.tvtest2.ExoPlayerManager;
 import com.union.travel.tvtest2.FrescoLoader;
 import com.union.travel.tvtest2.R;
@@ -41,7 +45,6 @@ public class DemoVideosFragment extends Fragment {
 
 	private VideoView video;
 	private String videoUrl = "https://mysmartech.ru/esiminch.mp4";
-	private SimpleExoPlayerView exoPlayerView;
 	private SimpleExoPlayer exoPlayer;
 	private SimpleDraweeView playBtn;
 	private List<String> videoUrlList = new ArrayList<>();
@@ -55,6 +58,12 @@ public class DemoVideosFragment extends Fragment {
 	public RecyclerView recyclerView;
 	private boolean isViewShown;
 
+
+
+	private YouTubePlayerView youTubePlayerView = null;
+	//private SimpleExoPlayerView exoPlayerView;
+
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_demo_videos, container, false);
@@ -66,8 +75,24 @@ public class DemoVideosFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		recyclerView = view.findViewById(R.id.recvw_demo);
-		//playerView = view.findViewById(R.id.exoplayerview_activity_video);
 		playBtn = view.findViewById(R.id.playBtn);
+
+//		youTubePlayerView = view.findViewById(R.id.youtubePlayerView);
+//
+//		youTubePlayerView.initialize(new YouTubePlayerInitListener() {
+//			@Override
+//			public void onInitSuccess(@NonNull YouTubePlayer youTubePlayer) {
+//				Log.d("dwd","Youtube !! lk;jhgfgchj");
+//
+//				youTubePlayer.loadVideo("GBvjQvq18Fo",2);
+//				youTubePlayer.play();
+//				PlayerUIController playerUIController = youTubePlayerView.getPlayerUIController();
+//				playerUIController.showFullscreenButton(false);
+//
+//
+//
+//			}
+//		}, false);
 
 		videoUrlList = AppSettings.getInstance().getVideoUrlList();
 
@@ -111,7 +136,10 @@ public class DemoVideosFragment extends Fragment {
 		VideoVerticalAdapter videoVerticalAdapter = new VideoVerticalAdapter(urls);
 		recyclerView.setAdapter(videoVerticalAdapter);
 
-		exoPlayerView = getView().findViewById(R.id.centreVideoView);
+//		exoPlayerView = getView().findViewById(R.id.centreVideoView);
+//		exoPlayerView.setVisibility(View.GONE);
+
+
 //		try {
 ////			BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
 ////			TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory());
@@ -150,34 +178,37 @@ public class DemoVideosFragment extends Fragment {
 
 		//	playerView.setBackground(bitmapDrawable);
 
-		exoManager = ExoPlayerManager.createInstance(this, getContext(), playerView);
-		exoManager.setVideoPath("https://mysmartech.ru/esiminch.mp4");
-		exoManager.seekToMls(1);
-		exoManager.setVideoCallback(new ExoPlayerManager.VideoCallback() {
-			@Override
-			public void onVideoStart(@NotNull String url) {
-				Log.d("dwd", "on video start");
 
-			}
 
-			@Override
-			public void onVideoEnd(@NotNull String url) {
-				Log.d("dwd", "on video end");
-				playBtn.setVisibility(View.GONE);
-
-			}
-
-			@Override
-			public void onVideoFail(@NotNull String url, @NotNull String errorMsg) {
-				Log.d("dwd", "fail video ");
-
-			}
-
-			@Override
-			public void onVideoBufferingEnd() {
-				Log.d("dwd", "video buffering end");
-			}
-		});
+		//todo bring back videos
+//		exoManager = ExoPlayerManager.createInstance(this, getContext(), playerView);
+//		exoManager.setVideoPath("https://mysmartech.ru/esiminch.mp4");
+//		exoManager.seekToMls(1);
+//		exoManager.setVideoCallback(new ExoPlayerManager.VideoCallback() {
+//			@Override
+//			public void onVideoStart(@NotNull String url) {
+//				Log.d("dwd", "on video start");
+//
+//			}
+//
+//			@Override
+//			public void onVideoEnd(@NotNull String url) {
+//				Log.d("dwd", "on video end");
+//				playBtn.setVisibility(View.GONE);
+//
+//			}
+//
+//			@Override
+//			public void onVideoFail(@NotNull String url, @NotNull String errorMsg) {
+//				Log.d("dwd", "fail video ");
+//
+//			}
+//
+//			@Override
+//			public void onVideoBufferingEnd() {
+//				Log.d("dwd", "video buffering end");
+//			}
+//		});
 	}
 
 	@Override

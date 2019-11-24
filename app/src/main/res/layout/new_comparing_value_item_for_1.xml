@@ -24,7 +24,7 @@
 		android:layout_height="wrap_content"
 		android:gravity="left"
 		android:paddingEnd="30dp"
-		android:text="stailfte eld w ef hs wd g g g g fhg jhfge fejhgf fejhfbe fejfbhe eejfbhef ekjfhe fekjfhejfbef ef efe fe fe e f ef e f efefefef "
+		android:text=" "
 		android:textColor="@color/color_comparing_name"
 		android:textSize="18dp"
 		android:visibility="visible"

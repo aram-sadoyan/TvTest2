@@ -1,13 +1,15 @@
 package com.union.travel.tvtest2.tabFragments;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.GridLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -15,19 +17,20 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.union.travel.tvtest2.FrescoLoader;
-import com.union.travel.tvtest2.MainActivity;
 import com.union.travel.tvtest2.R;
 import com.union.travel.tvtest2.adapter.VerticalWatchAdapter;
 import com.union.travel.tvtest2.model.AppSettings;
 import com.union.travel.tvtest2.model.Color;
 import com.union.travel.tvtest2.model.Model;
 import com.union.travel.tvtest2.model.Price;
+import com.union.travel.tvtest2.model.tabModel.ComparingItemWithTopModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +57,15 @@ public class OverviewFragment extends Fragment {
 	private TextView nameTxtView = null;
 	private TextView colorDescTxtView = null;
 	private TextView serialTxtView = null;
+	private TextView priceTxtView = null;
+	private List<Price> priceList = new ArrayList<>();
 
 	private AtomicBoolean dataIsSelectedFromHint = new AtomicBoolean();
+
+
+	private String selectedPrice = "";
+	private String selectedColorUrl = "";
+	private String selectedColorTitle = "";
 
 
 	@Override
@@ -72,7 +82,7 @@ public class OverviewFragment extends Fragment {
 			//TODO SET Fragment components when is from global clicks
 			boolean isSelectedFromModel = AppSettings.getInstance().isSelectedFromModel();
 			if (isSelectedFromModel) {
-				initOverViewfragment();
+				initOverViewFragment();
 				dataIsSelectedFromHint.set(true);
 				AppSettings.getInstance().setSelectedFromModel(false);
 			}
@@ -112,32 +122,34 @@ public class OverviewFragment extends Fragment {
 		arrowDownView = view.findViewById(R.id.arrowDownView);
 		gridLayout = view.findViewById(R.id.overviewGrid);
 		mainIcView = view.findViewById(R.id.watchId);
-		plusView.setOnClickListener(compareClickListener);
-		compareTxtView.setOnClickListener(compareClickListener);
+		priceTxtView = view.findViewById(R.id.priceTxtView);
 
 
 		if (!dataIsSelectedFromHint.get()) {
-			initOverViewfragment();
+			initOverViewFragment();
 		}
 
 
 	}
 
-	private void initOverViewfragment() {
+	private void initOverViewFragment() {
 		frescoLoader = new FrescoLoader();
-
 		model = AppSettings.getInstance().getModelByModelId();
-		if (model != null) {
-			prices = model.getPrices();
-			colorList = model.getColors();
+		if (model == null) {
+			return;
 		}
+		prices = model.getPrices();
+		colorList = model.getColors();
 		if (colorList.isEmpty()) {
 			return;
 		}
 
-		initNameAndTitles();
 		initGridLayoutForColors();
 		initOverviewTabVerticalRecView();
+
+		initNameAndTitles();
+		initPriceSizeGroup();
+		setBottomText(model.getId());
 
 		arrowDownView.setOnClickListener(v -> {
 			Log.d("dwd", "arrowDown clicked");
@@ -146,10 +158,56 @@ public class OverviewFragment extends Fragment {
 
 	}
 
+	@SuppressLint("ResourceType")
+	private void initPriceSizeGroup() {
+		priceList = model.getPrices();
+		if (priceList.isEmpty()) {
+			return;
+		}
+
+		final RadioButton[] rb = new RadioButton[priceList.size()];
+		radioGroup.removeAllViews();
+		RadioGroup rg = new RadioGroup(getContext()); //create the RadioGroup
+		rg.setOrientation(RadioGroup.HORIZONTAL);//or RadioGroup.VERTICAL
+		for (int i = 0; i < priceList.size(); i++) {
+			rb[i] = new RadioButton(getContext());
+			if (i == 0) {
+				rb[i].setChecked(true);
+			}
+			rb[i].setBackgroundResource(R.drawable.radio_flat_selector);
+			RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			lp.leftMargin = 20;
+			rb[i].setLayoutParams(lp);
+			rb[i].setGravity(Gravity.CENTER);
+			rb[i].setButtonDrawable(R.color.transparent);
+			rb[i].setTextColor(ContextCompat.getColorStateList(getContext(), R.drawable.radio_flat_text_selector));
+			rb[i].setTextSize(18);
+			rb[i].setText(priceList.get(i).getSize() + " mm");
+			rb[i].setId(i);
+			rb[i].setOnCheckedChangeListener(onCheckedChangedListener);
+			rg.addView(rb[i]);
+		}
+		radioGroup.addView(rg);
+		String slectedPriceString = priceList.get(0).getPricetext();
+		priceTxtView.setText(slectedPriceString);
+		selectedPrice = slectedPriceString;
+	}
+
+	private final CompoundButton.OnCheckedChangeListener onCheckedChangedListener =
+			(buttonView, isChecked) -> {
+				if (isChecked) {
+					String slectedPriceString = priceList.get(buttonView.getId()).getPricetext();
+					priceTxtView.setText(slectedPriceString);
+					selectedPrice = slectedPriceString;
+				}
+			};
+
 	private void initNameAndTitles() {
+		String colorTitle = model.getColors().get(0).getColorName();
+		selectedColorTitle = colorTitle;
 		titleTxtView.setText(model.getTitle());
 		nameTxtView.setText(model.getName());
-		colorDescTxtView.setText(model.getColors().get(0).getColorName());
+		colorDescTxtView.setText(colorTitle);
 		serialTxtView.setText(model.getSdDescription());
 	}
 
@@ -165,7 +223,12 @@ public class OverviewFragment extends Fragment {
 			v.setTag(i);
 			v.setOnClickListener(v1 -> {
 				int indexOfChild = gridLayout.indexOfChild(v1);
-				frescoLoader.loadWithParams(Uri.parse(getColorUrlByPosition(indexOfChild)), mainIcView, false);
+				String colorTitle = getColorNameByPosition(indexOfChild);
+				selectedColorTitle = colorTitle;
+				colorDescTxtView.setText(colorTitle);
+				String curentIcUrl = getColorUrlByPosition(indexOfChild);
+				selectedColorUrl = curentIcUrl;
+				frescoLoader.loadWithParams(Uri.parse(curentIcUrl), mainIcView, false);
 				if (verticalWatchAdapter != null) {
 					verticalWatchAdapter.setItemsList(colorList.get(indexOfChild).getColorUrls());
 					verticalWatchAdapter.notifyDataSetChanged();
@@ -183,7 +246,9 @@ public class OverviewFragment extends Fragment {
 			});
 
 			SimpleDraweeView colorIc = v.findViewById(R.id.gridItemIc);
-			frescoLoader.loadWithParams(Uri.parse(getColorUrlByPosition(i)), colorIc, false);
+			String curentIcUrl = getColorUrlByPosition(i);
+			selectedColorUrl = curentIcUrl;
+			frescoLoader.loadWithParams(Uri.parse(curentIcUrl), colorIc, false);
 
 			gridLayout.addView(v);
 
@@ -195,9 +260,24 @@ public class OverviewFragment extends Fragment {
 	}
 
 	private String getColorUrlByPosition(int i) {
+		if (colorList.isEmpty()) {
+			return "";
+		}
 		Color color = colorList.get(i);
 		if (color != null && !color.getColorUrls().isEmpty()) {
 			return color.getColorUrls().get(0);
+		} else {
+			return "";
+		}
+	}
+
+	private String getColorNameByPosition(int i) {
+		if (colorList.isEmpty()) {
+			return "";
+		}
+		Color color = colorList.get(i);
+		if (color != null && !color.getColorUrls().isEmpty()) {
+			return color.getColorName();
 		} else {
 			return "";
 		}
@@ -220,7 +300,6 @@ public class OverviewFragment extends Fragment {
 	}
 
 
-
 	public interface OnItemClickListener {
 		void onItemClick(String icUrl);
 	}
@@ -231,26 +310,50 @@ public class OverviewFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 
 
-		//todo radio button click listener
-		radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-			// This will get the radiobutton that has changed in its check state
-			RadioButton checkedRadioButton = group.findViewById(checkedId);
-			// This puts the value (true/false) into the variable
-			boolean isChecked = checkedRadioButton.isChecked();
-			// If the radiobutton that has changed in check state is now checked...
-			if (isChecked) {
-
-				// Changes the textview's text to "Checked: example radiobutton text"
-				//tv.setText("Checked:" + checkedRadioButton.getText());
-			}
-		});
-
 	}
 
 
+	private void setBottomText(int modelId) {
+		List<ComparingItemWithTopModel> comparingItemWithTopModelList = AppSettings.getInstance().getComparingItemWithTopModel();
+
+		//TODO get opttimise this get item id
+		List<Integer> comparedListid = new ArrayList<>();
+		for (ComparingItemWithTopModel model : comparingItemWithTopModelList) {
+			comparedListid.add(model.getId());
+		}
+
+		boolean currentModelIsAddedForComparing = false;
+		for (int comparingId : comparedListid) {
+			if (comparingId == modelId) {
+				currentModelIsAddedForComparing = true;
+			}
+		}
+
+		if (currentModelIsAddedForComparing) {
+			setTextADDED();
+		} else {
+			setTextNOTAdded();
+		}
+
+	}
+
+	private void setTextADDED() {
+		plusView.setVisibility(View.GONE);
+		compareTxtView.setText("Added");
+		plusView.setOnClickListener(null);
+		compareTxtView.setOnClickListener(null);
+	}
+
+	private void setTextNOTAdded() {
+		plusView.setVisibility(View.VISIBLE);
+		compareTxtView.setText("Add to compare");
+		plusView.setOnClickListener(compareClickListener);
+		compareTxtView.setOnClickListener(compareClickListener);
+	}
+
 	View.OnClickListener compareClickListener = v -> {
-		Log.d("dwd", "comparing click");
-		Activity activity = getActivity();
-		((MainActivity) activity).changeTab(0);
+		AppSettings.getInstance().addToComparingList(model.getSpec(), model.getName(), model.getId(),
+				selectedColorTitle, selectedPrice, selectedColorUrl);
+		setTextADDED();
 	};
 }

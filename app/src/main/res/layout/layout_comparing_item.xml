@@ -69,44 +69,4 @@
 
 
 
-<!--	<TextView-->
-<!--		android:id="@+id/paramTxt1"-->
-<!--		android:layout_width="wrap_content"-->
-<!--		android:layout_height="wrap_content"-->
-<!--		android:layout_marginTop="@dimen/compairing_top_margin_first_param"-->
-<!--		android:textSize="18sp"-->
-<!--		android:layout_marginStart="22dp"-->
-<!--		android:paddingEnd="30dp"-->
-<!--		android:text="fēnix® 6 - Pro and Sapphire Editions Sapphire - Titanium with Ember Orange BandSapphire - Titanium with Ember Orange Band"-->
-<!--		android:textColor="@color/color_comparing_name"-->
-<!--		app:layout_constraintTop_toTopOf="parent"-->
-<!--		android:ellipsize="end"-->
-<!--		app:layout_constraintStart_toStartOf="parent" />-->
-
-<!--	<TextView-->
-<!--		android:id="@+id/paramTxt2"-->
-<!--		android:layout_width="wrap_content"-->
-<!--		android:layout_height="wrap_content"-->
-<!--		android:textSize="18sp"-->
-<!--		android:layout_marginTop="7dp"-->
-<!--		android:layout_marginStart="22dp"-->
-<!--		android:text="Corning® Gorilla® Glass DX or Sapphire Crebjfhseikbjfnsehijlfkjbsenhlifubsjefjs "-->
-<!--		android:textColor="@color/color_comparing_name"-->
-<!--		app:layout_constraintTop_toBottomOf="@id/paramTxt1"-->
-<!--		app:layout_constraintStart_toStartOf="parent" />-->
-
-
-<!--	<TextView-->
-<!--		android:id="@+id/paramTxt3"-->
-<!--		android:layout_width="wrap_content"-->
-<!--		android:layout_height="wrap_content"-->
-<!--		android:textSize="18sp"-->
-<!--		android:layout_marginTop="7dp"-->
-<!--		android:layout_marginStart="22dp"-->
-<!--		android:text="Corning® Gorilla® Glass DX or Sapphire Crebjfhseikbjfnsehijlfkjbsenhlifubsjefjs "-->
-<!--		android:textColor="@color/color_comparing_name"-->
-<!--		app:layout_constraintTop_toBottomOf="@id/paramTxt1"-->
-<!--		app:layout_constraintStart_toStartOf="parent" />-->
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
