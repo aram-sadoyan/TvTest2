@@ -44,6 +44,9 @@ public class Model implements Serializable {
 	private
 	boolean music;
 
+	@SerializedName("Brend")
+	private
+	String brandName = "";
 
 	@SerializedName("Price")
 	private
@@ -154,5 +157,13 @@ public class Model implements Serializable {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getBrandName() {
+		return brandName;
+	}
+
+	public void setBrandName(String brandName) {
+		this.brandName = brandName;
 	}
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -66,6 +67,7 @@ public class OverviewFragment extends Fragment {
 	private String selectedPrice = "";
 	private String selectedColorUrl = "";
 	private String selectedColorTitle = "";
+	private int selectedAdapterPosition = 0;
 
 
 	@Override
@@ -208,6 +210,7 @@ public class OverviewFragment extends Fragment {
 		titleTxtView.setText(model.getTitle());
 		nameTxtView.setText(model.getName());
 		colorDescTxtView.setText(colorTitle);
+		AppSettings.getInstance().setCurrentModelColorTitle(colorTitle);
 		serialTxtView.setText(model.getSdDescription());
 	}
 
@@ -222,21 +225,36 @@ public class OverviewFragment extends Fragment {
 		selectedColorUrl = curentIcUrl;
 		frescoLoader.loadWithParams(Uri.parse(curentIcUrl), mainIcView, false);
 		AppSettings.getInstance().setCurrentMainIcUrl(curentIcUrl);
+
 		for (int i = 0; i < colorList.size(); i++) {
 			View v = inflater.inflate(R.layout.overview_grid_item, gridLayout, false);
 			v.setTag(i);
+			//GRID ITEMS CLICK
 			v.setOnClickListener(v1 -> {
 				int indexOfChild = gridLayout.indexOfChild(v1);
 				String colorTitle = getColorNameByPosition(indexOfChild);
 				selectedColorTitle = colorTitle;
 				colorDescTxtView.setText(colorTitle);
+				AppSettings.getInstance().setCurrentModelColorTitle(colorTitle);
 				String curentIcUrl2 = getColorUrlByPosition(indexOfChild);
 				selectedColorUrl = curentIcUrl2;
 				frescoLoader.loadWithParams(Uri.parse(curentIcUrl2), mainIcView, false);
 				AppSettings.getInstance().setCurrentMainIcUrl(curentIcUrl2);
 				if (verticalWatchAdapter != null) {
-					verticalWatchAdapter.setItemsList(colorList.get(indexOfChild).getColorUrls());
+					//todo for debug pls remove
+					List<String> itemUrls = new ArrayList<>();
+					itemUrls.addAll(colorList.get(indexOfChild).getColorUrls());
+					itemUrls.addAll(colorList.get(indexOfChild).getColorUrls());
+					//
+					verticalWatchAdapter.setItemsList(itemUrls);
 					verticalWatchAdapter.notifyDataSetChanged();
+					if (itemUrls.size() > 4) {
+						arrowDownView.setVisibility(View.VISIBLE);
+						arrowDownView.setOnClickListener(arrowDownClickListener);
+					} else {
+						arrowDownView.setVisibility(View.GONE);
+						arrowDownView.setOnClickListener(null);
+					}
 				}
 
 				int count = gridLayout.getChildCount();
@@ -297,7 +315,8 @@ public class OverviewFragment extends Fragment {
 		recyclerView.setHasFixedSize(true);
 
 		List<String> itemUrls = new ArrayList<>(colorList.get(0).getColorUrls());
-		verticalWatchAdapter = new VerticalWatchAdapter(itemUrls, icUrl -> {
+		verticalWatchAdapter = new VerticalWatchAdapter(itemUrls, (icUrl, adapterPosition) -> {
+			selectedAdapterPosition = adapterPosition;
 			frescoLoader.loadWithParams(Uri.parse(icUrl), mainIcView, false);
 			AppSettings.getInstance().setCurrentMainIcUrl(icUrl);
 
@@ -307,7 +326,7 @@ public class OverviewFragment extends Fragment {
 
 
 	public interface OnItemClickListener {
-		void onItemClick(String icUrl);
+		void onItemClick(String icUrl, int adapterPosition);
 	}
 
 
@@ -356,6 +375,31 @@ public class OverviewFragment extends Fragment {
 		plusView.setOnClickListener(compareClickListener);
 		compareTxtView.setOnClickListener(compareClickListener);
 	}
+
+	private View.OnClickListener arrowDownClickListener = v -> {
+		v.setOnClickListener(null);
+		int movedPos;
+
+		if (verticalWatchAdapter != null) {
+			if (selectedAdapterPosition == verticalWatchAdapter.getItemCount() - 1) {
+				movedPos = 0;
+			} else {
+				movedPos = selectedAdapterPosition+1;
+			}
+
+			recyclerView.smoothScrollToPosition(movedPos);
+			int finalMovedPos = movedPos;
+			int finalMovedPos1 = movedPos;
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					recyclerView.findViewHolderForAdapterPosition(finalMovedPos).itemView.performClick();
+					v.setOnClickListener(arrowDownClickListener);
+					selectedAdapterPosition = finalMovedPos1;
+				}
+			}, 30);
+		}
+	};
 
 	View.OnClickListener compareClickListener = v -> {
 		AppSettings.getInstance().addToComparingList(model.getSpec(), model.getName(), model.getId(),

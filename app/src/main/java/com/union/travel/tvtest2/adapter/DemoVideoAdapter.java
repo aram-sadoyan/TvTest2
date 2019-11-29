@@ -9,7 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.union.travel.tvtest2.R;
+
+import org.jetbrains.annotations.NotNull;
 
 public class DemoVideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -29,21 +35,75 @@ public class DemoVideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder itemHolder, int position) {
+        ItemViewHolder holder = (ItemViewHolder) itemHolder;
 
+        holder.youTubePlayerView.setEnableAutomaticInitialization(false);
+        holder.youTubePlayerView.initialize(new YouTubePlayerListener() {
+            @Override
+            public void onReady(@NotNull YouTubePlayer youTubePlayer) {
+                youTubePlayer.cueVideo("6JYIGclVQdw", 0);
+
+            }
+
+            @Override
+            public void onStateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerState playerState) {
+
+            }
+
+            @Override
+            public void onPlaybackQualityChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackQuality playbackQuality) {
+
+            }
+
+            @Override
+            public void onPlaybackRateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackRate playbackRate) {
+
+            }
+
+            @Override
+            public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError playerError) {
+
+            }
+
+            @Override
+            public void onCurrentSecond(@NotNull YouTubePlayer youTubePlayer, float v) {
+
+            }
+
+            @Override
+            public void onVideoDuration(@NotNull YouTubePlayer youTubePlayer, float v) {
+
+            }
+
+            @Override
+            public void onVideoLoadedFraction(@NotNull YouTubePlayer youTubePlayer, float v) {
+
+            }
+
+            @Override
+            public void onVideoId(@NotNull YouTubePlayer youTubePlayer, @NotNull String s) {
+
+            }
+
+            @Override
+            public void onApiChange(@NotNull YouTubePlayer youTubePlayer) {
+
+            }
+        });
 
 
     }
 
     @Override
     public int getItemCount() {
-        return 15;
+        return 7;
     }
 
 
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
-        private SimpleExoPlayer watchItem;
+        private YouTubePlayerView youTubePlayerView;
 //		private FrameLayout shopHorizontalRootItem;
 //		public TextView fontName;
 //		protected ProgressBar progressBar;
@@ -51,6 +111,7 @@ public class DemoVideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
      ItemViewHolder(SimpleExoPlayerView simpleExoPlayerView) {
          super(simpleExoPlayerView);
+
             //watchItem = view.findViewById(R.id.watchitem);
 //			categoryItemIcon = view.findViewById(R.id.shop_category_item_icon);
 //			shopHorizontalRootItem = view.findViewById(R.id.shop_hotzontal_root_item);

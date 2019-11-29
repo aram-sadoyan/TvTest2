@@ -22,18 +22,18 @@ public class GeneralSpec implements Serializable {
 	@SerializedName("WaterResistance")
 	private
 	String waterResistance;
-	@SerializedName("Weight")
-	private
-	String weight;
-	@SerializedName("Sensor")
-	private
-	String sensor;
+//	@SerializedName("Weight")
+//	private
+//	String weight;
+//	@SerializedName("Sensor")
+//	private
+//	String sensor;
 	@SerializedName("Display")
 	private
 	String display;
 	@SerializedName("ScreenSize")
 	private
-	String screenSize;
+	String displaySize;
 	@SerializedName("Platform")
 	private
 	String platform;
@@ -109,21 +109,21 @@ public class GeneralSpec implements Serializable {
 		this.waterResistance = waterResistance;
 	}
 
-	public String getWeight() {
-		return weight;
-	}
+//	public String getWeight() {
+//		return weight;
+//	}
+//
+//	public void setWeight(String weight) {
+//		this.weight = weight;
+//	}
 
-	public void setWeight(String weight) {
-		this.weight = weight;
-	}
-
-	public String getSensor() {
-		return sensor;
-	}
-
-	public void setSensor(String sensor) {
-		this.sensor = sensor;
-	}
+//	public String getSensor() {
+//		return sensor;
+//	}
+//
+//	public void setSensor(String sensor) {
+//		this.sensor = sensor;
+//	}
 
 	public String getDisplay() {
 		return display;
@@ -133,12 +133,12 @@ public class GeneralSpec implements Serializable {
 		this.display = display;
 	}
 
-	public String getScreenSize() {
-		return screenSize;
+	public String getDisplaySize() {
+		return displaySize;
 	}
 
-	public void setScreenSize(String screenSize) {
-		this.screenSize = screenSize;
+	public void setDisplaySize(String displaySize) {
+		this.displaySize = displaySize;
 	}
 
 	public String getPlatform() {

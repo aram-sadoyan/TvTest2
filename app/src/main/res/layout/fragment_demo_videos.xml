@@ -53,6 +53,18 @@
 <!--		app:layout_constraintStart_toEndOf="@+id/recvw_demo"-->
 <!--		app:layout_constraintTop_toBottomOf="@+id/titeTxtView" />-->
 
+	<com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+		android:id="@+id/youtubePlayerView"
+		android:layout_width="1074dp"
+		android:layout_height="603dp"
+		android:layout_marginTop="30dp"
+		app:showFullScreenButton="false"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@+id/recvw_demo"
+		app:layout_constraintTop_toBottomOf="@+id/titeTxtView" />
+
+
+
 <!--	<com.pierfrancescosoffritti.youtubeplayer.player.YouTubePlayerView-->
 <!--		android:id="@+id/youtubePlayerView"-->
 <!--		android:layout_width="1074dp"-->
@@ -82,11 +94,12 @@
 		android:id="@+id/playBtn"
 		android:layout_width="100dp"
 		android:layout_height="100dp"
+		android:visibility="gone"
 		android:background="@drawable/ic_youtube_24dp"
-		app:layout_constraintBottom_toBottomOf="@+id/exoplayerview_activity_video"
-		app:layout_constraintEnd_toEndOf="@+id/exoplayerview_activity_video"
-		app:layout_constraintStart_toStartOf="@+id/exoplayerview_activity_video"
-		app:layout_constraintTop_toTopOf="@+id/exoplayerview_activity_video" />
+		app:layout_constraintBottom_toBottomOf="@+id/youtubePlayerView"
+		app:layout_constraintEnd_toEndOf="@+id/youtubePlayerView"
+		app:layout_constraintStart_toStartOf="@+id/youtubePlayerView"
+		app:layout_constraintTop_toTopOf="@+id/youtubePlayerView" />
 
 
 

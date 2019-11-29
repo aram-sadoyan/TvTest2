@@ -25,9 +25,12 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
-import com.pierfrancescosoffritti.youtubeplayer.player.YouTubePlayer;
+
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.pierfrancescosoffritti.youtubeplayer.player.YouTubePlayerInitListener;
-import com.pierfrancescosoffritti.youtubeplayer.player.YouTubePlayerView;
 import com.pierfrancescosoffritti.youtubeplayer.ui.PlayerUIController;
 import com.union.travel.tvtest2.ExoPlayerManager;
 import com.union.travel.tvtest2.FrescoLoader;
@@ -59,7 +62,6 @@ public class DemoVideosFragment extends Fragment {
 	private boolean isViewShown;
 
 
-
 	private YouTubePlayerView youTubePlayerView = null;
 	//private SimpleExoPlayerView exoPlayerView;
 
@@ -77,22 +79,61 @@ public class DemoVideosFragment extends Fragment {
 		recyclerView = view.findViewById(R.id.recvw_demo);
 		playBtn = view.findViewById(R.id.playBtn);
 
-//		youTubePlayerView = view.findViewById(R.id.youtubePlayerView);
-//
-//		youTubePlayerView.initialize(new YouTubePlayerInitListener() {
-//			@Override
-//			public void onInitSuccess(@NonNull YouTubePlayer youTubePlayer) {
-//				Log.d("dwd","Youtube !! lk;jhgfgchj");
-//
-//				youTubePlayer.loadVideo("GBvjQvq18Fo",2);
-//				youTubePlayer.play();
-//				PlayerUIController playerUIController = youTubePlayerView.getPlayerUIController();
-//				playerUIController.showFullscreenButton(false);
-//
-//
-//
-//			}
-//		}, false);
+		youTubePlayerView = view.findViewById(R.id.youtubePlayerView);
+		youTubePlayerView.setEnableAutomaticInitialization(false);
+		youTubePlayerView.initialize(new YouTubePlayerListener() {
+			@Override
+			public void onReady(@NotNull YouTubePlayer youTubePlayer) {
+
+				youTubePlayer.cueVideo("6JYIGclVQdw", 0);
+			}
+
+			@Override
+			public void onStateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerState playerState) {
+
+			}
+
+			@Override
+			public void onPlaybackQualityChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackQuality playbackQuality) {
+
+			}
+
+			@Override
+			public void onPlaybackRateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackRate playbackRate) {
+
+			}
+
+			@Override
+			public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError playerError) {
+				Log.d("dwd", "error  " + playerError.toString());
+			}
+
+			@Override
+			public void onCurrentSecond(@NotNull YouTubePlayer youTubePlayer, float v) {
+
+			}
+
+			@Override
+			public void onVideoDuration(@NotNull YouTubePlayer youTubePlayer, float v) {
+
+			}
+
+			@Override
+			public void onVideoLoadedFraction(@NotNull YouTubePlayer youTubePlayer, float v) {
+
+			}
+
+			@Override
+			public void onVideoId(@NotNull YouTubePlayer youTubePlayer, @NotNull String s) {
+
+			}
+
+			@Override
+			public void onApiChange(@NotNull YouTubePlayer youTubePlayer) {
+
+			}
+		});
+
 
 		videoUrlList = AppSettings.getInstance().getVideoUrlList();
 
@@ -177,7 +218,6 @@ public class DemoVideosFragment extends Fragment {
 //		testIc.setImageDrawable(bitmapDrawable);
 
 		//	playerView.setBackground(bitmapDrawable);
-
 
 
 		//todo bring back videos

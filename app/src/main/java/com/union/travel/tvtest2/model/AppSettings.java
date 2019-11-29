@@ -33,6 +33,7 @@ public class AppSettings {
 
 	private String currentBrandName = "Samsung";
 	private String curentIcUrl = "";
+	private String currentModelColorTitle = "";
 
 	private AtomicBoolean selectedFromBrand = new AtomicBoolean();
 	private AtomicBoolean selectedFromModel = new AtomicBoolean();
@@ -257,6 +258,7 @@ public class AppSettings {
 		for (Model model : modelListAll){
 			if (currentModelId == model.getId()){
 				currentModel = model;
+				setCurrentBrandName(model.getBrandName());
 			}
 		}
 
@@ -332,5 +334,13 @@ public class AppSettings {
 
 	public String getCurentIcUrl() {
 		return curentIcUrl;
+	}
+
+	public String getCurrentModelColorTitle() {
+		return currentModelColorTitle;
+	}
+
+	public void setCurrentModelColorTitle(String currentModelColorTitle) {
+		this.currentModelColorTitle = currentModelColorTitle;
 	}
 }

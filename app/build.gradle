@@ -61,6 +61,8 @@ dependencies {
     implementation 'com.github.PierfrancescoSoffritti:AndroidYouTubePlayer:7.0.1'
     compile "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
 //    // bind view
 //    implementation 'com.jakewharton:butterknife:10.1.0'
 //    annotationProcessor "com.jakewharton:butterknife-compiler:10.1.0"

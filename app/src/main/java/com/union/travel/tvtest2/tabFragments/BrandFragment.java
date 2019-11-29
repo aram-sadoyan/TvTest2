@@ -128,7 +128,6 @@ public class BrandFragment extends Fragment {
 
 
     private View.OnClickListener selectBrandClickListener = v -> {
-        //Log.d("dwd", "comparing click " + brandAdapter.getSelectedPosition());
         AppSettings.getInstance().setCurrentBrandName(selectedBrandName);
         AppSettings.getInstance().setSelectedFromBrand(true);
         Activity activity = getActivity();

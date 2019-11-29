@@ -58,9 +58,7 @@ public class VerticalWatchAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 		if (selectedPosition == position) {
 			holder.indicatorView.setVisibility(View.VISIBLE);
-			Log.d("dwd", "true");
 		} else {
-			Log.d("dwd", "false");
 			holder.indicatorView.setVisibility(View.INVISIBLE);
 		}
 
@@ -89,19 +87,14 @@ public class VerticalWatchAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 		@Override
 		public void onClick(View v) {
-// Below line is just like a safety check, because sometimes holder could be null,
-			// in that case, getAdapterPosition() will return RecyclerView.NO_POSITION
 			if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
 			if (selectedPosition != getAdapterPosition()) {
-				listener.onItemClick(itemUrls.get(getAdapterPosition()));
+				int adapterPosition = getAdapterPosition();
+				listener.onItemClick(itemUrls.get(adapterPosition), adapterPosition);
 			}
-
-			// Updating old as well as new positions
 			notifyItemChanged(selectedPosition);
 			selectedPosition = getAdapterPosition();
 			notifyItemChanged(selectedPosition);
-
-			// Do your another stuff for your onClick
 		}
 	}
 }

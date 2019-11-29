@@ -157,7 +157,6 @@ public class ModelFragment extends Fragment {
 
 
 	private View.OnClickListener selectModelClickListener = v -> {
-		Log.d("dwd", "comparing click");
 		AppSettings.getInstance().setCurrentModelId(selectedModelId);
 		AppSettings.getInstance().setSelectedFromModel(true);
 		Activity activity = getActivity();

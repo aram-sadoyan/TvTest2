@@ -46,21 +46,25 @@ public class ComparingPageFragment extends Fragment {
 
 	//25 constants
 	List<String> stringKeys = Arrays.asList(
+			"Platform",
 			"Android",
 			"Ios",
 			"Windows Phone", "Mac",
-			"Windows", "Size",
-			"Material", "Battery", "Battery life",
+			"Windows",
+			"Size",
+			"Material",
+			"Battery",
+			"Battery life",
 			"Water-resistance",
-			"Weight",
-			"Sensor", "Display",
-			"Screen size",
-			"Platform",
-			"Processor", "Memory",
+			"Display",
+			"Display size",
+			"Processor",
+			"Memory",
 			"Connectivity",
 			"Steps",
 			"Distance",
-			"Calories burned", "Activity",
+			"Calories burned",
+			"Activity",
 			"Floors",
 			"Sleep",
 			"Heart rate");
@@ -255,7 +259,7 @@ public class ComparingPageFragment extends Fragment {
 					@Override
 					public void onAnimationEnd(Animator animation) {
 						super.onAnimationEnd(animation);
-						//compairingItemsContainer.removeAllViews();
+
 					}
 				});
 
@@ -385,6 +389,7 @@ public class ComparingPageFragment extends Fragment {
 			return new ArrayList<>();
 		}
 
+		valuesList1.add(generalSpec.getPlatform());
 		valuesList1.add(compabilitySpec.getAndroid() ? "Yes" : "");
 		valuesList1.add(compabilitySpec.getIos() ? "Yes" : "");
 		valuesList1.add(compabilitySpec.getWindowsPhone() ? "Yes" : "");
@@ -397,11 +402,10 @@ public class ComparingPageFragment extends Fragment {
 		valuesList1.add(generalSpec.getBattery());
 		valuesList1.add(generalSpec.getBatterylife());
 		valuesList1.add(generalSpec.getWaterResistance());
-		valuesList1.add(generalSpec.getWeight());
-		valuesList1.add(generalSpec.getSensor());
+		//valuesList1.add(generalSpec.getWeight());
+		//valuesList1.add(generalSpec.getSensor());
 		valuesList1.add(generalSpec.getDisplay());
-		valuesList1.add(generalSpec.getScreenSize());
-		valuesList1.add(generalSpec.getPlatform());
+		valuesList1.add(generalSpec.getDisplaySize());
 		valuesList1.add(generalSpec.getProcessor());
 		valuesList1.add(generalSpec.getMemory());
 		valuesList1.add(generalSpec.getConnectivity());

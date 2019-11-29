@@ -13,7 +13,7 @@
 		android:layout_height="0dp"
 		android:layout_marginStart="95dp"
 		android:layout_marginTop="97dp"
-		android:layout_marginBottom="210dp"
+		android:layout_marginBottom="282dp"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent" />
@@ -22,10 +22,11 @@
 		android:id="@+id/arrowDownView"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="40dp"
+		android:layout_marginTop="26dp"
 		android:background="@drawable/ic_arrow_down"
 		android:paddingStart="20dp"
 		android:paddingEnd="20dp"
+		android:visibility="gone"
 		app:layout_constraintEnd_toEndOf="@id/watchesRecyclerView"
 		app:layout_constraintStart_toStartOf="@id/watchesRecyclerView"
 		app:layout_constraintTop_toBottomOf="@id/watchesRecyclerView" />
