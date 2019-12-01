@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:fresco="http://schemas.android.com/apk/res-auto"
+	xmlns:app="http://schemas.android.com/tools"
+
 	android:layout_marginBottom="14dp"
 	android:orientation="horizontal"
 	android:layout_width="wrap_content"
@@ -10,6 +12,7 @@
 		android:id="@+id/watchitem"
 		android:layout_width="115dp"
 		android:layout_height="115dp"
+		app:actualImageScaleType="centerInside"
 		android:background="@color/primary_color_white"
 		fresco:actualImageScaleType="fitCenter" />
 

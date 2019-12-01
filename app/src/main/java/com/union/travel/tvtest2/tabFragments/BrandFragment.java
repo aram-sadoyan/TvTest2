@@ -20,6 +20,7 @@ import com.union.travel.tvtest2.MainActivity;
 import com.union.travel.tvtest2.R;
 import com.union.travel.tvtest2.model.AppSettings;
 import com.union.travel.tvtest2.model.tabModel.BrandTabModelItem;
+import com.union.travel.tvtest2.utils.AppConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +98,7 @@ public class BrandFragment extends Fragment {
 
             BrandTabModelItem brandTabModelItem = brandTabModelItemList.get(i);
             SimpleDraweeView brandIcView = v.findViewById(R.id.icBrandView);
-            frescoLoader.loadWithParams(Uri.parse(brandTabModelItem.getBrandIcUrl()), brandIcView, false);
+            frescoLoader.loadWithParams(Uri.parse(AppConstants.IMG_URL_PREFFIX + brandTabModelItem.getBrandIcUrl()), brandIcView, false);
             TextView brandNameTxtView = v.findViewById(R.id.textBrandView);
             brandNameTxtView.setText(brandTabModelItem.getBrandName());
 

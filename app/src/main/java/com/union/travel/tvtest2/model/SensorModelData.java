@@ -20,6 +20,14 @@ public class SensorModelData {
 	private int sensorSeven = -1;
 	@SerializedName("8")
 	private int sensorEight = -1;
+	@SerializedName("9")
+	private int sensorNine = -1;
+	@SerializedName("10")
+	private int sensorTen = -1;
+	@SerializedName("11")
+	private int sensorEleven = -1;
+	@SerializedName("12")
+	private int sensorTwelve = -1;
 
 
 	public int getSensorFirst() {
@@ -84,5 +92,37 @@ public class SensorModelData {
 
 	public void setSensorEight(int sensorEight) {
 		this.sensorEight = sensorEight;
+	}
+
+	public int getSensorNine() {
+		return sensorNine;
+	}
+
+	public void setSensorNine(int sensorNine) {
+		this.sensorNine = sensorNine;
+	}
+
+	public int getSensorTen() {
+		return sensorTen;
+	}
+
+	public void setSensorTen(int sensorTen) {
+		this.sensorTen = sensorTen;
+	}
+
+	public int getSensorEleven() {
+		return sensorEleven;
+	}
+
+	public void setSensorEleven(int sensorEleven) {
+		this.sensorEleven = sensorEleven;
+	}
+
+	public int getSensorTwelve() {
+		return sensorTwelve;
+	}
+
+	public void setSensorTwelve(int sensorTwelve) {
+		this.sensorTwelve = sensorTwelve;
 	}
 }

@@ -25,7 +25,7 @@ import java.lang.ref.WeakReference
 private const val TAG_SAVE_POS = "position"
 private const val TAG_SAVE_IS_PLAY = "is_playing"
 
-private const val DEFAULT_COLOR = "#FFFFFF"
+private const val DEFAULT_COLOR = "#000000"
 
 class ExoPlayerManager(
 		lifecycleOwner: LifecycleOwner,

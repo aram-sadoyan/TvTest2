@@ -22,5 +22,9 @@ public class AppConstants {
 	public static final String EXTRA_SERIALIZABLE_KEY_SPEC = "serializableSpec";
 
 
+	public static final String IMG_URL_PREFFIX = "https://www.Qicharge.am/TimeWatch/new/New/pages/forms/";
+	public static final String NEW_LINE_PREFFIX = "\n";
+
+
 
 }

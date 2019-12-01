@@ -109,21 +109,6 @@ public class GeneralSpec implements Serializable {
 		this.waterResistance = waterResistance;
 	}
 
-//	public String getWeight() {
-//		return weight;
-//	}
-//
-//	public void setWeight(String weight) {
-//		this.weight = weight;
-//	}
-
-//	public String getSensor() {
-//		return sensor;
-//	}
-//
-//	public void setSensor(String sensor) {
-//		this.sensor = sensor;
-//	}
 
 	public String getDisplay() {
 		return display;

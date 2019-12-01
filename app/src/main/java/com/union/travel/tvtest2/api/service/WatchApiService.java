@@ -3,6 +3,7 @@ package com.union.travel.tvtest2.api.service;
 import com.union.travel.tvtest2.api.Response;
 import com.union.travel.tvtest2.api.UserApiResponse;
 import com.union.travel.tvtest2.model.Brand;
+import com.union.travel.tvtest2.model.SensorModelData;
 import com.union.travel.tvtest2.response.WatchApiResponse;
 
 import java.util.List;
@@ -26,7 +27,13 @@ public interface WatchApiService {
 //	public Call<Response> getQiTest();
 
 
-	@GET("/TimeWatch/kyaj.html")
+//	@GET("/TimeWatch/kyaj.html")
+//	public Call<List<Brand>> getBrandList();
+
+	@GET("/TimeWatch/NewJson.php")
 	public Call<List<Brand>> getBrandList();
+
+	@GET("/TimeWatch/JsonArduino.php")
+	public Call<List<SensorModelData>> getSensorId();
 
 }

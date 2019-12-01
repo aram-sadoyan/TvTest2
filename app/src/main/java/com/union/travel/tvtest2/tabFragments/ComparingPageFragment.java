@@ -27,6 +27,7 @@ import com.union.travel.tvtest2.model.CompabilitySpec;
 import com.union.travel.tvtest2.model.GeneralSpec;
 import com.union.travel.tvtest2.model.Spec;
 import com.union.travel.tvtest2.model.tabModel.ComparingItemWithTopModel;
+import com.union.travel.tvtest2.utils.AppConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -170,7 +171,7 @@ public class ComparingPageFragment extends Fragment {
 			});
 
 			SimpleDraweeView modelIc = v.findViewById(R.id.modelIconView);
-			frescoLoader.loadWithParams(Uri.parse(icUrl), modelIc, false);
+			frescoLoader.loadWithParams(Uri.parse(AppConstants.IMG_URL_PREFFIX + icUrl), modelIc, false);
 
 			TextView nameTxtView = v.findViewById(R.id.modelNameTxtView);
 			nameTxtView.setText(name);
@@ -200,7 +201,7 @@ public class ComparingPageFragment extends Fragment {
 			});
 
 			SimpleDraweeView modelIc = v2.findViewById(R.id.modelIconView);
-			frescoLoader.loadWithParams(Uri.parse(icUrl), modelIc, false);
+			frescoLoader.loadWithParams(Uri.parse(AppConstants.IMG_URL_PREFFIX + icUrl), modelIc, false);
 
 			TextView nameTxtView = v2.findViewById(R.id.modelNameTxtView);
 			nameTxtView.setText(name);
@@ -232,7 +233,7 @@ public class ComparingPageFragment extends Fragment {
 			});
 
 			SimpleDraweeView modelIc = v3.findViewById(R.id.modelIconView);
-			frescoLoader.loadWithParams(Uri.parse(icUrl), modelIc, false);
+			frescoLoader.loadWithParams(Uri.parse(AppConstants.IMG_URL_PREFFIX + icUrl), modelIc, false);
 
 			TextView nameTxtView = v3.findViewById(R.id.modelNameTxtView);
 			nameTxtView.setText(name);

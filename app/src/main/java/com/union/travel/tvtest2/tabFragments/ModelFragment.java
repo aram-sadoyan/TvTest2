@@ -20,6 +20,7 @@ import com.union.travel.tvtest2.MainActivity;
 import com.union.travel.tvtest2.R;
 import com.union.travel.tvtest2.model.AppSettings;
 import com.union.travel.tvtest2.model.tabModel.ModelTabModelItem;
+import com.union.travel.tvtest2.utils.AppConstants;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -107,7 +108,7 @@ public class ModelFragment extends Fragment {
 		gridLayout.removeAllViews();
 		selectedModelId = modelTabModelItem.getModelItemList().get(0).getModelId();
 
-		frescoLoader.loadWithParams(Uri.parse(modelTabModelItem.getModelItemList().get(0).getModelUrl()), watchIc, false);
+		frescoLoader.loadWithParams(Uri.parse(AppConstants.IMG_URL_PREFFIX + modelTabModelItem.getModelItemList().get(0).getModelUrl()), watchIc, false);
 
 		for (int i = 0; i < modelTabModelItem.getModelItemList().size(); i++) {
 			View v = inflater.inflate(R.layout.overview_grid_item, gridLayout, false);
@@ -116,7 +117,7 @@ public class ModelFragment extends Fragment {
 				int indexOfChild = gridLayout.indexOfChild(v1);
 				setGlobalSelectedModelItemName(indexOfChild);
 				nameTxtView.setText(getNameStringFromModelByPosition(indexOfChild));
-				frescoLoader.loadWithParams(Uri.parse(modelTabModelItem.getModelItemList().get(indexOfChild).getModelUrl()), watchIc, false);
+				frescoLoader.loadWithParams(Uri.parse(AppConstants.IMG_URL_PREFFIX + modelTabModelItem.getModelItemList().get(indexOfChild).getModelUrl()), watchIc, false);
 				int count = gridLayout.getChildCount();
 				for (int i1 = 0; i1 < count; i1++) {
 					View childView = gridLayout.getChildAt(i1);
@@ -129,7 +130,7 @@ public class ModelFragment extends Fragment {
 			});
 
 			SimpleDraweeView modelGridItemIcView = v.findViewById(R.id.gridItemIc);
-			frescoLoader.loadWithParams(Uri.parse(getColorIcUrlByPosition(i)), modelGridItemIcView, false);
+			frescoLoader.loadWithParams(Uri.parse(AppConstants.IMG_URL_PREFFIX + getColorIcUrlByPosition(i)), modelGridItemIcView, false);
 			gridLayout.addView(v);
 
 			if (i == 0) {

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -19,9 +18,6 @@ import com.ToxicBakery.viewpager.transforms.DefaultTransformer;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.material.tabs.TabLayout;
-import com.pierfrancescosoffritti.youtubeplayer.player.YouTubePlayer;
-import com.pierfrancescosoffritti.youtubeplayer.player.YouTubePlayerInitListener;
-import com.pierfrancescosoffritti.youtubeplayer.player.YouTubePlayerView;
 import com.union.travel.tvtest2.adapter.TabAdapter;
 import com.union.travel.tvtest2.api.RestClient;
 import com.union.travel.tvtest2.model.AppSettings;
@@ -73,14 +69,15 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	private ComparingPageFragment comparingPageFragment;
 	private List<Fragment> fragmentItemList = new ArrayList<>();
 	private List<Integer> sensorsList = new ArrayList<>();
-	//private SimpleDraweeView btnPlay = null;
-
 
 	private boolean isDataRecevied = false;
 	private List<Brand> brandList = new ArrayList<>();
 
-
 	private boolean debugBooleanStarted = false;
+
+
+	private List<String> allVideoList = new ArrayList<>();
+	private int currentVideoIndex = -1;
 
 	@Override
 	protected void onStart() {
@@ -95,18 +92,41 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 			public void onResponse(Call<List<Brand>> call, Response<List<Brand>> response) {
 				//Log.d("dwd", response.toString());
 				brandList = response.body();
-				if (brandList != null && !brandList.isEmpty()){
+				if (brandList != null && !brandList.isEmpty()) {
 					AppSettings.getInstance().setFirstRequestedData(brandList);
-					//Todo get SensorModelData
-					SensorModelData sensorModelData = new SensorModelData();
-					sensorModelData.setSensorFirst(125);
-					sensorModelData.setSensorSecond(2);
-					sensorModelData.setSensorThree(6);
-					sensorModelData.setSensorFour(5);
-					sensorModelData.setSensorFive(423434);
-					AppSettings.getInstance().setSensorMoelData(sensorModelData);
 
-					isDataRecevied = true;
+					RestClient.getInstance(getApplicationContext()).getWatchApiService().getSensorId().enqueue(new Callback<List<SensorModelData>>() {
+						@Override
+						public void onResponse(Call<List<SensorModelData>> call, Response<List<SensorModelData>> response) {
+							Log.d("dwd", "Sensor id succes");
+
+							List<SensorModelData> sensorModelData = response.body();
+							if (sensorModelData != null && !sensorModelData.isEmpty()) {
+								AppSettings.getInstance().setSensorMoelData(sensorModelData.get(0));
+								isDataRecevied = true;
+
+
+								allVideoList = AppSettings.getInstance().getVideoUrlList();
+
+								//todo remove fro debug
+								allVideoList.clear();
+								allVideoList.add("https://mysmartech.ru/esiminch.mp4");
+								allVideoList.add("https://mysmartech.ru/esiminch.mp4");
+								allVideoList.add("https://mysmartech.ru/esiminch.mp4");
+
+								startVideo(0);
+							}
+
+						}
+
+						@Override
+						public void onFailure(Call<List<SensorModelData>> call, Throwable t) {
+							Log.d("dwd", "Sensor id" + t.getMessage());
+
+						}
+					});
+
+
 				}
 
 			}
@@ -119,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 
 	}
-
 
 
 	@Override
@@ -141,8 +160,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		arduino.addVendorId(6790);
 
 
-		hideVideoWithPLayBtn();
-		visibleWatchLayout();
+		//hideVideoWithPLayBtn();
+		//visibleWatchLayout(); ///todo
 
 
 		//todo set app time off delay 10000 = 10 secon
@@ -164,34 +183,42 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	}
 
 
+	private void startVideo(int index) {
+		this.currentVideoIndex = index;
 
-	private void startVideo() {
 		exoManager = ExoPlayerManager.createInstance(this, getApplicationContext(), playerView);
-		exoManager.setVideoPath("https://mysmartech.ru/esiminch.mp4");
+
+		exoManager.setVideoPath(allVideoList.get(currentVideoIndex));
+		currentVideoIndex = currentVideoIndex + 1;
+		if (currentVideoIndex >= allVideoList.size()) {
+			currentVideoIndex = 0;
+		}
 		exoManager.playStream(0L);
 		exoManager.setVideoCallback(new ExoPlayerManager.VideoCallback() {
 			@Override
 			public void onVideoStart(@NotNull String url) {
-				Log.d("dwd", "on video start");
+				Log.d("dwd", "on video start " + currentVideoIndex);
 
 			}
 
 			@Override
 			public void onVideoEnd(@NotNull String url) {
-				Log.d("dwd", "on video end");
+				Log.d("dwd", "on video end " + currentVideoIndex);
+				startVideo(currentVideoIndex);
+
 
 			}
 
 			@Override
 			public void onVideoFail(@NotNull String url, @NotNull String errorMsg) {
-				Log.d("dwd", "fail video ");
-
+				Log.d("dwd", " video failed" + currentVideoIndex);
+				startVideo(currentVideoIndex);
 
 			}
 
 			@Override
 			public void onVideoBufferingEnd() {
-				Log.d("dwd", "video buffering end");
+				Log.d("dwd", "video buffering end " + currentVideoIndex);
 			}
 		});
 	}
@@ -199,16 +226,30 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 
 
-//////// SWITCHER VIDEO / WATCH   LAYOUT
-	private void setVideoLayout(){
+	private void fadeInTabComponent(){
+		appLogoIc.animate().alpha(1f).setDuration(1000);
+		tabLayout.animate().alpha(1f).setDuration(1000);
+		viewPager.animate().alpha(1f).setDuration(1000);
+	}
+
+	private void fadeOutTabComponent(){
+		appLogoIc.animate().alpha(0f).setDuration(1000);
+		tabLayout.animate().alpha(0f).setDuration(1000);
+		viewPager.animate().alpha(0f).setDuration(1000);
+	}
+
+
+
+	//////// SWITCHER VIDEO / WATCH   LAYOUT
+	private void setVideoLayout() {
 		visibleVideoWithPLayBtn();
 		hideWatchLayout();
 	}
-	private void setWatchLayout(){
+
+	private void setWatchLayout() {
 		hideVideoWithPLayBtn();
 		visibleWatchLayout();
 	}
-
 
 
 	//////////////WATCH LAYOUT
@@ -217,6 +258,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		tabLayout.setVisibility(View.GONE);
 		viewPager.setVisibility(View.GONE);
 	}
+
 	private void visibleWatchLayout() {
 		appLogoIc.setVisibility(View.VISIBLE);
 		tabLayout.setVisibility(View.VISIBLE);
@@ -228,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	private void visibleVideoWithPLayBtn() {
 		playerView.setVisibility(View.VISIBLE);
 	}
+
 	private void hideVideoWithPLayBtn() {
 		playerView.setVisibility(View.GONE);
 	}
@@ -272,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 				//modelFragment.setArguments(args);
 			} else if ("tabId4".equals(tab.tabId)) {
 
-			//	args.putSerializable(AppConstants.EXTRA_SERIALIZABLE_KEY_SPEC, currentModel.getSpec());
+				//	args.putSerializable(AppConstants.EXTRA_SERIALIZABLE_KEY_SPEC, currentModel.getSpec());
 				//args.putString("smallDesc", watch.getSmallDescription());
 				if (specsFragment == null) {
 					specsFragment = new SpecsFragment();
@@ -285,7 +328,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 					comparingPageFragment = new ComparingPageFragment();
 					fragmentItemList.add(comparingPageFragment);
 				}
-			//	comparingPageFragment.setArguments(args);
+				//	comparingPageFragment.setArguments(args);
 			} else if ("tabId6".equals(tab.tabId)) {
 				//args.putString("smallDesc", watch.getSmallDescription());
 
@@ -319,8 +362,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 		tabsAreShown = true;
 
-
-
 		//todo remove for debug
 		viewPager.setCurrentItem(1);
 
@@ -334,10 +375,9 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		countDownTimer.start();
 
 		//todo for debug
-		if (!debugBooleanStarted){
+		if (!debugBooleanStarted) {
 			if (isDataRecevied) {
 				//todo  		//for debug		//for debug		//for debug		//for debug		//for debug		//for debug		//for debug
-
 
 				//todo get sensor id Rom PROCESSS when it was picked up
 				AppSettings.getInstance().setCurrentModelIdFromSensorModelData(1);
@@ -485,6 +525,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 				if (tabsAreShown && sensorIdInt == -1) {
 					operationRuning = true;
 					closeTabs();
+					//dont close tabs by putting sensor off
+
 					operationRuning = false;
 
 					tabsAreShown = false;
@@ -517,6 +559,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		} else {
 			currentId = sensorId;
 			startShowingContent();
+			txtv2.setText(currentId + "fefef");
 		}
 
 	}
@@ -529,7 +572,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	}
 
 	private void startShowingContent() {
-		//todo start showing fragments
 
 		initTabLayout(); //todo get watch key
 		operationRuning = false;
@@ -557,16 +599,9 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		viewPager.setCurrentItem(position, true);
 	}
 
-	public void voidSetOverviewFragmentFromModelTabSelection(){
+	public void voidSetOverviewFragmentFromModelTabSelection() {
 		viewPager.setCurrentItem(1, true);
 	}
-
-
-//	private View.OnClickListener onPlayBtnClickListener = v -> {
-//		Log.d("dwd", "on PLay button click");
-//		//visibleVideoWithPLayBtn();
-//		//prepareAndStartVideo();
-//	};
 
 
 

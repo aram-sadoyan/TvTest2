@@ -32,6 +32,7 @@ import com.union.travel.tvtest2.model.Color;
 import com.union.travel.tvtest2.model.Model;
 import com.union.travel.tvtest2.model.Price;
 import com.union.travel.tvtest2.model.tabModel.ComparingItemWithTopModel;
+import com.union.travel.tvtest2.utils.AppConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -223,7 +224,7 @@ public class OverviewFragment extends Fragment {
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
 		String curentIcUrl = getColorUrlByPosition(0);
 		selectedColorUrl = curentIcUrl;
-		frescoLoader.loadWithParams(Uri.parse(curentIcUrl), mainIcView, false);
+		frescoLoader.loadWithParams(Uri.parse(AppConstants.IMG_URL_PREFFIX + curentIcUrl), mainIcView, false);
 		AppSettings.getInstance().setCurrentMainIcUrl(curentIcUrl);
 
 		for (int i = 0; i < colorList.size(); i++) {
@@ -238,7 +239,7 @@ public class OverviewFragment extends Fragment {
 				AppSettings.getInstance().setCurrentModelColorTitle(colorTitle);
 				String curentIcUrl2 = getColorUrlByPosition(indexOfChild);
 				selectedColorUrl = curentIcUrl2;
-				frescoLoader.loadWithParams(Uri.parse(curentIcUrl2), mainIcView, false);
+				frescoLoader.loadWithParams(Uri.parse(AppConstants.IMG_URL_PREFFIX + curentIcUrl2), mainIcView, false);
 				AppSettings.getInstance().setCurrentMainIcUrl(curentIcUrl2);
 				if (verticalWatchAdapter != null) {
 					//todo for debug pls remove
@@ -270,7 +271,7 @@ public class OverviewFragment extends Fragment {
 
 			SimpleDraweeView colorIc = v.findViewById(R.id.gridItemIc);
 			String curentIcUrl3 = getColorUrlByPosition(i);
-			frescoLoader.loadWithParams(Uri.parse(curentIcUrl3), colorIc, false);
+			frescoLoader.loadWithParams(Uri.parse(AppConstants.IMG_URL_PREFFIX + curentIcUrl3), colorIc, false);
 
 			gridLayout.addView(v);
 
@@ -317,7 +318,7 @@ public class OverviewFragment extends Fragment {
 		List<String> itemUrls = new ArrayList<>(colorList.get(0).getColorUrls());
 		verticalWatchAdapter = new VerticalWatchAdapter(itemUrls, (icUrl, adapterPosition) -> {
 			selectedAdapterPosition = adapterPosition;
-			frescoLoader.loadWithParams(Uri.parse(icUrl), mainIcView, false);
+			frescoLoader.loadWithParams(Uri.parse(AppConstants.IMG_URL_PREFFIX + icUrl), mainIcView, false);
 			AppSettings.getInstance().setCurrentMainIcUrl(icUrl);
 
 		});

@@ -22,7 +22,6 @@ public class AppSettings {
 	private List<ComparingItemWithTopModel> comparingItemWithTopModelList = new ArrayList<>();
 
 
-
 	public Model getCurrentModel() {
 		return currentModel;
 	}
@@ -255,8 +254,8 @@ public class AppSettings {
 
 	public void setCurrentModelId(int currentModelId) {
 		this.currentModelId = currentModelId;
-		for (Model model : modelListAll){
-			if (currentModelId == model.getId()){
+		for (Model model : modelListAll) {
+			if (currentModelId == model.getId()) {
 				currentModel = model;
 				setCurrentBrandName(model.getBrandName());
 			}
@@ -267,7 +266,7 @@ public class AppSettings {
 
 
 	public Spec getCurrentSpec() {
-		if (currentModel == null){
+		if (currentModel == null) {
 			return null;
 		}
 		return currentModel.getSpec();
@@ -296,6 +295,21 @@ public class AppSettings {
 				break;
 			case 7:
 				setCurrentModelId(sensorModelData.getSensorSeven());
+				break;
+			case 8:
+				setCurrentModelId(sensorModelData.getSensorEight());
+				break;
+			case 9:
+				setCurrentModelId(sensorModelData.getSensorNine());
+				break;
+			case 10:
+				setCurrentModelId(sensorModelData.getSensorTen());
+				break;
+			case 11:
+				setCurrentModelId(sensorModelData.getSensorEleven());
+				break;
+			case 12:
+				setCurrentModelId(sensorModelData.getSensorTwelve());
 				break;
 		}
 	}

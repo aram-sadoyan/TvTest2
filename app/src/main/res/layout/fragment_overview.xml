@@ -36,9 +36,9 @@
 		android:id="@+id/watchId"
 		android:layout_width="590dp"
 		android:layout_height="590dp"
+		app:actualImageScaleType="centerInside"
 		android:layout_marginStart="61dp"
 		android:layout_marginTop="97dp"
-		android:background="@color/primary_color_white"
 		app:layout_constraintStart_toEndOf="@id/watchesRecyclerView"
 		app:layout_constraintTop_toTopOf="parent" />
 

@@ -21,6 +21,7 @@ import com.union.travel.tvtest2.model.CompabilitySpec;
 import com.union.travel.tvtest2.model.GeneralSpec;
 import com.union.travel.tvtest2.model.Model;
 import com.union.travel.tvtest2.model.Spec;
+import com.union.travel.tvtest2.utils.AppConstants;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -85,7 +86,7 @@ public class SpecsFragment extends Fragment {
 
 		//todo here we need current selected model
 		FrescoLoader frescoLoader = new FrescoLoader();
-		frescoLoader.loadWithParams(Uri.parse(getCurrentModelIcUrl()), icView, false);
+		frescoLoader.loadWithParams(Uri.parse(AppConstants.IMG_URL_PREFFIX + getCurrentModelIcUrl()), icView, false);
 
 		Model currentModel = AppSettings.getInstance().getCurrentModel();
 		nameTxtView.setText(currentModel.getName());

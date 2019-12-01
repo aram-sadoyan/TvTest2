@@ -30,8 +30,7 @@
 		android:layout_marginBottom="3dp"
 		app:layout_constraintEnd_toStartOf="@id/value2"
 		app:layout_constraintStart_toEndOf="@id/guideline3"
-		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintBottom_toTopOf="@id/value1underline"/>
+		app:layout_constraintTop_toTopOf="parent" />
 
 
 	<TextView
@@ -48,8 +47,7 @@
 		app:layout_constraintEnd_toStartOf="@id/value3"
 		app:layout_constraintStart_toEndOf="@id/value1"
 		app:layout_constraintTop_toTopOf="parent"
-		android:layout_marginBottom="3dp"
-		app:layout_constraintBottom_toTopOf="@id/value1underline"/>
+		android:layout_marginBottom="3dp" />
 
 	<TextView
 		android:id="@+id/value3"
@@ -64,8 +62,7 @@
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toEndOf="@id/value2"
 		app:layout_constraintTop_toTopOf="parent"
-		android:layout_marginBottom="3dp"
-		app:layout_constraintBottom_toTopOf="@id/value1underline"/>
+		android:layout_marginBottom="3dp" />
 
 	<androidx.constraintlayout.widget.Guideline
 		android:id="@+id/guideline3"

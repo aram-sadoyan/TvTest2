@@ -13,6 +13,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.union.travel.tvtest2.FrescoLoader;
 import com.union.travel.tvtest2.R;
 import com.union.travel.tvtest2.tabFragments.OverviewFragment;
+import com.union.travel.tvtest2.utils.AppConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +55,7 @@ public class VerticalWatchAdapter extends RecyclerView.Adapter<RecyclerView.View
 		final ItemViewHolder holder = (ItemViewHolder) viewHolder;
 		String itemUrl = itemUrls.get(position);
 
-		frescoLoader.loadWithParams(Uri.parse(itemUrl), holder.icModel, false);
+		frescoLoader.loadWithParams(Uri.parse(AppConstants.IMG_URL_PREFFIX + itemUrl), holder.icModel, false);
 
 		if (selectedPosition == position) {
 			holder.indicatorView.setVisibility(View.VISIBLE);
