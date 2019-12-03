@@ -51,7 +51,7 @@ public class ModelFragment extends Fragment {
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
 		isViewShown = getView() != null && isVisibleToUser;
-		Log.d("dwd", "ModelFragment is " + isViewShown);
+		//Log.d("dwd", "ModelFragment is " + isViewShown);
 		if (isViewShown) {
 			//TODO SET Fragment components when is from global clicks
 			boolean isSelectedFromBrand = AppSettings.getInstance().isSelectedFromBrand();

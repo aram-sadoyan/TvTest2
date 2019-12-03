@@ -1,12 +1,10 @@
 package com.union.travel.tvtest2.tabFragments;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
@@ -16,22 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.extractor.ExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
-
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerCallback;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
-import com.pierfrancescosoffritti.youtubeplayer.player.YouTubePlayerInitListener;
-import com.pierfrancescosoffritti.youtubeplayer.ui.PlayerUIController;
 import com.union.travel.tvtest2.ExoPlayerManager;
 import com.union.travel.tvtest2.FrescoLoader;
 import com.union.travel.tvtest2.R;
@@ -81,11 +70,20 @@ public class DemoVideosFragment extends Fragment {
 
 		youTubePlayerView = view.findViewById(R.id.youtubePlayerView);
 		youTubePlayerView.setEnableAutomaticInitialization(false);
+		youTubePlayerView.getYouTubePlayerWhenReady(new YouTubePlayerCallback() {
+			@Override
+			public void onYouTubePlayer(@NotNull YouTubePlayer youTubePlayer) {
+				youTubePlayer.cueVideo("6JYIGclVQdw", 0);
+			}
+		});
+
+
+
 		youTubePlayerView.initialize(new YouTubePlayerListener() {
 			@Override
 			public void onReady(@NotNull YouTubePlayer youTubePlayer) {
 
-				youTubePlayer.cueVideo("6JYIGclVQdw", 0);
+
 			}
 
 			@Override
@@ -174,29 +172,13 @@ public class DemoVideosFragment extends Fragment {
 		urls.add(videoUrl);
 		urls.add(videoUrl);
 		urls.add(videoUrl);
-		VideoVerticalAdapter videoVerticalAdapter = new VideoVerticalAdapter(urls);
+
+		VideoVerticalAdapter videoVerticalAdapter = new VideoVerticalAdapter(urls, (icUrl, adapterPosition) -> {
+			//TODO CHANGE CURRENT VIDEO VIEW
+			Log.d("dwd","playAnother view");
+		});
 		recyclerView.setAdapter(videoVerticalAdapter);
 
-//		exoPlayerView = getView().findViewById(R.id.centreVideoView);
-//		exoPlayerView.setVisibility(View.GONE);
-
-
-//		try {
-////			BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-////			TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory());
-//			exoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity());
-//			Uri uri = Uri.parse(videoUrl);
-//			DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory("exoplayer_video");
-//			ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-//			MediaSource mediaSource = new ExtractorMediaSource(uri, dataSourceFactory, extractorsFactory, null, null);
-//			exoPlayerView.setPlayer(exoPlayer);
-//			exoPlayer.setPlaybackParameters(null);
-//			exoPlayer.seekTo(5000L);
-//			exoPlayer.prepare(mediaSource);
-////			exoPlayer.setPlayWhenReady(true);
-//		} catch (Exception e) {
-//			Log.e("DemoVideosFragment", "exoplayer error" + e.toString());
-//		}
 
 	}
 
@@ -255,7 +237,12 @@ public class DemoVideosFragment extends Fragment {
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
 		isViewShown = getView() != null && isVisibleToUser;
-		Log.d("dwd", "fragment 2 " + isViewShown);
+		//Log.d("dwd", "fragment 2 " + isViewShown);
+	}
+
+
+	public interface OnItemClickListener {
+		void onItemClick(String icUrl, int adapterPosition);
 	}
 
 

@@ -78,7 +78,7 @@ public class ComparingPageFragment extends Fragment {
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
 		isViewShown = getView() != null && isVisibleToUser;
-		Log.d("dwd", "fragment 2 " + isViewShown);
+		//Log.d("dwd", "fragment 2 " + isViewShown);
 		if (isViewShown) {
 			initComparingragment();
 			dataIsSelectedFromHint.set(true);

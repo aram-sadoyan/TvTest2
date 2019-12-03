@@ -1,7 +1,6 @@
 package com.union.travel.tvtest2.model;
 
 import android.util.Size;
-import android.widget.Switch;
 
 import com.union.travel.tvtest2.model.tabModel.BrandTabModelItem;
 import com.union.travel.tvtest2.model.tabModel.ComparingItemWithTopModel;
@@ -260,8 +259,10 @@ public class AppSettings {
 				setCurrentBrandName(model.getBrandName());
 			}
 		}
+	}
 
-
+	public List<Model> getAllModelList(){
+		return modelListAll;
 	}
 
 

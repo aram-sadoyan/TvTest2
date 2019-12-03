@@ -120,7 +120,7 @@ public class BrandFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         isViewShown = getView() != null && isVisibleToUser;
-        Log.d("dwd", "BrandFragment " + isViewShown);
+       // Log.d("dwd", "BrandFragment " + isViewShown);
         if (isViewShown){
             //TODO SET Fragment components when is from global clicks
 

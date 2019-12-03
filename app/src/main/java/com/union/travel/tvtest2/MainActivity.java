@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +24,7 @@ import com.union.travel.tvtest2.adapter.TabAdapter;
 import com.union.travel.tvtest2.api.RestClient;
 import com.union.travel.tvtest2.model.AppSettings;
 import com.union.travel.tvtest2.model.Brand;
+import com.union.travel.tvtest2.model.Model;
 import com.union.travel.tvtest2.model.SensorModelData;
 import com.union.travel.tvtest2.tabFragments.ComparingPageFragment;
 import com.union.travel.tvtest2.tabFragments.DemoVideosFragment;
@@ -32,6 +35,7 @@ import com.union.travel.tvtest2.tabFragments.SpecsFragment;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,11 +59,14 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	private PlayerView playerView = null;
 	private TextView txtv = null;
 	private TextView txtv2 = null;
+	private TextView txtv3 = null;
+	private TextView txtv4 = null;
 	private Arduino arduino;
 	private boolean operationRuning = false;
 	private boolean tabsAreShown = false;
 	private int currentId = -2;
 	private Map<Integer, Watch> watchMap = new HashMap<>();
+	private List<Model> allModelList = new ArrayList<>();
 	private ArrayList<InfoTab> infoTabs;
 	private OverviewFragment overViewFragment;
 	private BrandFragment brandFragment;
@@ -83,8 +90,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	protected void onStart() {
 		super.onStart();
 		arduino.setArduinoListener(this);
-
-		initWatchMap();
+		//Crashlytics.getInstance().crash();
+		//initWatchMap();
 		setDefaultTabs();
 
 		RestClient.getInstance(getApplicationContext()).getWatchApiService().getBrandList().enqueue(new Callback<List<Brand>>() {
@@ -98,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 					RestClient.getInstance(getApplicationContext()).getWatchApiService().getSensorId().enqueue(new Callback<List<SensorModelData>>() {
 						@Override
 						public void onResponse(Call<List<SensorModelData>> call, Response<List<SensorModelData>> response) {
-							Log.d("dwd", "Sensor id succes");
+							//Log.d("dwd", "Sensor id succes");
 
 							List<SensorModelData> sensorModelData = response.body();
 							if (sensorModelData != null && !sensorModelData.isEmpty()) {
@@ -114,7 +121,16 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 								allVideoList.add("https://mysmartech.ru/esiminch.mp4");
 								allVideoList.add("https://mysmartech.ru/esiminch.mp4");
 
+								initWatchMap();
+
+								//todo remove comment its for debug, AND remove playerView.setVisibility(View.GONE);
+								//playerView.setVisibility(View.GONE);
 								startVideo(0);
+
+
+								//todo remove its fro debug
+								//proceedSensor(1);
+
 							}
 
 						}
@@ -155,6 +171,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 		txtv = findViewById(R.id.textView);
 		txtv2 = findViewById(R.id.textView2);
+		txtv3 = findViewById(R.id.textView3);
+		txtv4 = findViewById(R.id.textView4);
 
 		arduino = new Arduino(this);
 		arduino.addVendorId(6790);
@@ -163,19 +181,17 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		//hideVideoWithPLayBtn();
 		//visibleWatchLayout(); ///todo
 
-
+		//move this to another place
 		//todo set app time off delay 10000 = 10 secon
-		countDownTimer = new CountDownTimer(10000, 1000) {
+		countDownTimer = new CountDownTimer(180000, 1000) {
 			public void onTick(long millisUntilFinished) {
 				//TODO: Do something every second
 			}
 
 			public void onFinish() {
 
-				//todo remove for debud
-//				hideWatchLayout();
-//				visibleVideoWithPLayBtn();
-//				startVideo();
+				closeTabsWithFadeOut();
+
 			}
 		}.start();
 
@@ -185,94 +201,37 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 	private void startVideo(int index) {
 		this.currentVideoIndex = index;
+		if (exoManager == null){
+			exoManager = ExoPlayerManager.createInstance(this, getApplicationContext(), playerView);
+			exoManager.setVideoCallback(new ExoPlayerManager.VideoCallback() {
+				@Override
+				public void onVideoStart(@NotNull String url) {
+				}
 
-		exoManager = ExoPlayerManager.createInstance(this, getApplicationContext(), playerView);
+				@Override
+				public void onVideoEnd(@NotNull String url) {
+					startVideo(currentVideoIndex);
+				}
 
+				@Override
+				public void onVideoFail(@NotNull String url, @NotNull String errorMsg) {
+					startVideo(currentVideoIndex);
+				}
+
+				@Override
+				public void onVideoBufferingEnd() {
+				}
+			});
+		}
+
+		exoManager.toggleMute(true);
 		exoManager.setVideoPath(allVideoList.get(currentVideoIndex));
 		currentVideoIndex = currentVideoIndex + 1;
 		if (currentVideoIndex >= allVideoList.size()) {
 			currentVideoIndex = 0;
 		}
 		exoManager.playStream(0L);
-		exoManager.setVideoCallback(new ExoPlayerManager.VideoCallback() {
-			@Override
-			public void onVideoStart(@NotNull String url) {
-				Log.d("dwd", "on video start " + currentVideoIndex);
 
-			}
-
-			@Override
-			public void onVideoEnd(@NotNull String url) {
-				Log.d("dwd", "on video end " + currentVideoIndex);
-				startVideo(currentVideoIndex);
-
-
-			}
-
-			@Override
-			public void onVideoFail(@NotNull String url, @NotNull String errorMsg) {
-				Log.d("dwd", " video failed" + currentVideoIndex);
-				startVideo(currentVideoIndex);
-
-			}
-
-			@Override
-			public void onVideoBufferingEnd() {
-				Log.d("dwd", "video buffering end " + currentVideoIndex);
-			}
-		});
-	}
-
-
-
-
-	private void fadeInTabComponent(){
-		appLogoIc.animate().alpha(1f).setDuration(1000);
-		tabLayout.animate().alpha(1f).setDuration(1000);
-		viewPager.animate().alpha(1f).setDuration(1000);
-	}
-
-	private void fadeOutTabComponent(){
-		appLogoIc.animate().alpha(0f).setDuration(1000);
-		tabLayout.animate().alpha(0f).setDuration(1000);
-		viewPager.animate().alpha(0f).setDuration(1000);
-	}
-
-
-
-	//////// SWITCHER VIDEO / WATCH   LAYOUT
-	private void setVideoLayout() {
-		visibleVideoWithPLayBtn();
-		hideWatchLayout();
-	}
-
-	private void setWatchLayout() {
-		hideVideoWithPLayBtn();
-		visibleWatchLayout();
-	}
-
-
-	//////////////WATCH LAYOUT
-	private void hideWatchLayout() {
-		appLogoIc.setVisibility(View.GONE);
-		tabLayout.setVisibility(View.GONE);
-		viewPager.setVisibility(View.GONE);
-	}
-
-	private void visibleWatchLayout() {
-		appLogoIc.setVisibility(View.VISIBLE);
-		tabLayout.setVisibility(View.VISIBLE);
-		viewPager.setVisibility(View.VISIBLE);
-	}
-
-
-	//////////////VIDEO LAYOUT
-	private void visibleVideoWithPLayBtn() {
-		playerView.setVisibility(View.VISIBLE);
-	}
-
-	private void hideVideoWithPLayBtn() {
-		playerView.setVisibility(View.GONE);
 	}
 
 
@@ -360,6 +319,9 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		viewPager.setVisibility(View.VISIBLE);
 		tabLayout.setVisibility(View.VISIBLE);
 
+		countDownTimer.cancel();
+		countDownTimer.start();
+
 		tabsAreShown = true;
 
 		//todo remove for debug
@@ -371,6 +333,9 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	@Override
 	public void onUserInteraction() {
 		super.onUserInteraction();
+		if (!tabsAreShown) {
+			return;
+		}
 		countDownTimer.cancel();
 		countDownTimer.start();
 
@@ -380,8 +345,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 				//todo  		//for debug		//for debug		//for debug		//for debug		//for debug		//for debug		//for debug
 
 				//todo get sensor id Rom PROCESSS when it was picked up
-				AppSettings.getInstance().setCurrentModelIdFromSensorModelData(1);
-				startShowingContent();
+				//AppSettings.getInstance().setCurrentModelIdFromSensorModelData(1);
+				//startShowingContent();
 				debugBooleanStarted = true; //for debug
 			}
 		}
@@ -451,7 +416,14 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 	@Override
 	public void onArduinoMessage(byte[] bytes) {
-		display(new String(bytes));
+
+		ByteBuffer wrapped = ByteBuffer.wrap(bytes); // big-endian by default
+		short num = wrapped.getShort();
+		//todo
+		//txtv3.setText("w " + num);
+		Log.d("dwd","dwd " + new String(bytes));
+
+		display(new String(bytes), num);
 		//  Log.d("dwdd", new String(bytes));
 
 	}
@@ -466,13 +438,14 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 	}
 
-	public void display(final String message) {
+	public void display(final String message, short num) {
 		runOnUiThread(() -> {
 			// txtv.append(message + "\n");
 			// Log.d("flow", "message " + message);
+			txtv4.setText("wdw " + num);
 
 			txtv.setText(message);
-			if (operationRuning) {
+			if (operationRuning && !isDataRecevied) {
 				return;
 			}
 
@@ -517,19 +490,17 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 					sensorIdInt = -1;
 					break;
 				default:
+
+					//todo determine 12 SENSOR ID
 			}
-			// Log.d("flow","sensor list size " + sensorsList.size() + " " + sensorIdInt);
 
 			sensorsList.add(sensorIdInt);
 			if (sensorsList.size() == 1) {
 				if (tabsAreShown && sensorIdInt == -1) {
-					operationRuning = true;
-					closeTabs();
-					//dont close tabs by putting sensor off
 
 					operationRuning = false;
 
-					tabsAreShown = false;
+					//tabsAreShown = false;
 					sensorsList.clear();
 					currentId = -1;
 					return;
@@ -553,23 +524,79 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	}
 
 	public void proceedSensor(int sensorId) {
+
 		Watch watch = watchMap.get(sensorId);
+
 		if (watch == null) {
 			operationRuning = false;
+			Log.d("dwd", "PRocessSensor, operationRuning = " + operationRuning);
+
 		} else {
+			AppSettings.getInstance().setCurrentModelIdFromSensorModelData(sensorId);
 			currentId = sensorId;
+			hideAndStopVideoWithFadeOut();
+			fadeINTabLayouts();
 			startShowingContent();
-			txtv2.setText(currentId + "fefef");
+			Log.d("dwd", "PRocessSensor, sensorId = " + sensorId);
+			txtv2.setText(" sensor ID = " + sensorId);
 		}
 
 	}
 
+	private void hideAndStopVideoWithFadeOut() {
+		if (exoManager != null) {
+			exoManager.stopPlayer();
+			playerView.setVisibility(View.GONE);
+			//fadeOutPlayerView();
 
-	private void closeTabs() {
-		tabLayout.removeAllTabs();
-		viewPager.setVisibility(View.INVISIBLE);
-		tabLayout.setVisibility(View.INVISIBLE);
+		}
 	}
+
+
+	private void fadeINTabLayouts() {
+		Animation fadeIn = new AlphaAnimation(0f, 1f);
+		fadeIn.setDuration(2000);
+		fadeIn.setFillAfter(true);
+		tabLayout.setVisibility(View.INVISIBLE);
+		viewPager.setVisibility(View.INVISIBLE);
+		appLogoIc.setVisibility(View.INVISIBLE);
+		tabLayout.startAnimation(fadeIn);
+		viewPager.startAnimation(fadeIn);
+		appLogoIc.startAnimation(fadeIn);
+	}
+
+	private void closeTabsWithFadeOut() {
+		Animation fadeOut = new AlphaAnimation(1f, 0f);
+		fadeOut.setDuration(2000);
+		fadeOut.setFillAfter(true);
+
+		tabLayout.startAnimation(fadeOut);
+		viewPager.startAnimation(fadeOut);
+		appLogoIc.startAnimation(fadeOut);
+		fadeOut.setAnimationListener(new Animation.AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				tabLayout.removeAllTabs();
+				playerView.setVisibility(View.VISIBLE);
+				startVideo(currentVideoIndex);
+				tabsAreShown = false;
+				countDownTimer.cancel();
+
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+
+			}
+		});
+
+	}
+
 
 	private void startShowingContent() {
 
@@ -604,8 +631,11 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	}
 
 
-
 	private void initWatchMap() {
+
+		allModelList = AppSettings.getInstance().getAllModelList();
+
+
 		watchMap.put(1, new Watch(
 						"Watch 1 Lorem ipsum",
 						"header1",

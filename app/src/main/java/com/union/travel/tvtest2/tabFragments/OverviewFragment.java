@@ -106,7 +106,7 @@ public class OverviewFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		Log.d("dwd", "resumed");
+		//Log.d("dwd", "resumed");
 	}
 
 
@@ -155,8 +155,8 @@ public class OverviewFragment extends Fragment {
 		setBottomText(model.getId());
 
 		arrowDownView.setOnClickListener(v -> {
-			Log.d("dwd", "arrowDown clicked");
-			Log.d("dwd", "arrowDown clicked");
+		//	Log.d("dwd", "arrowDown clicked");
+		//	Log.d("dwd", "arrowDown clicked");
 		});
 
 	}
@@ -243,13 +243,14 @@ public class OverviewFragment extends Fragment {
 				AppSettings.getInstance().setCurrentMainIcUrl(curentIcUrl2);
 				if (verticalWatchAdapter != null) {
 					//todo for debug pls remove
-					List<String> itemUrls = new ArrayList<>();
-					itemUrls.addAll(colorList.get(indexOfChild).getColorUrls());
-					itemUrls.addAll(colorList.get(indexOfChild).getColorUrls());
+					//TODO PLS CHEK THIS CASES
+//					List<String> itemUrls = new ArrayList<>();
+//					itemUrls.addAll(colorList.get(indexOfChild).getColorUrls());
+//					itemUrls.addAll(colorList.get(indexOfChild).getColorUrls());
 					//
-					verticalWatchAdapter.setItemsList(itemUrls);
+					verticalWatchAdapter.setItemsList(colorList.get(indexOfChild).getColorUrls());
 					verticalWatchAdapter.notifyDataSetChanged();
-					if (itemUrls.size() > 4) {
+					if (colorList.get(indexOfChild).getColorUrls().size() > 4) {
 						arrowDownView.setVisibility(View.VISIBLE);
 						arrowDownView.setOnClickListener(arrowDownClickListener);
 					} else {

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "940643454237",
+    "firebase_url": "https://tvtest2-e5b0a.firebaseio.com",
+    "project_id": "tvtest2-e5b0a",
+    "storage_bucket": "tvtest2-e5b0a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:940643454237:android:5dc723c684dbd7de86a5f4",
+        "android_client_info": {
+          "package_name": "com.union.travel.tvtest2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "940643454237-2i60ehrkal8njcaf8v9lbd4vs5auv4jm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.union.travel.tvtest2",
+            "certificate_hash": "91e2778725544a4ec41e46f955fd637cccbcc868"
+          }
+        },
+        {
+          "client_id": "940643454237-5j03qsugaa02pnu3nuoehp6ljve7vt1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKsg5F_aTbMzFmbiGCjkVh3z610V1eMkU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "940643454237-5j03qsugaa02pnu3nuoehp6ljve7vt1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
