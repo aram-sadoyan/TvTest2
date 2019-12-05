@@ -93,20 +93,6 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	protected void onStart() {
 		super.onStart();
 		arduino.setArduinoListener(this);
-		//physicaloid = new Physicaloid(this);
-
-		//physicaloid.setBaudrate(9600);
-//		if (physicaloid.open()){
-//
-//			physicaloid.addReadListener(size -> {
-//				byte[] buf = new byte[size];
-//				physicaloid.read(buf, size);
-//				Log.d("dwd","kjhgf " + size);
-//			});
-//
-//		}
-		//Crashlytics.getInstance().crash();
-		//initWatchMap();
 		setDefaultTabs();
 
 		RestClient.getInstance(getApplicationContext()).getWatchApiService().getBrandList().enqueue(new Callback<List<Brand>>() {
@@ -139,12 +125,12 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 								initWatchMap();
 
 								//todo remove comment its for debug, AND remove playerView.setVisibility(View.GONE);
-								//playerView.setVisibility(View.GONE);
-								startVideo(0);
+								playerView.setVisibility(View.GONE);
+								//startVideo(0);
 
 
 								//todo remove its fro debug
-								//proceedSensor(1);
+								proceedSensor(1);
 
 							}
 
