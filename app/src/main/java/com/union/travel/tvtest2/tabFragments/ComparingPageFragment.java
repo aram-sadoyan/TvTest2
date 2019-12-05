@@ -134,7 +134,7 @@ public class ComparingPageFragment extends Fragment {
 				guideline.setGuidelineBegin(250);
 				break;
 			case 1:
-				guideline.setGuidelineBegin(600);
+				guideline.setGuidelineBegin(700);
 				break;
 			case 2:
 				guideline.setGuidelineBegin(1400);

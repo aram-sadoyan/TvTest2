@@ -20,6 +20,7 @@ import com.ToxicBakery.viewpager.transforms.DefaultTransformer;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.material.tabs.TabLayout;
+import com.physicaloid.lib.Physicaloid;
 import com.union.travel.tvtest2.adapter.TabAdapter;
 import com.union.travel.tvtest2.api.RestClient;
 import com.union.travel.tvtest2.model.AppSettings;
@@ -77,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	private List<Fragment> fragmentItemList = new ArrayList<>();
 	private List<Integer> sensorsList = new ArrayList<>();
 
+	private Physicaloid physicaloid;
+
 	private boolean isDataRecevied = false;
 	private List<Brand> brandList = new ArrayList<>();
 
@@ -90,6 +93,18 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	protected void onStart() {
 		super.onStart();
 		arduino.setArduinoListener(this);
+		//physicaloid = new Physicaloid(this);
+
+		//physicaloid.setBaudrate(9600);
+//		if (physicaloid.open()){
+//
+//			physicaloid.addReadListener(size -> {
+//				byte[] buf = new byte[size];
+//				physicaloid.read(buf, size);
+//				Log.d("dwd","kjhgf " + size);
+//			});
+//
+//		}
 		//Crashlytics.getInstance().crash();
 		//initWatchMap();
 		setDefaultTabs();
@@ -201,7 +216,10 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 	private void startVideo(int index) {
 		this.currentVideoIndex = index;
-		if (exoManager == null){
+		if (currentVideoIndex == -1){
+			return;
+		}
+		if (exoManager == null) {
 			exoManager = ExoPlayerManager.createInstance(this, getApplicationContext(), playerView);
 			exoManager.setVideoCallback(new ExoPlayerManager.VideoCallback() {
 				@Override
@@ -225,7 +243,13 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		}
 
 		exoManager.toggleMute(true);
-		exoManager.setVideoPath(allVideoList.get(currentVideoIndex));
+		if (currentVideoIndex >= allVideoList.size()) {
+			currentVideoIndex = 0;
+		}
+		if (!allVideoList.isEmpty()) {
+			exoManager.setVideoPath(allVideoList.get(currentVideoIndex));
+		}
+
 		currentVideoIndex = currentVideoIndex + 1;
 		if (currentVideoIndex >= allVideoList.size()) {
 			currentVideoIndex = 0;
@@ -365,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		InfoTab tab2 = new InfoTab();
 		tab2.tabId = "tabId2";
 		tab2.tabTitle = new HashMap<>();
-		tab2.tabTitle.put(Locale.ENGLISH.getLanguage().toLowerCase(), "Overviev");
+		tab2.tabTitle.put(Locale.ENGLISH.getLanguage().toLowerCase(), "Overview");
 		infoTabs.add(tab2);
 
 		InfoTab tab3 = new InfoTab();
@@ -417,13 +441,13 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	@Override
 	public void onArduinoMessage(byte[] bytes) {
 
-		ByteBuffer wrapped = ByteBuffer.wrap(bytes); // big-endian by default
-		short num = wrapped.getShort();
+//		ByteBuffer wrapped = ByteBuffer.wrap(bytes); // big-endian by default
+//		short num = wrapped.getShort();
 		//todo
 		//txtv3.setText("w " + num);
-		Log.d("dwd","dwd " + new String(bytes));
+		Log.d("dwd", "dwd " + new String(bytes));
 
-		display(new String(bytes), num);
+		display(new String(bytes));
 		//  Log.d("dwdd", new String(bytes));
 
 	}
@@ -438,53 +462,55 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 	}
 
-	public void display(final String message, short num) {
+	public void display(final String message) {
 		runOnUiThread(() -> {
 			// txtv.append(message + "\n");
 			// Log.d("flow", "message " + message);
-			txtv4.setText("wdw " + num);
+			txtv4.setText("wdw " );
 
 			txtv.setText(message);
 			if (operationRuning && !isDataRecevied) {
 				return;
 			}
 
-			// int count = 0;
 
 			int sensorIdInt = -1;
 			switch (message) {
-				case "d2\r\n":
+				case "1":
 					sensorIdInt = 1;
 					break;
-				case "d3\r\n":
+				case "2":
 					sensorIdInt = 2;
 					break;
-				case "d4\r\n":
+				case "3":
 					sensorIdInt = 3;
 					break;
-				case "d5\r\n":
+				case "4":
 					sensorIdInt = 4;
 					break;
-				case "d6\r\n":
+				case "5":
 					sensorIdInt = 5;
 					break;
-				case "d7\r\n":
+				case "6":
 					sensorIdInt = 6;
 					break;
-				case "d8":
+				case "7":
 					sensorIdInt = 7;
 					break;
-				case "d9":
+				case "8":
 					sensorIdInt = 8;
 					break;
-				case "d10":
+				case "9":
 					sensorIdInt = 9;
 					break;
-				case "d11":
+				case "10":
 					sensorIdInt = 10;
 					break;
-				case "d12":
+				case "11":
 					sensorIdInt = 11;
+					break;
+				case "12":
+					sensorIdInt = 12;
 					break;
 				case "OFF":
 					sensorIdInt = -1;
@@ -583,6 +609,9 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 			public void onAnimationEnd(Animation animation) {
 				tabLayout.removeAllTabs();
 				playerView.setVisibility(View.VISIBLE);
+				if (currentVideoIndex == -1){
+					currentVideoIndex = 0;
+				}
 				startVideo(currentVideoIndex);
 				tabsAreShown = false;
 				countDownTimer.cancel();

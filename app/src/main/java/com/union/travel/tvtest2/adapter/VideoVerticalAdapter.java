@@ -1,6 +1,5 @@
 package com.union.travel.tvtest2.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,16 +17,12 @@ import com.union.travel.tvtest2.tabFragments.DemoVideosFragment;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class VideoVerticalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-	List<String> urls = new ArrayList<>();
+	private List<String> urls;
 	private int selectedPosition = 0;
-
 	private final DemoVideosFragment.OnItemClickListener listener;
-
-
 
 	public VideoVerticalAdapter(List<String> urls, DemoVideosFragment.OnItemClickListener listener) {
 		this.urls = urls;
@@ -45,9 +40,8 @@ public class VideoVerticalAdapter extends RecyclerView.Adapter<RecyclerView.View
 		ItemViewHolder itemHolder = (ItemViewHolder) holder;
 
 		itemHolder.youTubePlayerView.setEnableAutomaticInitialization(false);
-		Log.d("dwd", "getEnableAutomaticInitialization " + itemHolder.youTubePlayerView.getEnableAutomaticInitialization());
 
-
+		//TODO REFACTOR
 		try {
 			itemHolder.youTubePlayerView.initialize(new YouTubePlayerListener() {
 				@Override
@@ -95,7 +89,6 @@ public class VideoVerticalAdapter extends RecyclerView.Adapter<RecyclerView.View
 			itemHolder.youTubePlayerView.getYouTubePlayerWhenReady(youTubePlayer -> youTubePlayer.addListener(new YouTubePlayerListener() {
 				@Override
 				public void onReady(@NotNull YouTubePlayer youTubePlayer) {
-					Log.d("dwd", "onREADY INNER");
 					youTubePlayer.cueVideo("6JYIGclVQdw", 0);
 				}
 
@@ -116,7 +109,6 @@ public class VideoVerticalAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				@Override
 				public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError playerError) {
-					Log.d("dwd", "onError");
 
 
 				}
@@ -149,8 +141,6 @@ public class VideoVerticalAdapter extends RecyclerView.Adapter<RecyclerView.View
 		}
 
 
-
-
 		if (selectedPosition == position) {
 			itemHolder.underlineIcView.setVisibility(View.VISIBLE);
 		} else {
@@ -162,7 +152,6 @@ public class VideoVerticalAdapter extends RecyclerView.Adapter<RecyclerView.View
 			if (selectedPosition != position) {
 				listener.onItemClick(urls.get(position), position);
 			}
-
 
 			notifyItemChanged(selectedPosition);
 			itemHolder.underlineIcView.setVisibility(View.VISIBLE);

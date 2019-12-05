@@ -403,7 +403,7 @@ public class OverviewFragment extends Fragment {
 		}
 	};
 
-	View.OnClickListener compareClickListener = v -> {
+	private View.OnClickListener compareClickListener = v -> {
 		AppSettings.getInstance().addToComparingList(model.getSpec(), model.getName(), model.getId(),
 				selectedColorTitle, selectedPrice, selectedColorUrl);
 		setTextADDED();
