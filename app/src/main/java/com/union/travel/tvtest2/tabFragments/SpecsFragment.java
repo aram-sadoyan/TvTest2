@@ -2,10 +2,10 @@ package com.union.travel.tvtest2.tabFragments;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,12 +27,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SpecsFragment extends Fragment {
 
-	private boolean isViewShown;
 	private LinearLayout parentParamsLayout;
 	private SimpleDraweeView icView = null;
 	private TextView nameTxtView = null;
 	private TextView titleTxtView = null;
-	private Spec currentSpec = null;
 
 	private AtomicBoolean dataIsSelectedFromHint = new AtomicBoolean();
 
@@ -40,9 +38,8 @@ public class SpecsFragment extends Fragment {
 	@Override
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
-		isViewShown = getView() != null && isVisibleToUser;
+		boolean isViewShown = getView() != null && isVisibleToUser;
 		if (isViewShown) {
-			Log.d("dwd", "fragment 2 " + isViewShown);
 			initSpecFragment();
 			dataIsSelectedFromHint.set(true);
 		} else {
@@ -78,7 +75,7 @@ public class SpecsFragment extends Fragment {
 	}
 
 	private void initSpecFragment() {
-		currentSpec = AppSettings.getInstance().getCurrentSpec();
+		Spec currentSpec = AppSettings.getInstance().getCurrentSpec();
 
 		if (currentSpec == null) {
 			return;
@@ -90,10 +87,11 @@ public class SpecsFragment extends Fragment {
 
 		Model currentModel = AppSettings.getInstance().getCurrentModel();
 		nameTxtView.setText(currentModel.getName());
-		//todo set current selected color name
 		titleTxtView.setText(AppSettings.getInstance().getCurrentModelColorTitle());
 
-		initSpecTextLayouts(currentSpec);
+		getActivity().runOnUiThread(() -> {
+			initSpecTextLayouts(currentSpec);
+		});
 
 	}
 

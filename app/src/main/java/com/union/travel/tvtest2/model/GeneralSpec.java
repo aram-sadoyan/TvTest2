@@ -22,12 +22,6 @@ public class GeneralSpec implements Serializable {
 	@SerializedName("WaterResistance")
 	private
 	String waterResistance;
-//	@SerializedName("Weight")
-//	private
-//	String weight;
-//	@SerializedName("Sensor")
-//	private
-//	String sensor;
 	@SerializedName("Display")
 	private
 	String display;

@@ -1,5 +1,6 @@
 package com.union.travel.tvtest2.adapter;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,21 +9,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
+import com.union.travel.tvtest2.FrescoLoader;
 import com.union.travel.tvtest2.R;
 import com.union.travel.tvtest2.tabFragments.DemoVideosFragment;
 
-import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VideoVerticalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-	private List<String> urls;
+	private List<String> urls = new ArrayList<>();
 	private int selectedPosition = 0;
 	private final DemoVideosFragment.OnItemClickListener listener;
+	private FrescoLoader frescoLoader = new FrescoLoader();
 
 	public VideoVerticalAdapter(List<String> urls, DemoVideosFragment.OnItemClickListener listener) {
 		this.urls = urls;
@@ -39,107 +38,7 @@ public class VideoVerticalAdapter extends RecyclerView.Adapter<RecyclerView.View
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 		ItemViewHolder itemHolder = (ItemViewHolder) holder;
 
-		itemHolder.youTubePlayerView.setEnableAutomaticInitialization(false);
-
-		//TODO REFACTOR
-		try {
-			itemHolder.youTubePlayerView.initialize(new YouTubePlayerListener() {
-				@Override
-				public void onReady(@NotNull YouTubePlayer youTubePlayer) {
-					youTubePlayer.cueVideo("6JYIGclVQdw", 0);
-				}
-
-				@Override
-				public void onStateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerState playerState) {
-				}
-
-				@Override
-				public void onPlaybackQualityChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackQuality playbackQuality) {
-				}
-
-				@Override
-				public void onPlaybackRateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackRate playbackRate) {
-				}
-
-				@Override
-				public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError playerError) {
-				}
-
-				@Override
-				public void onCurrentSecond(@NotNull YouTubePlayer youTubePlayer, float v) {
-				}
-
-				@Override
-				public void onVideoDuration(@NotNull YouTubePlayer youTubePlayer, float v) {
-				}
-
-				@Override
-				public void onVideoLoadedFraction(@NotNull YouTubePlayer youTubePlayer, float v) {
-				}
-
-				@Override
-				public void onVideoId(@NotNull YouTubePlayer youTubePlayer, @NotNull String s) {
-				}
-
-				@Override
-				public void onApiChange(@NotNull YouTubePlayer youTubePlayer) {
-				}
-			});
-		} catch (IllegalStateException ex) {
-			itemHolder.youTubePlayerView.getYouTubePlayerWhenReady(youTubePlayer -> youTubePlayer.addListener(new YouTubePlayerListener() {
-				@Override
-				public void onReady(@NotNull YouTubePlayer youTubePlayer) {
-					youTubePlayer.cueVideo("6JYIGclVQdw", 0);
-				}
-
-				@Override
-				public void onStateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerState playerState) {
-
-				}
-
-				@Override
-				public void onPlaybackQualityChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackQuality playbackQuality) {
-
-				}
-
-				@Override
-				public void onPlaybackRateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackRate playbackRate) {
-
-				}
-
-				@Override
-				public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError playerError) {
-
-
-				}
-
-				@Override
-				public void onCurrentSecond(@NotNull YouTubePlayer youTubePlayer, float v) {
-
-				}
-
-				@Override
-				public void onVideoDuration(@NotNull YouTubePlayer youTubePlayer, float v) {
-
-				}
-
-				@Override
-				public void onVideoLoadedFraction(@NotNull YouTubePlayer youTubePlayer, float v) {
-
-				}
-
-				@Override
-				public void onVideoId(@NotNull YouTubePlayer youTubePlayer, @NotNull String s) {
-
-				}
-
-				@Override
-				public void onApiChange(@NotNull YouTubePlayer youTubePlayer) {
-
-				}
-			}));
-		}
-
+		frescoLoader.loadWithParams(Uri.parse(urls.get(position)), itemHolder.simpleDraweeView, false);
 
 		if (selectedPosition == position) {
 			itemHolder.underlineIcView.setVisibility(View.VISIBLE);
@@ -166,7 +65,8 @@ public class VideoVerticalAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 
 	public class ItemViewHolder extends RecyclerView.ViewHolder {
-		private YouTubePlayerView youTubePlayerView;
+		//private YouTubePlayerView youTubePlayerView;
+		private SimpleDraweeView simpleDraweeView;
 		private SimpleDraweeView underlineIcView;
 		private View thumbView;
 
@@ -174,7 +74,8 @@ public class VideoVerticalAdapter extends RecyclerView.Adapter<RecyclerView.View
 			super(view);
 			thumbView = view.findViewById(R.id.thumbnailView);
 			underlineIcView = view.findViewById(R.id.verticalLineView);
-			youTubePlayerView = view.findViewById(R.id.youtubePlayerView);
+			//youTubePlayerView = view.findViewById(R.id.youtubePlayerView);
+			simpleDraweeView = view.findViewById(R.id.simpleDrawee);
 		}
 	}
 }

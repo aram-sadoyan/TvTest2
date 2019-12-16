@@ -33,10 +33,10 @@ import com.union.travel.tvtest2.tabFragments.OverviewFragment;
 import com.union.travel.tvtest2.tabFragments.BrandFragment;
 import com.union.travel.tvtest2.tabFragments.ModelFragment;
 import com.union.travel.tvtest2.tabFragments.SpecsFragment;
+import com.union.travel.tvtest2.utils.MyExceptionHandler;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,26 +93,13 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	protected void onStart() {
 		super.onStart();
 		arduino.setArduinoListener(this);
-		//physicaloid = new Physicaloid(this);
 
-		//physicaloid.setBaudrate(9600);
-//		if (physicaloid.open()){
-//
-//			physicaloid.addReadListener(size -> {
-//				byte[] buf = new byte[size];
-//				physicaloid.read(buf, size);
-//				Log.d("dwd","kjhgf " + size);
-//			});
-//
-//		}
-		//Crashlytics.getInstance().crash();
 		//initWatchMap();
 		setDefaultTabs();
 
 		RestClient.getInstance(getApplicationContext()).getWatchApiService().getBrandList().enqueue(new Callback<List<Brand>>() {
 			@Override
 			public void onResponse(Call<List<Brand>> call, Response<List<Brand>> response) {
-				//Log.d("dwd", response.toString());
 				brandList = response.body();
 				if (brandList != null && !brandList.isEmpty()) {
 					AppSettings.getInstance().setFirstRequestedData(brandList);
@@ -136,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 								allVideoList.add("https://mysmartech.ru/esiminch.mp4");
 								allVideoList.add("https://mysmartech.ru/esiminch.mp4");
 
-								initWatchMap();
+								//initWatchMap();
 
 								//todo remove comment its for debug, AND remove playerView.setVisibility(View.GONE);
 								//playerView.setVisibility(View.GONE);
@@ -144,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 
 								//todo remove its fro debug
-								//proceedSensor(1);
+								//proceedSensor(12);
 
 							}
 
@@ -176,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		Thread.setDefaultUncaughtExceptionHandler(new MyExceptionHandler(this));
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		viewPager = findViewById(R.id.viewPager);
@@ -224,11 +212,14 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 			exoManager.setVideoCallback(new ExoPlayerManager.VideoCallback() {
 				@Override
 				public void onVideoStart(@NotNull String url) {
+					Log.d("dwd","dwdwd");
 				}
 
 				@Override
 				public void onVideoEnd(@NotNull String url) {
 					startVideo(currentVideoIndex);
+					Log.d("dwd","dwdwd");
+
 				}
 
 				@Override
@@ -238,11 +229,14 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 
 				@Override
 				public void onVideoBufferingEnd() {
+					Log.d("dwd","dwdwd");
+
 				}
 			});
 		}
 
 		exoManager.toggleMute(true);
+		//exoManager.seekToMls(9000);
 		if (currentVideoIndex >= allVideoList.size()) {
 			currentVideoIndex = 0;
 		}
@@ -466,59 +460,58 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 		runOnUiThread(() -> {
 			// txtv.append(message + "\n");
 			// Log.d("flow", "message " + message);
-			txtv4.setText("wdw " );
+			//txtv4.setText("wdw " );
 
 			txtv.setText(message);
 			if (operationRuning && !isDataRecevied) {
 				return;
 			}
 
-
-			int sensorIdInt = -1;
-			switch (message) {
-				case "1":
-					sensorIdInt = 1;
-					break;
-				case "2":
-					sensorIdInt = 2;
-					break;
-				case "3":
-					sensorIdInt = 3;
-					break;
-				case "4":
-					sensorIdInt = 4;
-					break;
-				case "5":
-					sensorIdInt = 5;
-					break;
-				case "6":
-					sensorIdInt = 6;
-					break;
-				case "7":
-					sensorIdInt = 7;
-					break;
-				case "8":
-					sensorIdInt = 8;
-					break;
-				case "9":
-					sensorIdInt = 9;
-					break;
-				case "10":
-					sensorIdInt = 10;
-					break;
-				case "11":
-					sensorIdInt = 11;
-					break;
-				case "12":
-					sensorIdInt = 12;
-					break;
-				case "OFF":
-					sensorIdInt = -1;
-					break;
-				default:
-
-					//todo determine 12 SENSOR ID
-			}
+		int sensorIdInt = -1;
+		switch (message) {
+			case "1\r\n":
+				sensorIdInt = 1;
+				break;
+			case "2\r\n":
+				sensorIdInt = 2;
+				break;
+			case "3\r\n":
+				sensorIdInt = 3;
+				break;
+			case "4\r\n":
+				sensorIdInt = 4;
+				break;
+			case "5\r\n":
+				sensorIdInt = 5;
+				break;
+			case "6\r\n":
+				sensorIdInt = 6;
+				break;
+			case "7\r\n":
+				sensorIdInt = 7;
+				break;
+			case "8\r\n":
+				sensorIdInt = 8;
+				break;
+			case "9\r\n":
+				sensorIdInt = 9;
+				break;
+			case "10\r\n":
+				sensorIdInt = 10;
+				break;
+			case "11\r\n":
+				sensorIdInt = 11;
+				break;
+			case "12\r\n":
+				sensorIdInt = 12;
+				break;
+			case "OFF":
+			case "OFF\r\n":
+				sensorIdInt = -1;
+				break;
+			default:
+				//todo determine 12 SENSOR ID
+		}
 
 			sensorsList.add(sensorIdInt);
 			if (sensorsList.size() == 1) {
@@ -698,7 +691,7 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 				)
 		);
 
-		watchMap.put(4, new Watch(
+		watchMap.put(12, new Watch(
 						"Watch 4 Lorem ipsum",
 						"header4",
 						"title4",

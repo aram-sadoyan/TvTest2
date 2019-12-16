@@ -60,8 +60,23 @@ public class Model implements Serializable {
 	private
 	List<String> videoUrls = new ArrayList<>();
 
+	@SerializedName("NewImgLink")
+	private
+	List<String> videoImages = new ArrayList<>();
+
 	@SerializedName("Specs")
 	private Spec spec;
+
+
+	private List<ModelVideo> modelVideos = new ArrayList<>();
+
+	public List<ModelVideo> getModelVideos() {
+		return modelVideos;
+	}
+
+	public void setModelVideos(List<ModelVideo> modelVideos) {
+		this.modelVideos = modelVideos;
+	}
 
 	public int getId() {
 		return id;
@@ -165,5 +180,13 @@ public class Model implements Serializable {
 
 	public void setBrandName(String brandName) {
 		this.brandName = brandName;
+	}
+
+	public List<String> getVideoImages() {
+		return videoImages;
+	}
+
+	public void setVideoImages(List<String> videoImages) {
+		this.videoImages = videoImages;
 	}
 }

@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.VideoView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,47 +13,70 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.ui.PlayerView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerCallback;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
-import com.union.travel.tvtest2.ExoPlayerManager;
-import com.union.travel.tvtest2.FrescoLoader;
 import com.union.travel.tvtest2.R;
 import com.union.travel.tvtest2.adapter.VideoVerticalAdapter;
 import com.union.travel.tvtest2.model.AppSettings;
+import com.union.travel.tvtest2.model.Model;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DemoVideosFragment extends Fragment {
 
 
-	private VideoView video;
 	private String videoUrl = "https://mysmartech.ru/esiminch.mp4";
-	private SimpleExoPlayer exoPlayer;
-	private SimpleDraweeView playBtn;
-	private List<String> videoUrlList = new ArrayList<>();
-	private FrescoLoader frescoLoader = new FrescoLoader();
-
-
-	private ExoPlayerManager exoManager;
-	private PlayerView playerView = null;
-
-
 	public RecyclerView recyclerView;
-	private boolean isViewShown;
-
+	private TextView nameTxtView = null;
+	private TextView titleTxtView = null;
 
 	private YouTubePlayerView youTubePlayerView = null;
-	//private SimpleExoPlayerView exoPlayerView;
+	private AtomicBoolean dataIsSelectedFromHint = new AtomicBoolean();
+	private List<String> videoUrlList = new ArrayList<>();
 
+	private YouTubePlayer youTubePlayerGlobal = null;
+
+
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		boolean isViewShown = getView() != null && isVisibleToUser;
+		if (isViewShown) {
+			initDemoVideosFragment();
+			dataIsSelectedFromHint.set(true);
+			if (youTubePlayerGlobal != null){
+				youTubePlayerGlobal.play();
+			}
+		} else {
+			if (youTubePlayerGlobal != null){
+				youTubePlayerGlobal.pause();
+
+			}
+			dataIsSelectedFromHint.set(false);
+
+		}
+	}
+
+	private void initDemoVideosFragment() {
+		Model currentModel = AppSettings.getInstance().getCurrentModel();
+		if (currentModel == null) {
+			return;
+		}
+		//todo get ModelVideo list with thubnail url and video url
+		nameTxtView.setText(currentModel.getName());
+		titleTxtView.setText(AppSettings.getInstance().getCurrentModelColorTitle());
+
+		videoUrlList = AppSettings.getInstance().getVideoUrlList();
+
+
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,24 +89,32 @@ public class DemoVideosFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		recyclerView = view.findViewById(R.id.recvw_demo);
-		playBtn = view.findViewById(R.id.playBtn);
-
+		nameTxtView = view.findViewById(R.id.nameTxtView);
+		titleTxtView = view.findViewById(R.id.titeTxtView);
 		youTubePlayerView = view.findViewById(R.id.youtubePlayerView);
 		youTubePlayerView.setEnableAutomaticInitialization(false);
+
+		if (!dataIsSelectedFromHint.get()) {
+			initDemoVideosFragment();
+			initDemoVideoVerticalRecycler();
+		}
+
+
+
 		youTubePlayerView.getYouTubePlayerWhenReady(new YouTubePlayerCallback() {
 			@Override
 			public void onYouTubePlayer(@NotNull YouTubePlayer youTubePlayer) {
-				youTubePlayer.cueVideo("6JYIGclVQdw", 0);
+
+
 			}
 		});
-
 
 
 		youTubePlayerView.initialize(new YouTubePlayerListener() {
 			@Override
 			public void onReady(@NotNull YouTubePlayer youTubePlayer) {
-
-
+				youTubePlayerGlobal = youTubePlayer;
+				youTubePlayer.cueVideo("6JYIGclVQdw", 0);
 			}
 
 			@Override
@@ -133,15 +164,35 @@ public class DemoVideosFragment extends Fragment {
 		});
 
 
-		videoUrlList = AppSettings.getInstance().getVideoUrlList();
 
 
-//		playBtn.setOnClickListener(v -> {
-//			playBtn.setVisibility(View.GONE);
-//			exoManager.playStream(0L);
-//		});
+	}
 
-
+	private void initDemoVideoVerticalRecycler() {
+		RecyclerView.RecycledViewPool sharedPool = new RecyclerView.RecycledViewPool();
+		recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
+				LinearLayoutManager.VERTICAL, false));
+		recyclerView.setItemViewCacheSize(10);
+		recyclerView.setDrawingCacheEnabled(true);
+		recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+		recyclerView.setHasFixedSize(true);
+		recyclerView.setRecycledViewPool(sharedPool);
+		List<String> urls = new ArrayList<>();
+		urls.add("https://3.bp.blogspot.com/-MTT4RYVc0tQ/V8R1lCOrtpI/AAAAAAAAD4g/QRcIV3MNEiA8gQmSjqBrdkgLfq47_hnMgCLcB/s1600/youtube%2Bimage.png");
+		urls.add("https://3.bp.blogspot.com/-MTT4RYVc0tQ/V8R1lCOrtpI/AAAAAAAAD4g/QRcIV3MNEiA8gQmSjqBrdkgLfq47_hnMgCLcB/s1600/youtube%2Bimage.png");
+		urls.add("https://3.bp.blogspot.com/-MTT4RYVc0tQ/V8R1lCOrtpI/AAAAAAAAD4g/QRcIV3MNEiA8gQmSjqBrdkgLfq47_hnMgCLcB/s1600/youtube%2Bimage.png");
+		urls.add("https://3.bp.blogspot.com/-MTT4RYVc0tQ/V8R1lCOrtpI/AAAAAAAAD4g/QRcIV3MNEiA8gQmSjqBrdkgLfq47_hnMgCLcB/s1600/youtube%2Bimage.png");
+		urls.add("https://3.bp.blogspot.com/-MTT4RYVc0tQ/V8R1lCOrtpI/AAAAAAAAD4g/QRcIV3MNEiA8gQmSjqBrdkgLfq47_hnMgCLcB/s1600/youtube%2Bimage.png");
+		urls.add("https://3.bp.blogspot.com/-MTT4RYVc0tQ/V8R1lCOrtpI/AAAAAAAAD4g/QRcIV3MNEiA8gQmSjqBrdkgLfq47_hnMgCLcB/s1600/youtube%2Bimage.png");
+		urls.add("https://3.bp.blogspot.com/-MTT4RYVc0tQ/V8R1lCOrtpI/AAAAAAAAD4g/QRcIV3MNEiA8gQmSjqBrdkgLfq47_hnMgCLcB/s1600/youtube%2Bimage.png");
+		urls.add("https://3.bp.blogspot.com/-MTT4RYVc0tQ/V8R1lCOrtpI/AAAAAAAAD4g/QRcIV3MNEiA8gQmSjqBrdkgLfq47_hnMgCLcB/s1600/youtube%2Bimage.png");
+		urls.add("https://3.bp.blogspot.com/-MTT4RYVc0tQ/V8R1lCOrtpI/AAAAAAAAD4g/QRcIV3MNEiA8gQmSjqBrdkgLfq47_hnMgCLcB/s1600/youtube%2Bimage.png");
+		urls.add("https://3.bp.blogspot.com/-MTT4RYVc0tQ/V8R1lCOrtpI/AAAAAAAAD4g/QRcIV3MNEiA8gQmSjqBrdkgLfq47_hnMgCLcB/s1600/youtube%2Bimage.png");
+		VideoVerticalAdapter videoVerticalAdapter = new VideoVerticalAdapter(urls, (icUrl, adapterPosition) -> {
+			//TODO CHANGE CURRENT VIDEO VIEW
+			Log.d("dwd", "playAnother view");
+		});
+		recyclerView.setAdapter(videoVerticalAdapter);
 	}
 
 
@@ -152,92 +203,6 @@ public class DemoVideosFragment extends Fragment {
 		//initVideoView();
 
 
-		RecyclerView.RecycledViewPool sharedPool = new RecyclerView.RecycledViewPool();
-
-		recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
-				LinearLayoutManager.VERTICAL, false));
-		recyclerView.setItemViewCacheSize(10);
-		recyclerView.setDrawingCacheEnabled(true);
-		recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-		recyclerView.setHasFixedSize(true);
-		recyclerView.setRecycledViewPool(sharedPool);
-
-
-		List<String> urls = new ArrayList<>();
-		urls.add(videoUrl);
-		urls.add(videoUrl);
-		urls.add(videoUrl);
-		urls.add(videoUrl);
-		urls.add(videoUrl);
-		urls.add(videoUrl);
-		urls.add(videoUrl);
-		urls.add(videoUrl);
-
-		VideoVerticalAdapter videoVerticalAdapter = new VideoVerticalAdapter(urls, (icUrl, adapterPosition) -> {
-			//TODO CHANGE CURRENT VIDEO VIEW
-			Log.d("dwd","playAnother view");
-		});
-		recyclerView.setAdapter(videoVerticalAdapter);
-
-
-	}
-
-	private void initVideoView() {
-
-//		Bitmap thumb = ThumbnailUtils.createVideoThumbnail("https://mysmartech.ru/esiminch.mp4",
-//				MediaStore.Images.Thumbnails.MINI_KIND);
-//
-//		BitmapDrawable bitmapDrawable = new BitmapDrawable(thumb);
-//
-//		Bitmap bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
-//		Canvas canvas = new Canvas(bitmap);
-//		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-//
-//		canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-//		canvas.save();
-//		canvas.drawBitmap(thumb, 0f, 0f, paint);
-//
-//		testIc.setImageDrawable(bitmapDrawable);
-
-		//	playerView.setBackground(bitmapDrawable);
-
-
-		//todo bring back videos
-//		exoManager = ExoPlayerManager.createInstance(this, getContext(), playerView);
-//		exoManager.setVideoPath("https://mysmartech.ru/esiminch.mp4");
-//		exoManager.seekToMls(1);
-//		exoManager.setVideoCallback(new ExoPlayerManager.VideoCallback() {
-//			@Override
-//			public void onVideoStart(@NotNull String url) {
-//				Log.d("dwd", "on video start");
-//
-//			}
-//
-//			@Override
-//			public void onVideoEnd(@NotNull String url) {
-//				Log.d("dwd", "on video end");
-//				playBtn.setVisibility(View.GONE);
-//
-//			}
-//
-//			@Override
-//			public void onVideoFail(@NotNull String url, @NotNull String errorMsg) {
-//				Log.d("dwd", "fail video ");
-//
-//			}
-//
-//			@Override
-//			public void onVideoBufferingEnd() {
-//				Log.d("dwd", "video buffering end");
-//			}
-//		});
-	}
-
-	@Override
-	public void setUserVisibleHint(boolean isVisibleToUser) {
-		super.setUserVisibleHint(isVisibleToUser);
-		isViewShown = getView() != null && isVisibleToUser;
-		//Log.d("dwd", "fragment 2 " + isViewShown);
 	}
 
 

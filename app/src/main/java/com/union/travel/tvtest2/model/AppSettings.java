@@ -257,6 +257,20 @@ public class AppSettings {
 			if (currentModelId == model.getId()) {
 				currentModel = model;
 				setCurrentBrandName(model.getBrandName());
+				//todo add videObject
+				List<ModelVideo> modelVideoList = new ArrayList<>();
+				for (int i = 0; i < model.getVideoUrls().size(); i++){
+					List<String> videoUrlList = model.getVideoUrls();
+					List<String> thumbNailUrlList = model.getVideoImages();
+					if (!thumbNailUrlList.isEmpty() && thumbNailUrlList.size()
+							== videoUrlList.size()){
+						ModelVideo modelVideo = new ModelVideo(
+								thumbNailUrlList.get(i),
+								videoUrlList.get(i));
+						modelVideoList.add(modelVideo);
+					}
+				}
+				model.setModelVideos(modelVideoList);
 			}
 		}
 	}

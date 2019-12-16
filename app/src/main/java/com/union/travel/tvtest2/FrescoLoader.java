@@ -360,10 +360,6 @@ public class FrescoLoader {
 		imageView.setController(draweeControllerBuilder.build());
 	}
 
-	public void loadWithParams(final Uri uri, DraweeView imageView, ControllerListener<ImageInfo> listener) {
-		loadWithParams(uri, imageView, false, listener);
-	}
-
 	public void loadWithParams(final Uri uri, DraweeView imageView, boolean disableCache) {
 		loadWithParams(uri, imageView, false, null, disableCache);
 	}
@@ -397,10 +393,6 @@ public class FrescoLoader {
 			ops.setCustomDecodeWidthHeight(width, height, uri.getPath());
 			imageRequestBuilder.setImageDecodeOptions(ops);
 			imageRequestBuilder.setResizeOptions(new ResizeOptions(width, height));
-		}
-		if (disableCache) {
-			imageRequestBuilder.disableMemoryCache();
-			imageRequestBuilder.disableDiskCache();
 		}
 
 		DraweeController draweeController = Fresco.newDraweeControllerBuilder()

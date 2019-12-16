@@ -69,6 +69,7 @@ public class OverviewFragment extends Fragment {
 	private String selectedColorUrl = "";
 	private String selectedColorTitle = "";
 	private int selectedAdapterPosition = 0;
+	//private View transparentView = null;
 
 
 	@Override
@@ -83,12 +84,13 @@ public class OverviewFragment extends Fragment {
 		boolean isViewShown = getView() != null && isVisibleToUser;
 		if (isViewShown) {
 			//TODO SET Fragment components when is from global clicks
-			boolean isSelectedFromModel = AppSettings.getInstance().isSelectedFromModel();
-			if (isSelectedFromModel) {
-				initOverViewFragment();
-				dataIsSelectedFromHint.set(true);
-				AppSettings.getInstance().setSelectedFromModel(false);
-			}
+			//boolean isSelectedFromModel = AppSettings.getInstance().isSelectedFromModel();
+			//	if (isSelectedFromModel) {
+			//todo check this change
+			initOverViewFragment();
+			dataIsSelectedFromHint.set(true);
+			AppSettings.getInstance().setSelectedFromModel(false);
+			//}
 		} else {
 			dataIsSelectedFromHint.set(false);
 		}
@@ -126,6 +128,7 @@ public class OverviewFragment extends Fragment {
 		gridLayout = view.findViewById(R.id.overviewGrid);
 		mainIcView = view.findViewById(R.id.watchId);
 		priceTxtView = view.findViewById(R.id.priceTxtView);
+		//transparentView = view.findViewById(R.id.transparentView);
 
 
 		if (!dataIsSelectedFromHint.get()) {
@@ -154,10 +157,10 @@ public class OverviewFragment extends Fragment {
 		initPriceSizeGroup();
 		setBottomText(model.getId());
 
-		arrowDownView.setOnClickListener(v -> {
-		//	Log.d("dwd", "arrowDown clicked");
-		//	Log.d("dwd", "arrowDown clicked");
-		});
+//		arrowDownView.setOnClickListener(v -> {
+//		//	Log.d("dwd", "arrowDown clicked");
+//		//	Log.d("dwd", "arrowDown clicked");
+//		});
 
 	}
 
@@ -199,6 +202,9 @@ public class OverviewFragment extends Fragment {
 	private final CompoundButton.OnCheckedChangeListener onCheckedChangedListener =
 			(buttonView, isChecked) -> {
 				if (isChecked) {
+					if (priceList.isEmpty()) {
+						return;
+					}
 					String slectedPriceString = priceList.get(buttonView.getId()).getPricetext();
 					priceTxtView.setText(slectedPriceString);
 					selectedPrice = slectedPriceString;
@@ -212,7 +218,7 @@ public class OverviewFragment extends Fragment {
 		nameTxtView.setText(model.getName());
 		colorDescTxtView.setText(colorTitle);
 		AppSettings.getInstance().setCurrentModelColorTitle(colorTitle);
-		serialTxtView.setText(model.getSdDescription());
+		serialTxtView.setText(model.getPartNumber());
 	}
 
 	private void initGridLayoutForColors() {
@@ -322,8 +328,16 @@ public class OverviewFragment extends Fragment {
 			frescoLoader.loadWithParams(Uri.parse(AppConstants.IMG_URL_PREFFIX + icUrl), mainIcView, false);
 			AppSettings.getInstance().setCurrentMainIcUrl(icUrl);
 
+
 		});
 		recyclerView.setAdapter(verticalWatchAdapter);
+		if (colorList.get(0).getColorUrls().size() > 4) {
+			arrowDownView.setVisibility(View.VISIBLE);
+			arrowDownView.setOnClickListener(arrowDownClickListener);
+		} else {
+			arrowDownView.setVisibility(View.GONE);
+			arrowDownView.setOnClickListener(null);
+		}
 	}
 
 
@@ -369,6 +383,7 @@ public class OverviewFragment extends Fragment {
 		compareTxtView.setText("Added");
 		plusView.setOnClickListener(null);
 		compareTxtView.setOnClickListener(null);
+		//transparentView.setOnClickListener(null);
 	}
 
 	private void setTextNOTAdded() {
@@ -376,6 +391,7 @@ public class OverviewFragment extends Fragment {
 		compareTxtView.setText("Add to compare");
 		plusView.setOnClickListener(compareClickListener);
 		compareTxtView.setOnClickListener(compareClickListener);
+		//transparentView.setOnClickListener(compareClickListener);
 	}
 
 	private View.OnClickListener arrowDownClickListener = v -> {
@@ -386,7 +402,7 @@ public class OverviewFragment extends Fragment {
 			if (selectedAdapterPosition == verticalWatchAdapter.getItemCount() - 1) {
 				movedPos = 0;
 			} else {
-				movedPos = selectedAdapterPosition+1;
+				movedPos = selectedAdapterPosition + 1;
 			}
 
 			recyclerView.smoothScrollToPosition(movedPos);

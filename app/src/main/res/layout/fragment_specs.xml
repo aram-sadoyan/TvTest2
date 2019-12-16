@@ -2,35 +2,35 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:orientation="vertical"
-	android:background="@color/primary_color_white"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+	android:layout_height="match_parent"
+	android:background="@color/primary_color_white"
+	android:orientation="vertical">
 
 
 	<com.facebook.drawee.view.SimpleDraweeView
 		android:id="@+id/watchId"
 		android:layout_width="590dp"
 		android:layout_height="590dp"
-		app:actualImageScaleType="centerInside"
 		android:layout_marginStart="275dp"
 		android:layout_marginTop="97dp"
 		android:background="@color/primary_color_white"
-		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintStart_toStartOf="parent" />
+		app:actualImageScaleType="centerInside"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
 
 
 	<TextView
 		android:id="@+id/nameTxtView"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="62dp"
 		android:layout_marginStart="66dp"
-		android:textStyle="bold"
-		android:fontFamily="@font/lato"
-		android:text="fēnix® 6 - Pro and Sapphire Editions"
+		android:layout_marginTop="62dp"
+		android:fontFamily="sans-serif-light"
 		android:textColor="@color/primary_color_black"
 		android:textSize="48sp"
+		android:textStyle="bold"
 		app:layout_constraintStart_toEndOf="@id/watchId"
 		app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,13 +38,13 @@
 		android:id="@+id/titelTxtView"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginEnd="172dp"
 		android:layout_marginStart="66dp"
-		android:text="Sapphire - Titanium with Ember Orange Band"
+		android:layout_marginEnd="172dp"
+		android:fontFamily="sans-serif-light"
 		android:textColor="@color/lb_grey"
 		android:textSize="18sp"
 		app:layout_constraintStart_toEndOf="@id/watchId"
-		app:layout_constraintTop_toBottomOf="@id/nameTxtView"/>
+		app:layout_constraintTop_toBottomOf="@id/nameTxtView" />
 
 	<ScrollView
 		android:id="@+id/paramsScrollView"
@@ -58,15 +58,11 @@
 		app:layout_constraintTop_toBottomOf="@+id/titelTxtView">
 
 
-		<include layout="@layout/layout_params_parent_3"
+		<include
 			android:id="@+id/parentLayoutContainer"
-			/>
+			layout="@layout/layout_params_parent_3" />
 
 	</ScrollView>
-
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
