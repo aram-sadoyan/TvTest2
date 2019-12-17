@@ -123,15 +123,15 @@ public class MainActivity extends AppCompatActivity implements ArduinoListener {
 								allVideoList.add("https://mysmartech.ru/esiminch.mp4");
 								allVideoList.add("https://mysmartech.ru/esiminch.mp4");
 
-								//initWatchMap();
+								initWatchMap();
 
 								//todo remove comment its for debug, AND remove playerView.setVisibility(View.GONE);
-								//playerView.setVisibility(View.GONE);
-								startVideo(0);
+								playerView.setVisibility(View.GONE);
+								//startVideo(0);
 
 
 								//todo remove its fro debug
-								//proceedSensor(12);
+								proceedSensor(3);
 
 							}
 
