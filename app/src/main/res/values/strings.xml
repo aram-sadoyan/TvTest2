@@ -1,5 +1,5 @@
 <resources>
-	<string name="app_name">TvTest2</string>
+	<string name="app_name">TvTest2DEBUG</string>
     <string name="inch_vor_erkar_text">Inch vor erkar text</string>
     <string name="inch_vor_karch_text">Inch vor karch text</string>
 </resources>

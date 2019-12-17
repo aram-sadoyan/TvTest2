@@ -10,8 +10,8 @@
 
 	<com.facebook.drawee.view.SimpleDraweeView
 		android:id="@+id/watchId"
-		android:layout_width="590dp"
-		android:layout_height="590dp"
+		android:layout_width="280dp"
+		android:layout_height="280dp"
 		android:layout_marginStart="275dp"
 		android:layout_marginTop="97dp"
 		android:background="@color/primary_color_white"

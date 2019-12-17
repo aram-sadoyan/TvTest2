@@ -8,8 +8,8 @@
 
 	<com.facebook.drawee.view.SimpleDraweeView
 		android:id="@+id/gridItemIc"
-		android:layout_width="100dp"
-		android:layout_height="100dp"
+		android:layout_width="70dp"
+		android:layout_height="70dp"
 		app:actualImageScaleType="centerInside"
 		android:background="@color/primary_color_white"/>
 

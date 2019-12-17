@@ -55,8 +55,8 @@
 
 	<com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 		android:id="@+id/youtubePlayerView"
-		android:layout_width="1074dp"
-		android:layout_height="603dp"
+		android:layout_width="600dp"
+		android:layout_height="400dp"
 		android:layout_marginTop="30dp"
 		app:showFullScreenButton="false"
 		app:layout_constraintEnd_toEndOf="parent"

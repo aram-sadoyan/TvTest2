@@ -1,0 +1,9 @@
+package com.union.travel.tvtest3
+
+enum class ResizeModeType {
+	RESIZE_MODE_FILL,
+	RESIZE_MODE_FIT,
+	RESIZE_MODE_FIXED_HEIGHT,
+	RESIZE_MODE_FIXED_WIDTH,
+	RESIZE_MODE_ZOOM
+}

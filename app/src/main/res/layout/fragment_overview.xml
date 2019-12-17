@@ -12,8 +12,8 @@
 		android:layout_width="wrap_content"
 		android:layout_height="0dp"
 		android:layout_marginStart="95dp"
-		android:layout_marginTop="97dp"
-		android:layout_marginBottom="282dp"
+		android:layout_marginTop="42dp"
+		android:layout_marginBottom="60dp"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent" />
@@ -22,7 +22,7 @@
 		android:id="@+id/arrowDownView"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="26dp"
+		android:layout_marginTop="4dp"
 		android:background="@drawable/ic_arrow_down"
 		android:paddingStart="20dp"
 		android:paddingEnd="20dp"
@@ -34,8 +34,8 @@
 
 	<com.facebook.drawee.view.SimpleDraweeView
 		android:id="@+id/watchId"
-		android:layout_width="590dp"
-		android:layout_height="590dp"
+		android:layout_width="280dp"
+		android:layout_height="280dp"
 		app:actualImageScaleType="centerInside"
 		android:layout_marginStart="61dp"
 		android:layout_marginTop="97dp"
@@ -248,7 +248,7 @@
 		android:includeFontPadding="false"
 		android:text="899.99 USD"
 		android:textColor="@android:color/black"
-		android:textSize="64dp"
+		android:textSize="32dp"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent" />
 
